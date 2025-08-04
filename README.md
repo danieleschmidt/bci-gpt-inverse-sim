@@ -501,7 +501,7 @@ We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md).
 ```bibtex
 @inproceedings{bci_gpt_inverse_2025,
   title={BCI-GPT: Inverse Simulation for Imagined Speech to Text},
-  author={Your Name et al.},
+  author={Daniel Schmidt},
   booktitle={Advances in Neural Information Processing Systems},
   year={2025}
 }
