@@ -1,0 +1,83 @@
+{
+  "common": {
+    "yes": "是",
+    "no": "否",
+    "ok": "确定",
+    "cancel": "取消", 
+    "error": "错误",
+    "warning": "警告",
+    "info": "信息",
+    "success": "成功",
+    "loading": "加载中...",
+    "please_wait": "请稍等...",
+    "retry": "重试",
+    "close": "关闭"
+  },
+  "bci": {
+    "eeg_signal": "脑电信号",
+    "channels": "通道",
+    "sampling_rate": "采样率", 
+    "signal_quality": "信号质量",
+    "recording": "记录",
+    "processing": "处理",
+    "decoding": "解码",
+    "imagined_speech": "想象语音",
+    "brain_computer_interface": "脑机接口",
+    "neural_signal": "神经信号",
+    "electrode": "电极",
+    "artifact": "伪影",
+    "filter": "滤波器",
+    "calibration": "校准"
+  },
+  "model": {
+    "training": "训练",
+    "validation": "验证",
+    "testing": "测试", 
+    "epoch": "训练轮次",
+    "batch": "批次",
+    "loss": "损失",
+    "accuracy": "准确率",
+    "learning_rate": "学习率",
+    "model_loading": "正在加载模型...",
+    "model_saving": "正在保存模型...",
+    "inference": "推理",
+    "prediction": "预测",
+    "confidence": "置信度"
+  },
+  "errors": {
+    "file_not_found": "文件未找到: {filename}",
+    "invalid_format": "无效的文件格式",
+    "processing_failed": "处理失败: {error}",
+    "model_load_failed": "模型加载失败: {error}",
+    "insufficient_data": "数据不足，无法处理",
+    "connection_failed": "连接失败",
+    "timeout": "操作超时",
+    "permission_denied": "权限被拒绝",
+    "out_of_memory": "内存不足",
+    "gpu_not_available": "GPU不可用"
+  },
+  "cli": {
+    "train_command": "训练BCI-GPT模型",
+    "decode_command": "将脑电信号解码为文本",
+    "generate_command": "从文本生成合成脑电信号",
+    "serve_command": "启动BCI-GPT API服务器",
+    "info_command": "显示系统信息",
+    "config_file": "配置文件路径",
+    "model_path": "模型文件路径",
+    "data_path": "数据目录路径",
+    "output_path": "输出文件路径",
+    "verbose": "启用详细输出",
+    "quiet": "抑制输出消息"
+  },
+  "api": {
+    "server_starting": "正在启动BCI-GPT服务器...",
+    "server_ready": "服务器已就绪 {host}:{port}",
+    "server_stopping": "正在停止服务器...",
+    "invalid_request": "无效的请求格式",
+    "processing_request": "正在处理请求...",
+    "request_completed": "请求已成功完成",
+    "health_check": "健康检查",
+    "status_healthy": "系统运行正常",
+    "status_unhealthy": "系统运行异常"
+  }
+}
