@@ -1,0 +1,73 @@
+# Core dependencies
+torch>=2.0.0
+torchvision>=0.15.0
+torchaudio>=2.0.0
+numpy>=1.21.0
+scipy>=1.8.0
+
+# Machine Learning
+scikit-learn>=1.1.0
+transformers>=4.21.0
+datasets>=2.0.0
+accelerate>=0.20.0
+
+# Neuroimaging and EEG
+mne>=1.4.0
+pyedflib>=0.1.30
+
+# Optional neuroimaging dependencies
+# mne-connectivity>=0.4.0
+# mne-realtime>=0.1.0
+# nilearn>=0.10.0
+# neurodsp>=2.2.0
+# fooof>=1.0.0
+
+# Streaming and hardware interfaces
+pylsl>=1.16.0
+brainflow>=5.8.0
+
+# Visualization
+matplotlib>=3.5.0
+seaborn>=0.11.0
+plotly>=5.0.0
+
+# Data handling
+pandas>=1.4.0
+
+# Logging and monitoring
+tensorboard>=2.10.0
+wandb>=0.13.0
+
+# Configuration
+hydra-core>=1.2.0
+omegaconf>=2.2.0
+
+# CLI and utilities
+rich>=12.0.0
+typer>=0.7.0
+click>=8.0.0
+
+# Data validation
+pydantic>=1.10.0
+
+# Web frameworks (for optional API)
+fastapi>=0.95.0
+uvicorn>=0.20.0
+websockets>=11.0.0
+
+# Security and encryption
+cryptography>=3.4.8
+
+# Development and testing
+pytest>=7.0.0
+pytest-cov>=4.0.0
+black>=22.0.0
+isort>=5.10.0
+flake8>=5.0.0
+mypy>=0.991
+pre-commit>=2.20.0
+
+# Medical imaging (optional)
+# pydicom>=2.3.0
+# nibabel>=4.0.0
+# SimpleITK>=2.2.0
