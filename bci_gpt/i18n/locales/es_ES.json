@@ -1,0 +1,144 @@
+{
+  "app": {
+    "name": "BCI-GPT",
+    "description": "Simulador Inverso de Interfaz Cerebro-Computadora GPT",
+    "version": "v1.0.0"
+  },
+  "common": {
+    "yes": "Sí",
+    "no": "No",
+    "ok": "OK",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "load": "Cargar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "create": "Crear",
+    "update": "Actualizar",
+    "refresh": "Actualizar",
+    "search": "Buscar",
+    "clear": "Limpiar",
+    "help": "Ayuda",
+    "about": "Acerca de",
+    "settings": "Configuración",
+    "exit": "Salir",
+    "error": "Error",
+    "warning": "Advertencia",
+    "info": "Información",
+    "success": "Éxito",
+    "loading": "Cargando...",
+    "processing": "Procesando...",
+    "complete": "Completo",
+    "failed": "Falló"
+  },
+  "cli": {
+    "train": {
+      "title": "Entrenando Modelo BCI-GPT",
+      "starting": "Iniciando entrenamiento del modelo...",
+      "completed": "¡Entrenamiento completado exitosamente!",
+      "failed": "El entrenamiento falló: {error}",
+      "progress": "Época {epoch}/{total_epochs} - Pérdida: {loss:.4f}",
+      "validation": "Validación - Precisión: {accuracy:.2%}, WER: {wer:.2%}",
+      "saving": "Guardando modelo en {path}...",
+      "config_loaded": "Configuración cargada desde {path}",
+      "resume_from": "Reanudando entrenamiento desde checkpoint: {checkpoint}"
+    },
+    "decode": {
+      "title": "Decodificación BCI-GPT",
+      "realtime": "Decodificación EEG en Tiempo Real",
+      "file": "Decodificación EEG Basada en Archivos",
+      "starting": "Iniciando decodificación...",
+      "completed": "¡Decodificación completada exitosamente!",
+      "failed": "La decodificación falló: {error}",
+      "model_loaded": "Modelo cargado exitosamente",
+      "model_failed": "No se pudo cargar el modelo: {error}. Usando modo demo.",
+      "stream_started": "Transmisión iniciada exitosamente",
+      "stream_failed": "Falló la conexión de transmisión: {error}",
+      "decoded_text": "Decodificado: '{text}' (confianza: {confidence:.2f})",
+      "low_confidence": "Baja confianza: {confidence:.2f} < {threshold:.2f}",
+      "no_data": "No se recibieron datos de la transmisión",
+      "stopping": "Deteniendo decodificación en tiempo real...",
+      "benchmark": "Evaluando rendimiento del modelo...",
+      "demo": "Ejecutando demo de decodificación BCI-GPT"
+    },
+    "generate": {
+      "title": "Generación de EEG Sintético",
+      "starting": "Generando EEG para: '{text}'",
+      "completed": "¡Generación de EEG completada!",
+      "failed": "La generación falló: {error}",
+      "model_loaded": "Modelo GAN Inverso cargado exitosamente",
+      "model_failed": "No se pudo cargar el modelo: {error}. Usando generación sintética.",
+      "batch_processing": "Procesando {total} muestras de texto",
+      "sample_saved": "Muestra {index} guardada en: {path}",
+      "validation": "Calidad de generación: {score:.3f}",
+      "exporting": "Exportando al formato: {format}"
+    }
+  },
+  "models": {
+    "bci_gpt": {
+      "name": "Modelo BCI-GPT",
+      "description": "BCI GPT para conversión de pensamiento a texto",
+      "loading": "Cargando modelo BCI-GPT...",
+      "loaded": "Modelo BCI-GPT cargado exitosamente",
+      "failed": "Falló al cargar modelo BCI-GPT: {error}",
+      "inference": "Ejecutando inferencia...",
+      "training": "Entrenando modelo...",
+      "validation": "Validando rendimiento del modelo..."
+    }
+  },
+  "eeg": {
+    "channels": "Canales",
+    "samples": "Muestras",
+    "duration": "Duración",
+    "sampling_rate": "Frecuencia de Muestreo",
+    "quality": "Calidad de Señal",
+    "artifact": "Artefacto",
+    "preprocessing": "Preprocesamiento",
+    "filtering": "Filtrado",
+    "good_quality": "Señal de buena calidad",
+    "poor_quality": "Señal de mala calidad - verificar electrodos",
+    "loading_data": "Cargando datos EEG...",
+    "processing_data": "Procesando datos EEG...",
+    "validation_passed": "Validación EEG aprobada",
+    "validation_failed": "Validación EEG falló: {error}"
+  },
+  "security": {
+    "encryption_enabled": "Cifrado de datos habilitado",
+    "encryption_disabled": "Advertencia: Cifrado de datos deshabilitado",
+    "access_granted": "Acceso concedido",
+    "access_denied": "Acceso denegado: {reason}",
+    "privacy_level": "Nivel de privacidad: {level}",
+    "hipaa_compliant": "Compatible con HIPAA",
+    "hipaa_violation": "Violación HIPAA: {issue}"
+  },
+  "monitoring": {
+    "system_health": "Estado del Sistema",
+    "performance": "Rendimiento",
+    "memory_usage": "Uso de Memoria",
+    "cpu_usage": "Uso de CPU",
+    "healthy": "Saludable",
+    "warning": "Advertencia",
+    "critical": "Crítico"
+  },
+  "clinical": {
+    "patient_id": "ID del Paciente",
+    "session_duration": "Duración de Sesión",
+    "fatigue_detected": "Fatiga detectada - recomendada pausa",
+    "session_safe": "Sesión dentro de parámetros de seguridad"
+  },
+  "validation": {
+    "checking": "Validando calidad de datos...",
+    "passed": "Validación aprobada",
+    "failed": "Validación falló",
+    "overall_quality": "Calidad General",
+    "excellent": "Excelente",
+    "good": "Bueno",
+    "fair": "Regular",
+    "poor": "Malo"
+  },
+  "errors": {
+    "file_not_found": "Archivo no encontrado: {path}",
+    "out_of_memory": "Sin memoria",
+    "unknown_error": "Error desconocido: {error}"
+  }
+}

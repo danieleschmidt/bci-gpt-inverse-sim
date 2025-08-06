@@ -3,7 +3,9 @@
 import numpy as np
 from typing import Dict, Optional, List, Tuple
 import warnings
+import logging
 from dataclasses import dataclass
+from pathlib import Path
 
 try:
     import scipy.signal
@@ -34,18 +36,24 @@ class ValidationMetrics:
     statistical_fidelity: float
     artifact_score: float
     overall_quality: float
+    validation_timestamp: Optional[float] = None
+    data_shape: Optional[tuple] = None
+    warnings: Optional[List[str]] = None
 
 
 class SyntheticEEGValidator:
     """Comprehensive validation of synthetic EEG signals."""
     
-    def __init__(self, sampling_rate: int = 1000):
+    def __init__(self, sampling_rate: int = 1000, reference_stats_path: Optional[str] = None):
         """Initialize validator.
         
         Args:
             sampling_rate: EEG sampling rate in Hz
+            reference_stats_path: Path to reference EEG statistics file
         """
         self.sampling_rate = sampling_rate
+        self.reference_stats_path = reference_stats_path
+        self.logger = logging.getLogger(__name__)
         
         # Reference EEG characteristics
         self.eeg_bands = {
@@ -64,6 +72,134 @@ class SyntheticEEGValidator:
             'temporal_autocorr': (0.7, 0.95)
         }
     
+    def validate_comprehensive(self,
+                              synthetic_eeg: np.ndarray,
+                              real_eeg_stats: Optional[str] = None,
+                              compute_spectral: bool = True,
+                              compute_temporal: bool = True,
+                              compute_spatial: bool = True) -> Dict[str, float]:
+        """Comprehensive validation with flexible options.
+        
+        Args:
+            synthetic_eeg: Synthetic EEG signal (channels x samples)
+            real_eeg_stats: Path to real EEG statistics file
+            compute_spectral: Whether to compute spectral metrics
+            compute_temporal: Whether to compute temporal metrics
+            compute_spatial: Whether to compute spatial metrics
+            
+        Returns:
+            Dictionary of validation scores
+        """
+        import time
+        
+        try:
+            # Validate input
+            self._validate_input(synthetic_eeg)
+            
+            # Load reference statistics if provided
+            reference_stats = self._load_reference_stats(real_eeg_stats or self.reference_stats_path)
+            
+            results = {
+                'validation_timestamp': time.time(),
+                'data_shape': synthetic_eeg.shape
+            }
+            
+            warnings_list = []
+            
+            # Core validation always performed
+            results['realism_score'] = self._assess_realism(synthetic_eeg, reference_stats)
+            results['artifact_score'] = self._assess_artifacts(synthetic_eeg)
+            
+            # Optional validations
+            if compute_temporal:
+                results['temporal_consistency'] = self._assess_temporal_consistency(synthetic_eeg)
+            else:
+                results['temporal_consistency'] = 0.5  # Neutral score
+                
+            if compute_spectral:
+                results['spectral_similarity'] = self._assess_spectral_similarity(synthetic_eeg, reference_stats)
+            else:
+                results['spectral_similarity'] = 0.5  # Neutral score
+                
+            if compute_spatial and synthetic_eeg.shape[0] > 1:
+                results['spatial_coherence'] = self._assess_spatial_coherence(synthetic_eeg)
+            else:
+                results['spatial_coherence'] = 1.0 if synthetic_eeg.shape[0] == 1 else 0.5
+                
+            results['statistical_fidelity'] = self._assess_statistical_fidelity(synthetic_eeg, reference_stats)
+            
+            # Compute overall quality
+            results['overall_quality'] = self._compute_overall_quality(
+                results['realism_score'], results['temporal_consistency'],
+                results['spectral_similarity'], results['spatial_coherence'], 
+                results['statistical_fidelity'], results['artifact_score']
+            )
+            
+            results['warnings'] = warnings_list
+            
+            self.logger.info(f"Validation completed. Overall quality: {results['overall_quality']:.3f}")
+            return results
+            
+        except Exception as e:
+            self.logger.error(f"Validation failed: {e}")
+            raise
+    
+    def validate_basic(self, synthetic_eeg: np.ndarray) -> Dict[str, float]:
+        """Basic validation for quick checks.
+        
+        Args:
+            synthetic_eeg: Synthetic EEG signal (channels x samples)
+            
+        Returns:
+            Dictionary with basic validation scores
+        """
+        try:
+            self._validate_input(synthetic_eeg)
+            
+            realism_score = self._assess_realism(synthetic_eeg)
+            artifact_score = self._assess_artifacts(synthetic_eeg)
+            
+            overall_quality = (realism_score + artifact_score) / 2
+            
+            return {
+                'realism_score': realism_score,
+                'artifact_score': artifact_score,
+                'overall_quality': overall_quality,
+                'temporal_consistency': 0.8,  # Assumed good
+                'data_shape': synthetic_eeg.shape
+            }
+            
+        except Exception as e:
+            self.logger.error(f"Basic validation failed: {e}")
+            return {
+                'realism_score': 0.0,
+                'artifact_score': 0.0,
+                'overall_quality': 0.0,
+                'temporal_consistency': 0.0,
+                'error': str(e)
+            }
+    
+    def _validate_input(self, eeg_data: np.ndarray) -> None:
+        """Validate input EEG data."""
+        if not isinstance(eeg_data, np.ndarray):
+            raise ValueError("EEG data must be a numpy array")
+            
+        if eeg_data.ndim != 2:
+            raise ValueError(f"EEG data must be 2D (channels x samples), got {eeg_data.ndim}D")
+            
+        if eeg_data.size == 0:
+            raise ValueError("EEG data is empty")
+            
+        if not np.all(np.isfinite(eeg_data)):
+            raise ValueError("EEG data contains NaN or infinite values")
+            
+        channels, samples = eeg_data.shape
+        if channels > 128:
+            self.logger.warning(f"Unusually high number of channels: {channels}")
+            
+        if samples < 100:
+            self.logger.warning(f"Very short signal: {samples} samples")
+    
     def validate(self,
                 synthetic_eeg: np.ndarray,
                 real_eeg_stats: Optional[str] = None) -> ValidationMetrics:
@@ -76,8 +212,16 @@ class SyntheticEEGValidator:
         Returns:
             ValidationMetrics object with all validation scores
         """
-        # Load reference statistics if provided
-        reference_stats = self._load_reference_stats(real_eeg_stats) if real_eeg_stats else None
+        import time
+        
+        try:
+            # Validate input
+            self._validate_input(synthetic_eeg)
+            
+            # Load reference statistics if provided
+            reference_stats = self._load_reference_stats(real_eeg_stats or self.reference_stats_path)
+            
+            warnings_list = []
         
         # Compute individual validation metrics
         realism_score = self._assess_realism(synthetic_eeg, reference_stats)
