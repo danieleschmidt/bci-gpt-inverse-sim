@@ -1,0 +1,376 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: bci-gpt
+  labels:
+    name: bci-gpt
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bci-gpt-app
+  namespace: bci-gpt
+  labels:
+    app: bci-gpt
+    version: v1
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: bci-gpt
+  template:
+    metadata:
+      labels:
+        app: bci-gpt
+        version: v1
+    spec:
+      serviceAccountName: bci-gpt-service-account
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
+      containers:
+      - name: bci-gpt
+        image: bci-gpt:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8000
+          protocol: TCP
+        env:
+        - name: BCI_GPT_ENV
+          value: "production"
+        - name: BCI_GPT_LOG_LEVEL
+          value: "INFO"
+        - name: REDIS_URL
+          valueFrom:
+            secretKeyRef:
+              name: bci-gpt-secrets
+              key: redis-url
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: bci-gpt-secrets
+              key: database-url
+        - name: BCI_GPT_DATA_DIR
+          value: "/app/data"
+        - name: BCI_GPT_MODEL_DIR
+          value: "/app/models"
+        - name: KUBERNETES_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        resources:
+          requests:
+            cpu: 500m
+            memory: 1Gi
+          limits:
+            cpu: 2000m
+            memory: 4Gi
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 3
+          successThreshold: 1
+          failureThreshold: 3
+        volumeMounts:
+        - name: data-volume
+          mountPath: /app/data
+        - name: models-volume
+          mountPath: /app/models
+        - name: config-volume
+          mountPath: /app/config
+          readOnly: true
+        - name: logs-volume
+          mountPath: /app/logs
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+            - ALL
+      volumes:
+      - name: data-volume
+        persistentVolumeClaim:
+          claimName: bci-gpt-data-pvc
+      - name: models-volume
+        persistentVolumeClaim:
+          claimName: bci-gpt-models-pvc
+      - name: config-volume
+        configMap:
+          name: bci-gpt-config
+      - name: logs-volume
+        emptyDir: {}
+      nodeSelector:
+        node-type: compute
+      tolerations:
+      - key: "compute-node"
+        operator: "Equal"
+        value: "true"
+        effect: "NoSchedule"
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - bci-gpt
+              topologyKey: kubernetes.io/hostname
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bci-gpt-service
+  namespace: bci-gpt
+  labels:
+    app: bci-gpt
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 8000
+    protocol: TCP
+    name: http
+  selector:
+    app: bci-gpt
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: bci-gpt-ingress
+  namespace: bci-gpt
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: "50m"
+    nginx.ingress.kubernetes.io/rate-limit: "100"
+    nginx.ingress.kubernetes.io/rate-limit-window: "1m"
+spec:
+  tls:
+  - hosts:
+    - bci-gpt.example.com
+    secretName: bci-gpt-tls
+  rules:
+  - host: bci-gpt.example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: bci-gpt-service
+            port:
+              number: 80
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: bci-gpt-hpa
+  namespace: bci-gpt
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: bci-gpt-app
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+  behavior:
+    scaleUp:
+      stabilizationWindowSeconds: 60
+      policies:
+      - type: Pods
+        value: 2
+        periodSeconds: 60
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+      - type: Pods
+        value: 1
+        periodSeconds: 60
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: bci-gpt-data-pvc
+  namespace: bci-gpt
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: fast-ssd
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: bci-gpt-models-pvc
+  namespace: bci-gpt
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Gi
+  storageClassName: fast-ssd
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: bci-gpt-service-account
+  namespace: bci-gpt
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: bci-gpt
+  name: bci-gpt-role
+rules:
+- apiGroups: [""]
+  resources: ["pods", "services", "configmaps", "secrets"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["apps"]
+  resources: ["deployments"]
+  verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: bci-gpt-role-binding
+  namespace: bci-gpt
+subjects:
+- kind: ServiceAccount
+  name: bci-gpt-service-account
+  namespace: bci-gpt
+roleRef:
+  kind: Role
+  name: bci-gpt-role
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bci-gpt-config
+  namespace: bci-gpt
+data:
+  config.yaml: |
+    version: "1.0.0"
+    environment: "production"
+    debug: false
+    
+    model:
+      hidden_size: 768
+      num_layers: 12
+      device: "auto"
+      mixed_precision: true
+    
+    training:
+      batch_size: 32
+      learning_rate: 1e-4
+      max_grad_norm: 1.0
+    
+    eeg:
+      sampling_rate: 1000
+      num_channels: 64
+      window_size: 2.0
+      filter_low: 0.5
+      filter_high: 100.0
+    
+    security:
+      encryption_enabled: true
+      audit_logging: true
+      max_file_size_mb: 50.0
+    
+    monitoring:
+      log_level: "INFO"
+      metrics_enabled: true
+      health_checks: true
+      alert_thresholds:
+        cpu_threshold: 80.0
+        memory_threshold: 85.0
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: bci-gpt-pdb
+  namespace: bci-gpt
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: bci-gpt
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: bci-gpt-network-policy
+  namespace: bci-gpt
+spec:
+  podSelector:
+    matchLabels:
+      app: bci-gpt
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: ingress-nginx
+    ports:
+    - protocol: TCP
+      port: 8000
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: monitoring
+    ports:
+    - protocol: TCP
+      port: 8000
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          name: kube-system
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 53
+    - protocol: UDP
+      port: 53
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 443
+    - protocol: TCP
+      port: 80
