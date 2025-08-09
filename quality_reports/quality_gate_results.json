@@ -1,0 +1,127 @@
+{
+  "timestamp": 1754776532.2493973,
+  "gates": {
+    "code_quality": {
+      "status": "PASS",
+      "duration_seconds": 0.011821985244750977,
+      "details": {},
+      "errors": [],
+      "warnings": [
+        "Flake8 not available or timed out"
+      ]
+    },
+    "security_scan": {
+      "status": "PASS",
+      "duration_seconds": 0.014423847198486328,
+      "details": {},
+      "errors": [],
+      "warnings": [
+        "Bandit security scanner not available",
+        "Potential hardcoded token in bci_gpt/compliance/data_protection.py",
+        "Potential hardcoded key in bci_gpt/i18n/translator.py",
+        "Potential hardcoded key in bci_gpt/optimization/caching.py",
+        "Potential hardcoded key in bci_gpt/utils/config_manager.py"
+      ]
+    },
+    "unit_tests": {
+      "status": "FAIL",
+      "duration_seconds": 0.0010840892791748047,
+      "details": {},
+      "errors": [
+        "pytest not available"
+      ],
+      "warnings": []
+    },
+    "integration_tests": {
+      "status": "PASS",
+      "duration_seconds": 0.0006403923034667969,
+      "details": {},
+      "errors": [],
+      "warnings": [
+        "Integration tests error: [Errno 2] No such file or directory: 'python'"
+      ]
+    },
+    "performance_tests": {
+      "status": "PASS",
+      "duration_seconds": 3.0994415283203125e-06,
+      "details": {},
+      "errors": [],
+      "warnings": [
+        "Performance checks skipped - modules not available"
+      ]
+    },
+    "memory_tests": {
+      "status": "PASS",
+      "duration_seconds": 0.00017189979553222656,
+      "details": {},
+      "errors": [],
+      "warnings": [
+        "psutil not available for memory checks"
+      ]
+    },
+    "compliance_check": {
+      "status": "PASS",
+      "duration_seconds": 2.1457672119140625e-06,
+      "details": {},
+      "errors": [],
+      "warnings": [
+        "Compliance checks skipped - modules not available"
+      ]
+    },
+    "system_health": {
+      "status": "PASS",
+      "duration_seconds": 1.9073486328125e-06,
+      "details": {},
+      "errors": [],
+      "warnings": [
+        "System health checks skipped - modules not available"
+      ]
+    },
+    "configuration_validation": {
+      "status": "PASS",
+      "duration_seconds": 2.1457672119140625e-06,
+      "details": {},
+      "errors": [],
+      "warnings": [
+        "Configuration validation skipped - modules not available"
+      ]
+    },
+    "dependency_audit": {
+      "status": "PASS",
+      "duration_seconds": 0.9153716564178467,
+      "details": {},
+      "errors": [],
+      "warnings": [
+        "safety package not available for dependency audit"
+      ]
+    }
+  },
+  "overall_status": "FAIL",
+  "critical_failures": [
+    "pytest not available"
+  ],
+  "warnings": [
+    "Flake8 not available or timed out",
+    "Bandit security scanner not available",
+    "Potential hardcoded token in bci_gpt/compliance/data_protection.py",
+    "Potential hardcoded key in bci_gpt/i18n/translator.py",
+    "Potential hardcoded key in bci_gpt/optimization/caching.py",
+    "Potential hardcoded key in bci_gpt/utils/config_manager.py",
+    "Integration tests error: [Errno 2] No such file or directory: 'python'",
+    "Performance checks skipped - modules not available",
+    "psutil not available for memory checks",
+    "Compliance checks skipped - modules not available",
+    "System health checks skipped - modules not available",
+    "Configuration validation skipped - modules not available",
+    "safety package not available for dependency audit"
+  ],
+  "summary": {
+    "total_gates": 10,
+    "passed_gates": 9,
+    "failed_gates": 1,
+    "error_gates": 0,
+    "pass_rate": 90.0,
+    "total_warnings": 13,
+    "total_critical_failures": 1
+  }
+}

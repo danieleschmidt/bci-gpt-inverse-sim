@@ -1,0 +1,40 @@
+=== BCI-GPT Quality Gate Report ===
+
+Overall Status: FAIL
+Gates Passed: 9/10 (90.0%)
+Critical Failures: 1
+Warnings: 13
+
+Gate Results:
+--------------------------------------------------
+✓ Code Quality: PASS (0.01s)
+    WARNING: Flake8 not available or timed out
+✓ Security Scan: PASS (0.01s)
+    WARNING: Bandit security scanner not available
+    WARNING: Potential hardcoded token in bci_gpt/compliance/data_protection.py
+    WARNING: Potential hardcoded key in bci_gpt/i18n/translator.py
+✗ Unit Tests: FAIL (0.00s)
+    ERROR: pytest not available
+✓ Integration Tests: PASS (0.00s)
+    WARNING: Integration tests error: [Errno 2] No such file or directory: 'python'
+✓ Performance Tests: PASS (0.00s)
+    WARNING: Performance checks skipped - modules not available
+✓ Memory Tests: PASS (0.00s)
+    WARNING: psutil not available for memory checks
+✓ Compliance Check: PASS (0.00s)
+    WARNING: Compliance checks skipped - modules not available
+✓ System Health: PASS (0.00s)
+    WARNING: System health checks skipped - modules not available
+✓ Configuration Validation: PASS (0.00s)
+    WARNING: Configuration validation skipped - modules not available
+✓ Dependency Audit: PASS (0.92s)
+    WARNING: safety package not available for dependency audit
+
+Critical Failures:
+--------------------------------------------------
+• pytest not available
+
+Deployment Recommendation:
+--------------------------------------------------
+✗ NOT APPROVED FOR DEPLOYMENT
+Critical issues must be resolved before deployment.
