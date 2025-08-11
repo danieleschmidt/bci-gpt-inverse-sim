@@ -222,30 +222,42 @@ class SyntheticEEGValidator:
             reference_stats = self._load_reference_stats(real_eeg_stats or self.reference_stats_path)
             
             warnings_list = []
-        
-        # Compute individual validation metrics
-        realism_score = self._assess_realism(synthetic_eeg, reference_stats)
-        temporal_consistency = self._assess_temporal_consistency(synthetic_eeg)
-        spectral_similarity = self._assess_spectral_similarity(synthetic_eeg, reference_stats)
-        spatial_coherence = self._assess_spatial_coherence(synthetic_eeg)
-        statistical_fidelity = self._assess_statistical_fidelity(synthetic_eeg, reference_stats)
-        artifact_score = self._assess_artifacts(synthetic_eeg)
-        
-        # Compute overall quality score
-        overall_quality = self._compute_overall_quality(
-            realism_score, temporal_consistency, spectral_similarity,
-            spatial_coherence, statistical_fidelity, artifact_score
-        )
-        
-        return ValidationMetrics(
-            realism_score=realism_score,
-            temporal_consistency=temporal_consistency,
-            spectral_similarity=spectral_similarity,
-            spatial_coherence=spatial_coherence,
-            statistical_fidelity=statistical_fidelity,
-            artifact_score=artifact_score,
-            overall_quality=overall_quality
-        )
+            
+            # Compute individual validation metrics
+            realism_score = self._assess_realism(synthetic_eeg, reference_stats)
+            temporal_consistency = self._assess_temporal_consistency(synthetic_eeg)
+            spectral_similarity = self._assess_spectral_similarity(synthetic_eeg, reference_stats)
+            spatial_coherence = self._assess_spatial_coherence(synthetic_eeg)
+            statistical_fidelity = self._assess_statistical_fidelity(synthetic_eeg, reference_stats)
+            artifact_score = self._assess_artifacts(synthetic_eeg)
+            
+            # Compute overall quality score
+            overall_quality = self._compute_overall_quality(
+                realism_score, temporal_consistency, spectral_similarity,
+                spatial_coherence, statistical_fidelity, artifact_score
+            )
+            
+            return ValidationMetrics(
+                realism_score=realism_score,
+                temporal_consistency=temporal_consistency,
+                spectral_similarity=spectral_similarity,
+                spatial_coherence=spatial_coherence,
+                statistical_fidelity=statistical_fidelity,
+                artifact_score=artifact_score,
+                overall_quality=overall_quality
+            )
+            
+        except Exception as e:
+            # Return default metrics if validation fails
+            return ValidationMetrics(
+                realism_score=0.0,
+                temporal_consistency=0.0,
+                spectral_similarity=0.0,
+                spatial_coherence=0.0,
+                statistical_fidelity=0.0,
+                artifact_score=0.0,
+                overall_quality=0.0
+            )
     
     def _load_reference_stats(self, stats_path: str) -> Optional[Dict]:
         """Load reference EEG statistics."""

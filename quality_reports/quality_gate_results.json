@@ -1,49 +1,57 @@
 {
-  "timestamp": 1754776532.2493973,
+  "timestamp": 1754889641.2135487,
   "gates": {
     "code_quality": {
       "status": "PASS",
-      "duration_seconds": 0.011821985244750977,
-      "details": {},
+      "duration_seconds": 0.05110740661621094,
+      "details": {
+        "flake8": "FAIL"
+      },
       "errors": [],
       "warnings": [
-        "Flake8 not available or timed out"
+        "Flake8 found style issues"
       ]
     },
     "security_scan": {
       "status": "PASS",
-      "duration_seconds": 0.014423847198486328,
+      "duration_seconds": 0.05005598068237305,
       "details": {},
       "errors": [],
       "warnings": [
-        "Bandit security scanner not available",
+        "Could not parse bandit output",
         "Potential hardcoded token in bci_gpt/compliance/data_protection.py",
         "Potential hardcoded key in bci_gpt/i18n/translator.py",
         "Potential hardcoded key in bci_gpt/optimization/caching.py",
+        "Potential hardcoded key in bci_gpt/optimization/advanced_caching.py",
         "Potential hardcoded key in bci_gpt/utils/config_manager.py"
       ]
     },
     "unit_tests": {
       "status": "FAIL",
-      "duration_seconds": 0.0010840892791748047,
-      "details": {},
+      "duration_seconds": 0.9008059501647949,
+      "details": {
+        "pytest": "FAIL",
+        "output": ""
+      },
       "errors": [
-        "pytest not available"
+        "Unit tests failed"
       ],
       "warnings": []
     },
     "integration_tests": {
-      "status": "PASS",
-      "duration_seconds": 0.0006403923034667969,
-      "details": {},
-      "errors": [],
-      "warnings": [
-        "Integration tests error: [Errno 2] No such file or directory: 'python'"
-      ]
+      "status": "FAIL",
+      "duration_seconds": 0.42336368560791016,
+      "details": {
+        "integration_tests": "FAIL"
+      },
+      "errors": [
+        "Integration tests failed"
+      ],
+      "warnings": []
     },
     "performance_tests": {
       "status": "PASS",
-      "duration_seconds": 3.0994415283203125e-06,
+      "duration_seconds": 5.7220458984375e-06,
       "details": {},
       "errors": [],
       "warnings": [
@@ -52,7 +60,7 @@
     },
     "memory_tests": {
       "status": "PASS",
-      "duration_seconds": 0.00017189979553222656,
+      "duration_seconds": 0.00022792816162109375,
       "details": {},
       "errors": [],
       "warnings": [
@@ -61,7 +69,7 @@
     },
     "compliance_check": {
       "status": "PASS",
-      "duration_seconds": 2.1457672119140625e-06,
+      "duration_seconds": 5.0067901611328125e-06,
       "details": {},
       "errors": [],
       "warnings": [
@@ -70,7 +78,7 @@
     },
     "system_health": {
       "status": "PASS",
-      "duration_seconds": 1.9073486328125e-06,
+      "duration_seconds": 4.0531158447265625e-06,
       "details": {},
       "errors": [],
       "warnings": [
@@ -79,7 +87,7 @@
     },
     "configuration_validation": {
       "status": "PASS",
-      "duration_seconds": 2.1457672119140625e-06,
+      "duration_seconds": 3.337860107421875e-06,
       "details": {},
       "errors": [],
       "warnings": [
@@ -88,40 +96,47 @@
     },
     "dependency_audit": {
       "status": "PASS",
-      "duration_seconds": 0.9153716564178467,
+      "duration_seconds": 0.09188151359558105,
       "details": {},
       "errors": [],
       "warnings": [
-        "safety package not available for dependency audit"
+        "Could not parse safety check output",
+        "Check pyyaml version 6.0.2 against < 5.4.0",
+        "Check pillow version 11.0.0 against < 8.2.0",
+        "Check requests version 2.32.4 against < 2.25.0"
       ]
     }
   },
   "overall_status": "FAIL",
   "critical_failures": [
-    "pytest not available"
+    "Unit tests failed",
+    "Integration tests failed"
   ],
   "warnings": [
-    "Flake8 not available or timed out",
-    "Bandit security scanner not available",
+    "Flake8 found style issues",
+    "Could not parse bandit output",
     "Potential hardcoded token in bci_gpt/compliance/data_protection.py",
     "Potential hardcoded key in bci_gpt/i18n/translator.py",
     "Potential hardcoded key in bci_gpt/optimization/caching.py",
+    "Potential hardcoded key in bci_gpt/optimization/advanced_caching.py",
     "Potential hardcoded key in bci_gpt/utils/config_manager.py",
-    "Integration tests error: [Errno 2] No such file or directory: 'python'",
     "Performance checks skipped - modules not available",
     "psutil not available for memory checks",
     "Compliance checks skipped - modules not available",
     "System health checks skipped - modules not available",
     "Configuration validation skipped - modules not available",
-    "safety package not available for dependency audit"
+    "Could not parse safety check output",
+    "Check pyyaml version 6.0.2 against < 5.4.0",
+    "Check pillow version 11.0.0 against < 8.2.0",
+    "Check requests version 2.32.4 against < 2.25.0"
   ],
   "summary": {
     "total_gates": 10,
-    "passed_gates": 9,
-    "failed_gates": 1,
+    "passed_gates": 8,
+    "failed_gates": 2,
     "error_gates": 0,
-    "pass_rate": 90.0,
-    "total_warnings": 13,
-    "total_critical_failures": 1
+    "pass_rate": 80.0,
+    "total_warnings": 16,
+    "total_critical_failures": 2
   }
 }

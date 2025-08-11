@@ -1,22 +1,22 @@
 === BCI-GPT Quality Gate Report ===
 
 Overall Status: FAIL
-Gates Passed: 9/10 (90.0%)
-Critical Failures: 1
-Warnings: 13
+Gates Passed: 8/10 (80.0%)
+Critical Failures: 2
+Warnings: 16
 
 Gate Results:
 --------------------------------------------------
-✓ Code Quality: PASS (0.01s)
-    WARNING: Flake8 not available or timed out
-✓ Security Scan: PASS (0.01s)
-    WARNING: Bandit security scanner not available
+✓ Code Quality: PASS (0.05s)
+    WARNING: Flake8 found style issues
+✓ Security Scan: PASS (0.05s)
+    WARNING: Could not parse bandit output
     WARNING: Potential hardcoded token in bci_gpt/compliance/data_protection.py
     WARNING: Potential hardcoded key in bci_gpt/i18n/translator.py
-✗ Unit Tests: FAIL (0.00s)
-    ERROR: pytest not available
-✓ Integration Tests: PASS (0.00s)
-    WARNING: Integration tests error: [Errno 2] No such file or directory: 'python'
+✗ Unit Tests: FAIL (0.90s)
+    ERROR: Unit tests failed
+✗ Integration Tests: FAIL (0.42s)
+    ERROR: Integration tests failed
 ✓ Performance Tests: PASS (0.00s)
     WARNING: Performance checks skipped - modules not available
 ✓ Memory Tests: PASS (0.00s)
@@ -27,12 +27,15 @@ Gate Results:
     WARNING: System health checks skipped - modules not available
 ✓ Configuration Validation: PASS (0.00s)
     WARNING: Configuration validation skipped - modules not available
-✓ Dependency Audit: PASS (0.92s)
-    WARNING: safety package not available for dependency audit
+✓ Dependency Audit: PASS (0.09s)
+    WARNING: Could not parse safety check output
+    WARNING: Check pyyaml version 6.0.2 against < 5.4.0
+    WARNING: Check pillow version 11.0.0 against < 8.2.0
 
 Critical Failures:
 --------------------------------------------------
-• pytest not available
+• Unit tests failed
+• Integration tests failed
 
 Deployment Recommendation:
 --------------------------------------------------
