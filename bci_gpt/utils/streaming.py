@@ -249,7 +249,7 @@ class BrainFlowStream(EEGStreamBase):
     
     def __init__(self,
                  config: StreamConfig,
-                 board_id: int = BoardIds.SYNTHETIC_BOARD.value,
+                 board_id: int = -1,  # SYNTHETIC_BOARD equivalent
                  serial_port: Optional[str] = None):
         super().__init__(config)
         
