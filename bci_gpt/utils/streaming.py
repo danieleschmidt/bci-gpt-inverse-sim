@@ -27,6 +27,23 @@ except ImportError:
 
 
 @dataclass
+class EEGSample:
+    """Single EEG sample with metadata."""
+    data: np.ndarray
+    timestamp: float
+    channels: List[str]
+    sampling_rate: float
+    quality: float = 1.0
+    
+    def __post_init__(self):
+        """Validate sample data."""
+        if self.data.ndim != 1:
+            raise ValueError("EEG sample data must be 1-dimensional")
+        if len(self.data) != len(self.channels):
+            raise ValueError("Data length must match number of channels")
+
+
+@dataclass
 class StreamConfig:
     """Configuration for EEG streaming."""
     sampling_rate: int = 1000

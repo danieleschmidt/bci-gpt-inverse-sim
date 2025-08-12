@@ -1,9 +1,9 @@
 {
-  "timestamp": 1754889641.2135487,
+  "timestamp": 1755036922.3388386,
   "gates": {
     "code_quality": {
       "status": "PASS",
-      "duration_seconds": 0.05110740661621094,
+      "duration_seconds": 0.07145261764526367,
       "details": {
         "flake8": "FAIL"
       },
@@ -14,21 +14,21 @@
     },
     "security_scan": {
       "status": "PASS",
-      "duration_seconds": 0.05005598068237305,
+      "duration_seconds": 0.0609588623046875,
       "details": {},
       "errors": [],
       "warnings": [
         "Could not parse bandit output",
         "Potential hardcoded token in bci_gpt/compliance/data_protection.py",
         "Potential hardcoded key in bci_gpt/i18n/translator.py",
-        "Potential hardcoded key in bci_gpt/optimization/caching.py",
         "Potential hardcoded key in bci_gpt/optimization/advanced_caching.py",
+        "Potential hardcoded key in bci_gpt/optimization/caching.py",
         "Potential hardcoded key in bci_gpt/utils/config_manager.py"
       ]
     },
     "unit_tests": {
       "status": "FAIL",
-      "duration_seconds": 0.9008059501647949,
+      "duration_seconds": 0.472445011138916,
       "details": {
         "pytest": "FAIL",
         "output": ""
@@ -40,7 +40,7 @@
     },
     "integration_tests": {
       "status": "FAIL",
-      "duration_seconds": 0.42336368560791016,
+      "duration_seconds": 0.40636730194091797,
       "details": {
         "integration_tests": "FAIL"
       },
@@ -60,16 +60,16 @@
     },
     "memory_tests": {
       "status": "PASS",
-      "duration_seconds": 0.00022792816162109375,
-      "details": {},
+      "duration_seconds": 0.4028193950653076,
+      "details": {
+        "baseline_memory_mb": 404.79
+      },
       "errors": [],
-      "warnings": [
-        "psutil not available for memory checks"
-      ]
+      "warnings": []
     },
     "compliance_check": {
       "status": "PASS",
-      "duration_seconds": 5.0067901611328125e-06,
+      "duration_seconds": 3.337860107421875e-06,
       "details": {},
       "errors": [],
       "warnings": [
@@ -78,7 +78,7 @@
     },
     "system_health": {
       "status": "PASS",
-      "duration_seconds": 4.0531158447265625e-06,
+      "duration_seconds": 2.384185791015625e-06,
       "details": {},
       "errors": [],
       "warnings": [
@@ -87,7 +87,7 @@
     },
     "configuration_validation": {
       "status": "PASS",
-      "duration_seconds": 3.337860107421875e-06,
+      "duration_seconds": 2.1457672119140625e-06,
       "details": {},
       "errors": [],
       "warnings": [
@@ -96,7 +96,7 @@
     },
     "dependency_audit": {
       "status": "PASS",
-      "duration_seconds": 0.09188151359558105,
+      "duration_seconds": 0.11245036125183105,
       "details": {},
       "errors": [],
       "warnings": [
@@ -117,11 +117,10 @@
     "Could not parse bandit output",
     "Potential hardcoded token in bci_gpt/compliance/data_protection.py",
     "Potential hardcoded key in bci_gpt/i18n/translator.py",
-    "Potential hardcoded key in bci_gpt/optimization/caching.py",
     "Potential hardcoded key in bci_gpt/optimization/advanced_caching.py",
+    "Potential hardcoded key in bci_gpt/optimization/caching.py",
     "Potential hardcoded key in bci_gpt/utils/config_manager.py",
     "Performance checks skipped - modules not available",
-    "psutil not available for memory checks",
     "Compliance checks skipped - modules not available",
     "System health checks skipped - modules not available",
     "Configuration validation skipped - modules not available",
@@ -136,7 +135,7 @@
     "failed_gates": 2,
     "error_gates": 0,
     "pass_rate": 80.0,
-    "total_warnings": 16,
+    "total_warnings": 15,
     "total_critical_failures": 2
   }
 }
