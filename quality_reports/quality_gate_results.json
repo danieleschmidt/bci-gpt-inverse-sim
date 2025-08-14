@@ -1,9 +1,9 @@
 {
-  "timestamp": 1755135880.4291055,
+  "timestamp": 1755141263.0928433,
   "gates": {
     "code_quality": {
       "status": "PASS",
-      "duration_seconds": 0.0634918212890625,
+      "duration_seconds": 0.04366779327392578,
       "details": {
         "flake8": "FAIL"
       },
@@ -14,7 +14,7 @@
     },
     "security_scan": {
       "status": "PASS",
-      "duration_seconds": 0.05463290214538574,
+      "duration_seconds": 0.04762864112854004,
       "details": {},
       "errors": [],
       "warnings": [
@@ -28,7 +28,7 @@
     },
     "unit_tests": {
       "status": "FAIL",
-      "duration_seconds": 0.45568227767944336,
+      "duration_seconds": 0.4103055000305176,
       "details": {
         "pytest": "FAIL",
         "output": ""
@@ -40,7 +40,7 @@
     },
     "integration_tests": {
       "status": "FAIL",
-      "duration_seconds": 0.4059743881225586,
+      "duration_seconds": 0.4059789180755615,
       "details": {
         "integration_tests": "FAIL"
       },
@@ -51,7 +51,7 @@
     },
     "performance_tests": {
       "status": "PASS",
-      "duration_seconds": 6.9141387939453125e-06,
+      "duration_seconds": 4.76837158203125e-06,
       "details": {},
       "errors": [],
       "warnings": [
@@ -60,7 +60,7 @@
     },
     "memory_tests": {
       "status": "PASS",
-      "duration_seconds": 0.00033664703369140625,
+      "duration_seconds": 0.00021457672119140625,
       "details": {},
       "errors": [],
       "warnings": [
@@ -69,7 +69,7 @@
     },
     "compliance_check": {
       "status": "PASS",
-      "duration_seconds": 5.4836273193359375e-06,
+      "duration_seconds": 2.6226043701171875e-06,
       "details": {},
       "errors": [],
       "warnings": [
@@ -78,7 +78,7 @@
     },
     "system_health": {
       "status": "PASS",
-      "duration_seconds": 4.0531158447265625e-06,
+      "duration_seconds": 1.6689300537109375e-06,
       "details": {},
       "errors": [],
       "warnings": [
@@ -87,7 +87,7 @@
     },
     "configuration_validation": {
       "status": "PASS",
-      "duration_seconds": 4.291534423828125e-06,
+      "duration_seconds": 2.1457672119140625e-06,
       "details": {},
       "errors": [],
       "warnings": [
@@ -96,7 +96,7 @@
     },
     "dependency_audit": {
       "status": "PASS",
-      "duration_seconds": 0.20508623123168945,
+      "duration_seconds": 0.13470077514648438,
       "details": {},
       "errors": [],
       "warnings": [
