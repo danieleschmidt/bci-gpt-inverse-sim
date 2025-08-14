@@ -7,13 +7,13 @@ Warnings: 13
 
 Gate Results:
 --------------------------------------------------
-✓ Code Quality: PASS (0.06s)
+✓ Code Quality: PASS (0.04s)
     WARNING: Flake8 found style issues
 ✓ Security Scan: PASS (0.05s)
     WARNING: Could not parse bandit output
     WARNING: Potential hardcoded token in bci_gpt/compliance/data_protection.py
     WARNING: Potential hardcoded key in bci_gpt/i18n/translator.py
-✗ Unit Tests: FAIL (0.46s)
+✗ Unit Tests: FAIL (0.41s)
     ERROR: Unit tests failed
 ✗ Integration Tests: FAIL (0.41s)
     ERROR: Integration tests failed
@@ -27,7 +27,7 @@ Gate Results:
     WARNING: System health checks skipped - modules not available
 ✓ Configuration Validation: PASS (0.00s)
     WARNING: Configuration validation skipped - modules not available
-✓ Dependency Audit: PASS (0.21s)
+✓ Dependency Audit: PASS (0.13s)
     WARNING: Could not parse safety check output
 
 Critical Failures:
