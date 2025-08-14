@@ -3,33 +3,32 @@
 Overall Status: FAIL
 Gates Passed: 8/10 (80.0%)
 Critical Failures: 2
-Warnings: 15
+Warnings: 13
 
 Gate Results:
 --------------------------------------------------
-✓ Code Quality: PASS (0.07s)
+✓ Code Quality: PASS (0.06s)
     WARNING: Flake8 found style issues
-✓ Security Scan: PASS (0.06s)
+✓ Security Scan: PASS (0.05s)
     WARNING: Could not parse bandit output
     WARNING: Potential hardcoded token in bci_gpt/compliance/data_protection.py
     WARNING: Potential hardcoded key in bci_gpt/i18n/translator.py
-✗ Unit Tests: FAIL (0.47s)
+✗ Unit Tests: FAIL (0.46s)
     ERROR: Unit tests failed
 ✗ Integration Tests: FAIL (0.41s)
     ERROR: Integration tests failed
 ✓ Performance Tests: PASS (0.00s)
     WARNING: Performance checks skipped - modules not available
-✓ Memory Tests: PASS (0.40s)
+✓ Memory Tests: PASS (0.00s)
+    WARNING: psutil not available for memory checks
 ✓ Compliance Check: PASS (0.00s)
     WARNING: Compliance checks skipped - modules not available
 ✓ System Health: PASS (0.00s)
     WARNING: System health checks skipped - modules not available
 ✓ Configuration Validation: PASS (0.00s)
     WARNING: Configuration validation skipped - modules not available
-✓ Dependency Audit: PASS (0.11s)
+✓ Dependency Audit: PASS (0.21s)
     WARNING: Could not parse safety check output
-    WARNING: Check pyyaml version 6.0.2 against < 5.4.0
-    WARNING: Check pillow version 11.0.0 against < 8.2.0
 
 Critical Failures:
 --------------------------------------------------

@@ -144,7 +144,7 @@ class QualityGateRunner:
         
         # Run flake8 if available
         try:
-            cmd = ["python", "-m", "flake8", "bci_gpt", "--max-line-length=100", "--ignore=E203,W503"]
+            cmd = ["python3", "-m", "flake8", "bci_gpt", "--max-line-length=100", "--ignore=E203,W503"]
             flake8_result = subprocess.run(cmd, capture_output=True, text=True, timeout=60)
             
             if flake8_result.returncode == 0:
@@ -170,7 +170,7 @@ class QualityGateRunner:
         
         try:
             # Run bandit security linter if available
-            cmd = ["python", "-m", "bandit", "-r", "bci_gpt", "-f", "json"]
+            cmd = ["python3", "-m", "bandit", "-r", "bci_gpt", "-f", "json"]
             bandit_result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
             
             if bandit_result.returncode == 0:
@@ -232,7 +232,7 @@ class QualityGateRunner:
                 return result
             
             # Run pytest
-            cmd = ["python", "-m", "pytest", "tests/", "-v", "--tb=short", "--timeout=300"]
+            cmd = ["python3", "-m", "pytest", "tests/", "-v", "--tb=short", "--timeout=300"]
             pytest_result = subprocess.run(cmd, capture_output=True, text=True, timeout=600)
             
             # Parse pytest output
@@ -267,7 +267,7 @@ class QualityGateRunner:
             # Run comprehensive system tests
             test_file = "tests/test_comprehensive_system.py"
             if Path(test_file).exists():
-                cmd = ["python", "-m", "pytest", test_file, "-v", "--tb=short", "--timeout=120"]
+                cmd = ["python3", "-m", "pytest", test_file, "-v", "--tb=short", "--timeout=120"]
                 test_result = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
                 
                 if test_result.returncode == 0:
@@ -533,7 +533,7 @@ class QualityGateRunner:
             if Path("requirements.txt").exists():
                 # Try to run safety check if available
                 try:
-                    cmd = ["python", "-m", "safety", "check", "--json"]
+                    cmd = ["python3", "-m", "safety", "check", "--json"]
                     safety_result = subprocess.run(cmd, capture_output=True, text=True, timeout=60)
                     
                     if safety_result.returncode == 0:
