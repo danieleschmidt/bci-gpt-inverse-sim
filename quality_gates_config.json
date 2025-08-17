@@ -1,0 +1,77 @@
+{
+  "gates": {
+    "syntax_validation": {
+      "enabled": true,
+      "success_threshold": 1.0,
+      "timeout": 60,
+      "retry_count": 3
+    },
+    "unit_tests": {
+      "enabled": true,
+      "success_threshold": 0.95,
+      "timeout": 600,
+      "retry_count": 3
+    },
+    "integration_tests": {
+      "enabled": true,
+      "success_threshold": 0.9,
+      "timeout": 300,
+      "retry_count": 3
+    },
+    "code_style": {
+      "enabled": true,
+      "success_threshold": 0.8,
+      "timeout": 120,
+      "retry_count": 3
+    },
+    "type_checking": {
+      "enabled": true,
+      "success_threshold": 0.7,
+      "timeout": 180,
+      "retry_count": 3
+    },
+    "security_scan": {
+      "enabled": true,
+      "success_threshold": 0.85,
+      "timeout": 240,
+      "retry_count": 3
+    },
+    "performance_benchmark": {
+      "enabled": true,
+      "success_threshold": 0.75,
+      "timeout": 120,
+      "retry_count": 3
+    },
+    "documentation_coverage": {
+      "enabled": true,
+      "success_threshold": 0.6,
+      "timeout": 60,
+      "retry_count": 3
+    },
+    "deployment_readiness": {
+      "enabled": true,
+      "success_threshold": 0.7,
+      "timeout": 90,
+      "retry_count": 3
+    },
+    "research_validation": {
+      "enabled": true,
+      "success_threshold": 0.8,
+      "timeout": 60,
+      "retry_count": 3
+    }
+  },
+  "adaptive_thresholds": {
+    "syntax_validation": 0.0,
+    "unit_tests": 0.0,
+    "integration_tests": 0.0,
+    "code_style": 0.0,
+    "type_checking": 0.0,
+    "security_scan": 0.0,
+    "performance_benchmark": 0.0,
+    "documentation_coverage": 0.0,
+    "deployment_readiness": 0.9,
+    "research_validation": 0.0
+  },
+  "last_updated": 1755393066.3527558
+}

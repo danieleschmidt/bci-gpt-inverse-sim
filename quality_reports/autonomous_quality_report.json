@@ -1,0 +1,93 @@
+{
+  "summary": {
+    "status": "degraded",
+    "overall_score": 0.09,
+    "pass_rate": 0.1,
+    "critical_pass_rate": 0.0,
+    "gates_passed": 1,
+    "gates_failed": 9,
+    "gates_total": 10,
+    "execution_time": 0.345104455947876,
+    "timestamp": 1755392446.6627254
+  },
+  "results": {
+    "syntax_validation": {
+      "status": "failed",
+      "score": 0.0,
+      "execution_time": 0.04050159454345703,
+      "message": "Attempt 4: ",
+      "retry_count": 3
+    },
+    "unit_tests": {
+      "status": "failed",
+      "score": 0.0,
+      "execution_time": 0.03958868980407715,
+      "message": "Attempt 4: ",
+      "retry_count": 3
+    },
+    "integration_tests": {
+      "status": "failed",
+      "score": 0.0,
+      "execution_time": 0.03906893730163574,
+      "message": "Attempt 4: ",
+      "retry_count": 3
+    },
+    "code_style": {
+      "status": "failed",
+      "score": 0.0,
+      "execution_time": 0.03789210319519043,
+      "message": "Attempt 4: ",
+      "retry_count": 3
+    },
+    "type_checking": {
+      "status": "failed",
+      "score": 0.0,
+      "execution_time": 0.03698992729187012,
+      "message": "Attempt 4: ",
+      "retry_count": 3
+    },
+    "security_scan": {
+      "status": "failed",
+      "score": 0.0,
+      "execution_time": 0.036529541015625,
+      "message": "Attempt 4: ",
+      "retry_count": 3
+    },
+    "performance_benchmark": {
+      "status": "failed",
+      "score": 0.0,
+      "execution_time": 0.03491067886352539,
+      "message": "Attempt 4: ",
+      "retry_count": 3
+    },
+    "documentation_coverage": {
+      "status": "failed",
+      "score": 0.0,
+      "execution_time": 0.034604549407958984,
+      "message": "Attempt 4: ",
+      "retry_count": 3
+    },
+    "deployment_readiness": {
+      "status": "passed",
+      "score": 0.9,
+      "execution_time": 0.01230311393737793,
+      "message": "Attempt 1: Deployment: Development mode\n",
+      "retry_count": 0
+    },
+    "research_validation": {
+      "status": "failed",
+      "score": 0.0,
+      "execution_time": 0.0327153205871582,
+      "message": "Attempt 4: ",
+      "retry_count": 3
+    }
+  },
+  "recommendations": [
+    "Overall pass rate below 80% - review failed gates and implement fixes",
+    "Critical gates failing - address immediately before deployment",
+    "Unit tests failing - fix test cases and implementation bugs",
+    "Code style issues - run 'black bci_gpt/' and 'isort bci_gpt/'",
+    "Type checking errors - add missing type annotations",
+    "Security issues detected - review dependencies and code"
+  ]
+}
