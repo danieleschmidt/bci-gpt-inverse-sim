@@ -1,0 +1,18 @@
+{
+  "status": "degraded",
+  "overall_score": 0.09,
+  "pass_rate": 0.1,
+  "critical_pass_rate": 0.0,
+  "gates_passed": 1,
+  "gates_failed": 9,
+  "gates_total": 10,
+  "execution_time": 0.3302161693572998,
+  "timestamp": 1755392542.9601562,
+  "healing_applied": true,
+  "healing_iterations": 1,
+  "fixes_applied": 2,
+  "self_healing_summary": {
+    "status": "no_healing_performed",
+    "total_actions": 0
+  }
+}
