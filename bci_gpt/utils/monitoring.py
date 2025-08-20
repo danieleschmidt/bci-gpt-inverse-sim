@@ -46,6 +46,17 @@ except ImportError:
     warnings.warn("OpenTelemetry not available for distributed tracing")
 
 
+from enum import Enum
+
+
+class HealthStatus(Enum):
+    """Health status enumeration."""
+    HEALTHY = "healthy"
+    WARNING = "warning" 
+    CRITICAL = "critical"
+    UNKNOWN = "unknown"
+
+
 @dataclass
 class SystemMetrics:
     """System resource metrics."""
