@@ -32,6 +32,10 @@ class BCIError:
     error_code: Optional[str] = None
 
 
+# Legacy alias for backwards compatibility
+BCI_GPTError = Exception
+
+
 class BCIGPTException(Exception):
     """Base exception class for BCI-GPT."""
     
