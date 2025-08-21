@@ -1,0 +1,1025 @@
+{
+  "validation_summary": {
+    "total_time": 1.807408094406128,
+    "security_score": 0,
+    "quality_score": 72.66121557487982,
+    "compliance_status": false,
+    "validation_passed": false
+  },
+  "security_results": {
+    "scan_timestamp": 1755746445.6384156,
+    "scan_duration": 1.6804463863372803,
+    "vulnerabilities_found": [
+      {
+        "type": "weak_crypto",
+        "severity": "MEDIUM",
+        "file": "/root/repo/optimized_scalable_sdlc_runner.py",
+        "line": 792,
+        "description": "Weak Crypto detected",
+        "code_snippet": "return hashlib.md5(f\"{operation}_{time.time() // 3600}\".encode()).hexdigest()",
+        "recommendation": "Use strong cryptographic algorithms (SHA-256, AES)"
+      },
+      {
+        "type": "debug_info",
+        "severity": "MEDIUM",
+        "file": "/root/repo/security_quality_gates_runner.py",
+        "line": 1322,
+        "description": "Debug Info detected",
+        "code_snippet": "print(\"   \u2705 Secret detection and exposure analysis\")",
+        "recommendation": "Remove debug information from production code"
+      },
+      {
+        "type": "insecure_random",
+        "severity": "LOW",
+        "file": "/root/repo/bci_gpt/cli.py",
+        "line": 512,
+        "description": "Insecure Random detected",
+        "code_snippet": "decoded_text = np.random.choice(demo_words)",
+        "recommendation": "Use cryptographically secure random generators"
+      },
+      {
+        "type": "weak_crypto",
+        "severity": "MEDIUM",
+        "file": "/root/repo/tests/test_models.py",
+        "line": 243,
+        "description": "Weak Crypto detected",
+        "code_snippet": "\"\"\"Test model training and evaluation modes.\"\"\"",
+        "recommendation": "Use strong cryptographic algorithms (SHA-256, AES)"
+      },
+      {
+        "type": "insecure_random",
+        "severity": "LOW",
+        "file": "/root/repo/bci_gpt/decoding/cli.py",
+        "line": 489,
+        "description": "Insecure Random detected",
+        "code_snippet": "decoded_text = np.random.choice(demo_words)",
+        "recommendation": "Use cryptographically secure random generators"
+      },
+      {
+        "type": "weak_crypto",
+        "severity": "MEDIUM",
+        "file": "/root/repo/bci_gpt/optimization/advanced_caching.py",
+        "line": 85,
+        "description": "Weak Crypto detected",
+        "code_snippet": "return hashlib.md5(key_str.encode()).hexdigest()",
+        "recommendation": "Use strong cryptographic algorithms (SHA-256, AES)"
+      },
+      {
+        "type": "weak_crypto",
+        "severity": "MEDIUM",
+        "file": "/root/repo/bci_gpt/optimization/advanced_caching.py",
+        "line": 94,
+        "description": "Weak Crypto detected",
+        "code_snippet": "'hash': hashlib.md5(obj.detach().cpu().numpy().tobytes()).hexdigest()",
+        "recommendation": "Use strong cryptographic algorithms (SHA-256, AES)"
+      },
+      {
+        "type": "weak_crypto",
+        "severity": "MEDIUM",
+        "file": "/root/repo/bci_gpt/optimization/advanced_caching.py",
+        "line": 101,
+        "description": "Weak Crypto detected",
+        "code_snippet": "'hash': hashlib.md5(obj.tobytes()).hexdigest()",
+        "recommendation": "Use strong cryptographic algorithms (SHA-256, AES)"
+      },
+      {
+        "type": "weak_crypto",
+        "severity": "MEDIUM",
+        "file": "/root/repo/bci_gpt/optimization/caching.py",
+        "line": 173,
+        "description": "Weak Crypto detected",
+        "code_snippet": "eeg_hash = hashlib.md5(eeg_data.tobytes()).hexdigest()",
+        "recommendation": "Use strong cryptographic algorithms (SHA-256, AES)"
+      },
+      {
+        "type": "weak_crypto",
+        "severity": "MEDIUM",
+        "file": "/root/repo/bci_gpt/optimization/caching.py",
+        "line": 177,
+        "description": "Weak Crypto detected",
+        "code_snippet": "param_hash = hashlib.md5(param_str.encode()).hexdigest()",
+        "recommendation": "Use strong cryptographic algorithms (SHA-256, AES)"
+      },
+      {
+        "type": "weak_crypto",
+        "severity": "MEDIUM",
+        "file": "/root/repo/bci_gpt/optimization/caching.py",
+        "line": 370,
+        "description": "Weak Crypto detected",
+        "code_snippet": "input_hash = hashlib.md5(input_bytes).hexdigest()",
+        "recommendation": "Use strong cryptographic algorithms (SHA-256, AES)"
+      },
+      {
+        "type": "hardcoded_secrets",
+        "severity": "HIGH",
+        "file": "/root/repo/bci_gpt/pipeline/compliance_monitor.py",
+        "line": 48,
+        "description": "Hardcoded Secrets detected",
+        "code_snippet": "TOP_SECRET = \"top_secret\"",
+        "recommendation": "Use environment variables or secure credential management"
+      },
+      {
+        "type": "weak_crypto",
+        "severity": "MEDIUM",
+        "file": "/root/repo/bci_gpt/pipeline/data_guardian.py",
+        "line": 491,
+        "description": "Weak Crypto detected",
+        "code_snippet": "current_hash = hashlib.md5(data_str.encode()).hexdigest()",
+        "recommendation": "Use strong cryptographic algorithms (SHA-256, AES)"
+      },
+      {
+        "type": "weak_crypto",
+        "severity": "MEDIUM",
+        "file": "/root/repo/bci_gpt/pipeline/distributed_processing.py",
+        "line": 113,
+        "description": "Weak Crypto detected",
+        "code_snippet": "and automatic scaling across multiple processing nodes.",
+        "recommendation": "Use strong cryptographic algorithms (SHA-256, AES)"
+      },
+      {
+        "type": "weak_crypto",
+        "severity": "MEDIUM",
+        "file": "/root/repo/bci_gpt/pipeline/distributed_processing.py",
+        "line": 137,
+        "description": "Weak Crypto detected",
+        "code_snippet": "self.cluster_nodes: Dict[str, Node] = {self.node_id: self.local_node}\\n        self.node_health_checks: Dict[str, datetime] = {}\\n        self.cluster_topology: Dict[str, List[str]] = {}  # region -> nodes\\n        \\n        # Task management\\n        self.task_queue: deque = deque()\\n        self.active_tasks: Dict[str, DistributedTask] = {}\\n        self.completed_tasks: Dict[str, DistributedTask] = {}\\n        self.task_handlers: Dict[str, Callable] = {}\\n        \\n        # Load balancing and scheduling\\n        self.load_balancer = LoadBalancer()\\n        self.task_scheduler = TaskScheduler()\\n        \\n        # Processing control\\n        self.processing_active = False\\n        self.coordinator_thread: Optional[threading.Thread] = None\\n        self.worker_threads: Dict[str, threading.Thread] = {}\\n        \\n        # Communication\\n        self.message_handlers: Dict[str, Callable] = {}\\n        self.heartbeat_interval = 30.0  # seconds\\n        self.heartbeat_timeout = 90.0   # seconds\\n        \\n        # Circuit breakers for fault tolerance\\n        self.circuit_breakers: Dict[str, CircuitBreaker] = {}\\n        \\n        # Metrics and monitoring\\n        self.workload_metrics = WorkloadMetrics()\\n        self.performance_history: deque = deque(maxlen=1000)\\n        \\n        # Executor for async operations\\n        self.executor = ThreadPoolExecutor(max_workers=20)\\n        \\n        # Initialize message handlers\\n        self._initialize_message_handlers()\\n        \\n        # Initialize default task handlers\\n        self._initialize_task_handlers()\\n    \\n    def _generate_node_id(self) -> str:\\n        \\\"\\\"\\\"Generate unique node ID.\\\"\\\"\\\"\\n        hostname = socket.gethostname()\\n        timestamp = int(time.time())\\n        return f\\\"{hostname}_{timestamp}_{uuid.uuid4().hex[:8]}\\\"\\n    \\n    def _get_local_ip(self) -> str:\\n        \\\"\\\"\\\"Get local IP address.\\\"\\\"\\\"\\n        try:\\n            # Connect to a dummy address to get local IP\\n            with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:\\n                s.connect((\\\"8.8.8.8\\\", 80))\\n                return s.getsockname()[0]\\n        except Exception:\\n            return \\\"127.0.0.1\\\"\\n    \\n    def _find_free_port(self) -> int:\\n        \\\"\\\"\\\"Find a free port for communication.\\\"\\\"\\\"\\n        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:\\n            s.bind(('', 0))\\n            return s.getsockname()[1]\\n    \\n    def _detect_region(self) -> str:\\n        \\\"\\\"\\\"Detect geographical region.\\\"\\\"\\\"\\n        # In real implementation, this would detect cloud region or datacenter\\n        return \\\"us-east-1\\\"\\n    \\n    def _detect_zone(self) -> str:\\n        \\\"\\\"\\\"Detect availability zone.\\\"\\\"\\\"\\n        # In real implementation, this would detect availability zone\\n        return \\\"us-east-1a\\\"\\n    \\n    def _detect_capabilities(self) -> Set[str]:\\n        \\\"\\\"\\\"Detect node capabilities.\\\"\\\"\\\"\\n        capabilities = {\\\"general\\\", \\\"bci_processing\\\", \\\"ml_inference\\\"}\\n        \\n        # Add GPU capability if available\\n        try:\\n            import torch\\n            if torch.cuda.is_available():\\n                capabilities.add(\\\"gpu_processing\\\")\\n        except ImportError:\\n            pass\\n        \\n        return capabilities\\n    \\n    def _measure_resources(self) -> Dict[str, float]:\\n        \\\"\\\"\\\"Measure available resources.\\\"\\\"\\\"\\n        try:\\n            import psutil\\n            \\n            return {\\n                \\\"cpu_cores\\\": psutil.cpu_count(),\\n                \\\"memory_gb\\\": psutil.virtual_memory().total / (1024**3),\\n                \\\"disk_gb\\\": psutil.disk_usage('/').total / (1024**3),\\n                \\\"network_mbps\\\": 1000.0  # Placeholder\\n            }\\n        except ImportError:\\n            return {\\n                \\\"cpu_cores\\\": 4.0,\\n                \\\"memory_gb\\\": 8.0,\\n                \\\"disk_gb\\\": 100.0,\\n                \\\"network_mbps\\\": 100.0\\n            }\\n    \\n    def _initialize_message_handlers(self) -> None:\\n        \\\"\\\"\\\"Initialize message handlers for node communication.\\\"\\\"\\\"\\n        self.message_handlers = {\\n            \\\"heartbeat\\\": self._handle_heartbeat,\\n            \\\"task_assignment\\\": self._handle_task_assignment,\\n            \\\"task_result\\\": self._handle_task_result,\\n            \\\"task_failure\\\": self._handle_task_failure,\\n            \\\"node_join\\\": self._handle_node_join,\\n            \\\"node_leave\\\": self._handle_node_leave,\\n            \\\"cluster_update\\\": self._handle_cluster_update\\n        }\\n    \\n    def _initialize_task_handlers(self) -> None:\\n        \\\"\\\"\\\"Initialize default task handlers.\\\"\\\"\\\"\\n        self.task_handlers = {\\n            \\\"eeg_processing\\\": self._handle_eeg_processing_task,\\n            \\\"model_inference\\\": self._handle_model_inference_task,\\n            \\\"data_validation\\\": self._handle_data_validation_task,\\n            \\\"feature_extraction\\\": self._handle_feature_extraction_task,\\n            \\\"pipeline_optimization\\\": self._handle_pipeline_optimization_task\\n        }\\n    \\n    def start_processing(self) -> None:\\n        \\\"\\\"\\\"Start distributed processing.\\\"\\\"\\\"\\n        if self.processing_active:\\n            return\\n        \\n        self.processing_active = True\\n        \\n        if self.is_coordinator:\\n            # Start coordinator services\\n            self.coordinator_thread = threading.Thread(\\n                target=self._coordinator_loop, daemon=True\\n            )\\n            self.coordinator_thread.start()\\n            \\n            # Start cluster management\\n            self._start_cluster_management()\\n        else:\\n            # Connect to coordinator\\n            self._connect_to_coordinator()\\n        \\n        # Start worker threads\\n        self._start_worker_threads()\\n        \\n        # Start monitoring\\n        self._start_monitoring()\\n        \\n        self.logger.info(f\\\"Distributed processing started (role: {self.local_node.role.value})\\\")\\n    \\n    def stop_processing(self) -> None:\\n        \\\"\\\"\\\"Stop distributed processing.\\\"\\\"\\\"\\n        self.processing_active = False\\n        \\n        # Stop coordinator thread\\n        if self.coordinator_thread:\\n            self.coordinator_thread.join(timeout=10.0)\\n        \\n        # Stop worker threads\\n        for thread in self.worker_threads.values():\\n            thread.join(timeout=5.0)\\n        \\n        # Shutdown executor\\n        self.executor.shutdown(wait=True)\\n        \\n        self.logger.info(\\\"Distributed processing stopped\\\")\\n    \\n    def _coordinator_loop(self) -> None:\\n        \\\"\\\"\\\"Main coordinator loop.\\\"\\\"\\\"\\n        while self.processing_active:\\n            try:\\n                # Monitor cluster health\\n                self._monitor_cluster_health()\\n                \\n                # Schedule pending tasks\\n                self._schedule_pending_tasks()\\n                \\n                # Rebalance workload if needed\\n                self._rebalance_workload()\\n                \\n                # Update cluster metrics\\n                self._update_cluster_metrics()\\n                \\n                # Handle failed tasks\\n                self._handle_failed_tasks()\\n                \\n            except Exception as e:\\n                self.logger.error(f\\\"Coordinator loop error: {e}\\\")\\n            \\n            time.sleep(5.0)  # Coordinator cycle time\\n    \\n    def _start_cluster_management(self) -> None:\\n        \\\"\\\"\\\"Start cluster management services.\\\"\\\"\\\"\\n        # Start heartbeat monitoring\\n        heartbeat_thread = threading.Thread(\\n            target=self._heartbeat_monitor_loop, daemon=True\\n        )\\n        heartbeat_thread.start()\\n        \\n        # Initialize cluster topology\\n        self._update_cluster_topology()\\n    \\n    def _connect_to_coordinator(self) -> None:\\n        \\\"\\\"\\\"Connect worker node to coordinator.\\\"\\\"\\\"\\n        try:\\n            # Send join request to coordinator\\n            message = {\\n                \\\"type\\\": \\\"node_join\\\",\\n                \\\"node_info\\\": {\\n                    \\\"node_id\\\": self.node_id,\\n                    \\\"role\\\": self.local_node.role.value,\\n                    \\\"address\\\": self.local_node.address,\\n                    \\\"port\\\": self.local_node.port,\\n                    \\\"region\\\": self.local_node.region,\\n                    \\\"zone\\\": self.local_node.zone,\\n                    \\\"capabilities\\\": list(self.local_node.capabilities),\\n                    \\\"resources\\\": self.local_node.resources\\n                }\\n            }\\n            \\n            # In real implementation, this would send actual network message\\n            self.logger.info(f\\\"Connected to coordinator at {self.coordinator_address}\\\")\\n            \\n        except Exception as e:\\n            self.logger.error(f\\\"Failed to connect to coordinator: {e}\\\")\\n    \\n    def _start_worker_threads(self) -> None:\\n        \\\"\\\"\\\"Start worker processing threads.\\\"\\\"\\\"\\n        # Determine number of worker threads based on resources\\n        num_workers = max(2, int(self.local_node.resources.get(\\\"cpu_cores\\\", 4) / 2))\\n        \\n        for i in range(num_workers):\\n            worker_id = f\\\"worker_{i}\\\"\\n            thread = threading.Thread(\\n                target=self._worker_loop,\\n                args=(worker_id,),\\n                daemon=True\\n            )\\n            self.worker_threads[worker_id] = thread\\n            thread.start()\\n    \\n    def _start_monitoring(self) -> None:\\n        \\\"\\\"\\\"Start monitoring services.\\\"\\\"\\\"\\n        monitor_thread = threading.Thread(\\n            target=self._monitoring_loop, daemon=True\\n        )\\n        monitor_thread.start()\\n    \\n    def _worker_loop(self, worker_id: str) -> None:\\n        \\\"\\\"\\\"Worker processing loop.\\\"\\\"\\\"\\n        while self.processing_active:\\n            try:\\n                # Get next task\\n                task = self._get_next_task(worker_id)\\n                \\n                if task:\\n                    # Execute task\\n                    self._execute_task(task, worker_id)\\n                else:\\n                    # No tasks available, sleep briefly\\n                    time.sleep(1.0)\\n                \\n            except Exception as e:\\n                self.logger.error(f\\\"Worker {worker_id} error: {e}\\\")\\n                time.sleep(5.0)  # Back off on error\\n    \\n    def _monitoring_loop(self) -> None:\\n        \\\"\\\"\\\"Monitoring and metrics loop.\\\"\\\"\\\"\\n        while self.processing_active:\\n            try:\\n                # Update local metrics\\n                self._update_local_metrics()\\n                \\n                # Send heartbeat if not coordinator\\n                if not self.is_coordinator:\\n                    self._send_heartbeat()\\n                \\n                # Update performance history\\n                self._update_performance_history()\\n                \\n            except Exception as e:\\n                self.logger.error(f\\\"Monitoring loop error: {e}\\\")\\n            \\n            time.sleep(self.heartbeat_interval)\\n    \\n    def _heartbeat_monitor_loop(self) -> None:\\n        \\\"\\\"\\\"Monitor heartbeats from cluster nodes.\\\"\\\"\\\"\\n        while self.processing_active:\\n            try:\\n                current_time = datetime.now()\\n                \\n                # Check for failed nodes\\n                failed_nodes = []\\n                for node_id, last_heartbeat in self.node_health_checks.items():\\n                    if node_id == self.node_id:\\n                        continue  # Skip self\\n                    \\n                    time_since_heartbeat = (current_time - last_heartbeat).total_seconds()\\n                    if time_since_heartbeat > self.heartbeat_timeout:\\n                        failed_nodes.append(node_id)\\n                \\n                # Handle failed nodes\\n                for node_id in failed_nodes:\\n                    self._handle_node_failure(node_id)\\n                \\n            except Exception as e:\\n                self.logger.error(f\\\"Heartbeat monitor error: {e}\\\")\\n            \\n            time.sleep(30.0)  # Check every 30 seconds\\n    \\n    def submit_task(self, task_type: str, payload: Dict[str, Any], \\n                   priority: TaskPriority = TaskPriority.NORMAL,\\n                   requirements: Dict[str, Any] = None,\\n                   dependencies: List[str] = None,\\n                   timeout: float = 300.0) -> str:\\n        \\\"\\\"\\\"Submit a task for distributed processing.\\\"\\\"\\\"\\n        task_id = f\\\"{task_type}_{uuid.uuid4().hex[:8]}\\\"\\n        \\n        task = DistributedTask(\\n            task_id=task_id,\\n            task_type=task_type,\\n            priority=priority,\\n            payload=payload,\\n            requirements=requirements or {},\\n            dependencies=dependencies or [],\\n            timeout=timeout\\n        )\\n        \\n        self.task_queue.append(task)\\n        self.workload_metrics.total_tasks += 1\\n        self.workload_metrics.pending_tasks += 1\\n        \\n        self.logger.info(f\\\"Task submitted: {task_id} (type: {task_type})\\\")\\n        return task_id\\n    \\n    def _get_next_task(self, worker_id: str) -> Optional[DistributedTask]:\\n        \\\"\\\"\\\"Get next task for worker to process.\\\"\\\"\\\"\\n        # Find suitable task from queue\\n        for i, task in enumerate(self.task_queue):\\n            if task.status != TaskStatus.PENDING:\\n                continue\\n            \\n            # Check if worker can handle task requirements\\n            if self._can_handle_task(task, worker_id):\\n                # Remove from queue and assign\\n                task = self.task_queue.popleft() if i == 0 else self.task_queue[i]\\n                if i > 0:\\n                    del self.task_queue[i]\\n                \\n                task.assigned_node = self.node_id\\n                task.status = TaskStatus.ASSIGNED\\n                self.active_tasks[task.task_id] = task\\n                \\n                self.workload_metrics.pending_tasks -= 1\\n                self.workload_metrics.running_tasks += 1\\n                \\n                return task\\n        \\n        return None\\n    \\n    def _can_handle_task(self, task: DistributedTask, worker_id: str) -> bool:\\n        \\\"\\\"\\\"Check if worker can handle task requirements.\\\"\\\"\\\"\\n        requirements = task.requirements\\n        \\n        # Check capabilities\\n        required_capabilities = set(requirements.get(\\\"capabilities\\\", []))\\n        if not required_capabilities.issubset(self.local_node.capabilities):\\n            return False\\n        \\n        # Check resources\\n        required_memory = requirements.get(\\\"memory_gb\\\", 0)\\n        if required_memory > self.local_node.resources.get(\\\"memory_gb\\\", 0):\\n            return False\\n        \\n        # Check dependencies\\n        for dep_id in task.dependencies:\\n            if dep_id not in self.completed_tasks:\\n                return False\\n        \\n        return True\\n    \\n    def _execute_task(self, task: DistributedTask, worker_id: str) -> None:\\n        \\\"\\\"\\\"Execute a task.\\\"\\\"\\\"\\n        self.logger.info(f\\\"Worker {worker_id} executing task: {task.task_id}\\\")\\n        \\n        task.status = TaskStatus.RUNNING\\n        task.started_at = datetime.now()\\n        \\n        try:\\n            # Get task handler\\n            handler = self.task_handlers.get(task.task_type)\\n            if not handler:\\n                raise BCI_GPTError(f\\\"No handler for task type: {task.task_type}\\\")\\n            \\n            # Execute task with timeout\\n            future = self.executor.submit(handler, task.payload)\\n            result = future.result(timeout=task.timeout)\\n            \\n            # Task completed successfully\\n            task.status = TaskStatus.COMPLETED\\n            task.completed_at = datetime.now()\\n            task.result = result\\n            \\n            # Move to completed tasks\\n            self.completed_tasks[task.task_id] = task\\n            del self.active_tasks[task.task_id]\\n            \\n            self.workload_metrics.running_tasks -= 1\\n            self.workload_metrics.completed_tasks += 1\\n            \\n            # Update performance metrics\\n            processing_time = (task.completed_at - task.started_at).total_seconds()\\n            self._update_processing_metrics(processing_time)\\n            \\n            self.logger.info(f\\\"Task completed: {task.task_id} in {processing_time:.2f}s\\\")\\n            \\n        except Exception as e:\\n            # Task failed\\n            task.status = TaskStatus.FAILED\\n            task.error = str(e)\\n            task.completed_at = datetime.now()\\n            \\n            self.workload_metrics.running_tasks -= 1\\n            self.workload_metrics.failed_tasks += 1\\n            \\n            # Check if task should be retried\\n            if task.retry_count < task.max_retries:\\n                task.retry_count += 1\\n                task.status = TaskStatus.RETRYING\\n                self.task_queue.appendleft(task)  # High priority retry\\n                \\n                self.workload_metrics.pending_tasks += 1\\n                self.logger.warning(f\\\"Task retry {task.retry_count}/{task.max_retries}: {task.task_id}\\\")\\n            else:\\n                # Max retries exceeded\\n                self.completed_tasks[task.task_id] = task\\n                del self.active_tasks[task.task_id]\\n                self.logger.error(f\\\"Task failed permanently: {task.task_id} - {e}\\\")\\n    \\n    def _update_processing_metrics(self, processing_time: float) -> None:\\n        \\\"\\\"\\\"Update processing performance metrics.\\\"\\\"\\\"\\n        # Update average processing time (exponential moving average)\\n        alpha = 0.1\\n        self.workload_metrics.avg_processing_time = (\\n            alpha * processing_time + \\n            (1 - alpha) * self.workload_metrics.avg_processing_time\\n        )\\n        \\n        # Update error rate\\n        total_processed = self.workload_metrics.completed_tasks + self.workload_metrics.failed_tasks\\n        if total_processed > 0:\\n            self.workload_metrics.error_rate = self.workload_metrics.failed_tasks / total_processed\\n    \\n    def _monitor_cluster_health(self) -> None:\\n        \\\"\\\"\\\"Monitor health of cluster nodes.\\\"\\\"\\\"\\n        current_time = datetime.now()\\n        \\n        for node_id, node in self.cluster_nodes.items():\\n            if node_id == self.node_id:\\n                continue  # Skip self\\n            \\n            last_heartbeat = self.node_health_checks.get(node_id)\\n            if last_heartbeat:\\n                time_since_heartbeat = (current_time - last_heartbeat).total_seconds()\\n                \\n                if time_since_heartbeat > self.heartbeat_timeout:\\n                    node.health_status = HealthStatus.UNHEALTHY\\n                elif time_since_heartbeat > self.heartbeat_timeout / 2:\\n                    node.health_status = HealthStatus.WARNING\\n                else:\\n                    node.health_status = HealthStatus.HEALTHY\\n    \\n    def _schedule_pending_tasks(self) -> None:\\n        \\\"\\\"\\\"Schedule pending tasks to available nodes.\\\"\\\"\\\"\\n        if not self.is_coordinator:\\n            return\\n        \\n        # Get available nodes\\n        available_nodes = [\\n            node for node in self.cluster_nodes.values()\\n            if node.health_status == HealthStatus.HEALTHY and node.role == NodeRole.WORKER\\n        ]\\n        \\n        if not available_nodes:\\n            return\\n        \\n        # Schedule high-priority tasks first\\n        priority_order = [TaskPriority.CRITICAL, TaskPriority.HIGH, TaskPriority.NORMAL, TaskPriority.LOW]\\n        \\n        for priority in priority_order:\\n            priority_tasks = [t for t in self.task_queue if t.priority == priority and t.status == TaskStatus.PENDING]\\n            \\n            for task in priority_tasks:\\n                # Find best node for task\\n                best_node = self._find_best_node_for_task(task, available_nodes)\\n                if best_node:\\n                    self._assign_task_to_node(task, best_node)\\n    \\n    def _find_best_node_for_task(self, task: DistributedTask, available_nodes: List[Node]) -> Optional[Node]:\\n        \\\"\\\"\\\"Find best node for task based on requirements and load.\\\"\\\"\\\"\\n        suitable_nodes = []\\n        \\n        for node in available_nodes:\\n            # Check capabilities\\n            required_capabilities = set(task.requirements.get(\\\"capabilities\\\", []))\\n            if not required_capabilities.issubset(node.capabilities):\\n                continue\\n            \\n            # Check resources\\n            required_memory = task.requirements.get(\\\"memory_gb\\\", 0)\\n            if required_memory > node.resources.get(\\\"memory_gb\\\", 0):\\n                continue\\n            \\n            suitable_nodes.append(node)\\n        \\n        if not suitable_nodes:\\n            return None\\n        \\n        # Select node with lowest load\\n        return min(suitable_nodes, key=lambda n: n.load)\\n    \\n    def _assign_task_to_node(self, task: DistributedTask, node: Node) -> None:\\n        \\\"\\\"\\\"Assign task to specific node.\\\"\\\"\\\"\\n        task.assigned_node = node.node_id\\n        task.status = TaskStatus.ASSIGNED\\n        \\n        # In real implementation, this would send network message\\n        self.logger.info(f\\\"Task {task.task_id} assigned to node {node.node_id}\\\")\\n    \\n    def _rebalance_workload(self) -> None:\\n        \\\"\\\"\\\"Rebalance workload across cluster nodes.\\\"\\\"\\\"\\n        if not self.is_coordinator:\\n            return\\n        \\n        # Calculate load distribution\\n        node_loads = {node_id: node.load for node_id, node in self.cluster_nodes.items()}\\n        avg_load = sum(node_loads.values()) / len(node_loads) if node_loads else 0\\n        \\n        # Find overloaded and underloaded nodes\\n        overloaded_nodes = [node_id for node_id, load in node_loads.items() if load > avg_load * 1.5]\\n        underloaded_nodes = [node_id for node_id, load in node_loads.items() if load < avg_load * 0.5]\\n        \\n        # Migrate tasks from overloaded to underloaded nodes\\n        for overloaded_id in overloaded_nodes:\\n            if not underloaded_nodes:\\n                break\\n            \\n            # Find tasks to migrate\\n            migratable_tasks = [\\n                task for task in self.active_tasks.values()\\n                if task.assigned_node == overloaded_id and task.status == TaskStatus.ASSIGNED\\n            ]\\n            \\n            for task in migratable_tasks[:1]:  # Migrate one task at a time\\n                target_node_id = underloaded_nodes[0]\\n                task.assigned_node = target_node_id\\n                \\n                self.logger.info(f\\\"Migrated task {task.task_id} from {overloaded_id} to {target_node_id}\\\")\\n                break\\n    \\n    def _update_cluster_metrics(self) -> None:\\n        \\\"\\\"\\\"Update cluster-wide metrics.\\\"\\\"\\\"\\n        if not self.is_coordinator:\\n            return\\n        \\n        # Calculate cluster-wide metrics\\n        total_tasks = sum(len(node.metadata.get(\\\"active_tasks\\\", [])) for node in self.cluster_nodes.values())\\n        total_capacity = sum(node.resources.get(\\\"cpu_cores\\\", 0) for node in self.cluster_nodes.values())\\n        \\n        # Update load distribution\\n        self.workload_metrics.load_distribution = {\\n            node_id: node.load for node_id, node in self.cluster_nodes.items()\\n        }\\n        \\n        # Update resource utilization\\n        self.workload_metrics.resource_utilization = {\\n            \\\"cpu\\\": sum(node.load * node.resources.get(\\\"cpu_cores\\\", 0) for node in self.cluster_nodes.values()) / max(total_capacity, 1),\\n            \\\"tasks\\\": total_tasks\\n        }\\n    \\n    def _handle_failed_tasks(self) -> None:\\n        \\\"\\\"\\\"Handle tasks that have failed or timed out.\\\"\\\"\\\"\\n        current_time = datetime.now()\\n        \\n        failed_tasks = []\\n        for task in self.active_tasks.values():\\n            if task.status == TaskStatus.RUNNING and task.started_at:\\n                runtime = (current_time - task.started_at).total_seconds()\\n                if runtime > task.timeout:\\n                    failed_tasks.append(task)\\n        \\n        for task in failed_tasks:\\n            task.status = TaskStatus.FAILED\\n            task.error = \\\"Task timeout\\\"\\n            task.completed_at = current_time\\n            \\n            # Retry if possible\\n            if task.retry_count < task.max_retries:\\n                task.retry_count += 1\\n                task.status = TaskStatus.RETRYING\\n                self.task_queue.appendleft(task)\\n            else:\\n                self.completed_tasks[task.task_id] = task\\n                del self.active_tasks[task.task_id]\\n    \\n    def _handle_node_failure(self, node_id: str) -> None:\\n        \\\"\\\"\\\"Handle failure of a cluster node.\\\"\\\"\\\"\\n        if node_id not in self.cluster_nodes:\\n            return\\n        \\n        failed_node = self.cluster_nodes[node_id]\\n        failed_node.health_status = HealthStatus.UNHEALTHY\\n        \\n        self.logger.warning(f\\\"Node failed: {node_id}\\\")\\n        \\n        # Reassign tasks from failed node\\n        failed_tasks = [\\n            task for task in self.active_tasks.values()\\n            if task.assigned_node == node_id\\n        ]\\n        \\n        for task in failed_tasks:\\n            task.assigned_node = None\\n            task.status = TaskStatus.PENDING\\n            self.task_queue.appendleft(task)  # High priority reassignment\\n            \\n            self.logger.info(f\\\"Reassigning task from failed node: {task.task_id}\\\")\\n    \\n    def _update_local_metrics(self) -> None:\\n        \\\"\\\"\\\"Update local node metrics.\\\"\\\"\\\"\\n        try:\\n            import psutil\\n            \\n            # Update load\\n            cpu_percent = psutil.cpu_percent(interval=1)\\n            memory_percent = psutil.virtual_memory().percent\\n            \\n            self.local_node.load = (cpu_percent + memory_percent) / 200.0  # Normalize to 0-1\\n            \\n            # Update metadata\\n            self.local_node.metadata.update({\\n                \\\"active_tasks\\\": list(self.active_tasks.keys()),\\n                \\\"cpu_percent\\\": cpu_percent,\\n                \\\"memory_percent\\\": memory_percent,\\n                \\\"task_queue_size\\\": len(self.task_queue)\\n            })\\n            \\n        except ImportError:\\n            # Fallback metrics\\n            self.local_node.load = len(self.active_tasks) / 10.0  # Simple load estimate\\n    \\n    def _send_heartbeat(self) -> None:\\n        \\\"\\\"\\\"Send heartbeat to coordinator.\\\"\\\"\\\"\\n        heartbeat_data = {\\n            \\\"node_id\\\": self.node_id,\\n            \\\"timestamp\\\": datetime.now().isoformat(),\\n            \\\"load\\\": self.local_node.load,\\n            \\\"health_status\\\": self.local_node.health_status.value,\\n            \\\"active_tasks\\\": len(self.active_tasks),\\n            \\\"metadata\\\": self.local_node.metadata\\n        }\\n        \\n        # In real implementation, this would send network message\\n        self.logger.debug(f\\\"Heartbeat sent: load={self.local_node.load:.2f}\\\")\\n    \\n    def _update_performance_history(self) -> None:\\n        \\\"\\\"\\\"Update performance history.\\\"\\\"\\\"\\n        performance_snapshot = {\\n            \\\"timestamp\\\": datetime.now(),\\n            \\\"load\\\": self.local_node.load,\\n            \\\"active_tasks\\\": len(self.active_tasks),\\n            \\\"queue_size\\\": len(self.task_queue),\\n            \\\"completed_tasks\\\": len(self.completed_tasks),\\n            \\\"error_rate\\\": self.workload_metrics.error_rate\\n        }\\n        \\n        self.performance_history.append(performance_snapshot)\\n    \\n    def _update_cluster_topology(self) -> None:\\n        \\\"\\\"\\\"Update cluster topology mapping.\\\"\\\"\\\"\\n        self.cluster_topology.clear()\\n        \\n        for node in self.cluster_nodes.values():\\n            region = node.region\\n            if region not in self.cluster_topology:\\n                self.cluster_topology[region] = []\\n            \\n            if node.node_id not in self.cluster_topology[region]:\\n                self.cluster_topology[region].append(node.node_id)\\n    \\n    # Message handlers\\n    \\n    def _handle_heartbeat(self, message: Dict[str, Any]) -> None:\\n        \\\"\\\"\\\"Handle heartbeat message.\\\"\\\"\\\"\\n        node_id = message[\\\"node_id\\\"]\\n        \\n        if node_id in self.cluster_nodes:\\n            node = self.cluster_nodes[node_id]\\n            node.load = message[\\\"load\\\"]\\n            node.last_heartbeat = datetime.now()\\n            node.metadata.update(message.get(\\\"metadata\\\", {}))\\n            \\n            self.node_health_checks[node_id] = datetime.now()\\n    \\n    def _handle_task_assignment(self, message: Dict[str, Any]) -> None:\\n        \\\"\\\"\\\"Handle task assignment message.\\\"\\\"\\\"\\n        # Worker receives task assignment from coordinator\\n        task_data = message[\\\"task\\\"]\\n        task = DistributedTask(**task_data)\\n        \\n        self.active_tasks[task.task_id] = task\\n        self.logger.info(f\\\"Received task assignment: {task.task_id}\\\")\\n    \\n    def _handle_task_result(self, message: Dict[str, Any]) -> None:\\n        \\\"\\\"\\\"Handle task result message.\\\"\\\"\\\"\\n        task_id = message[\\\"task_id\\\"]\\n        result = message[\\\"result\\\"]\\n        \\n        if task_id in self.active_tasks:\\n            task = self.active_tasks[task_id]\\n            task.result = result\\n            task.status = TaskStatus.COMPLETED\\n            task.completed_at = datetime.now()\\n            \\n            self.completed_tasks[task_id] = task\\n            del self.active_tasks[task_id]\\n    \\n    def _handle_task_failure(self, message: Dict[str, Any]) -> None:\\n        \\\"\\\"\\\"Handle task failure message.\\\"\\\"\\\"\\n        task_id = message[\\\"task_id\\\"]\\n        error = message[\\\"error\\\"]\\n        \\n        if task_id in self.active_tasks:\\n            task = self.active_tasks[task_id]\\n            task.error = error\\n            task.status = TaskStatus.FAILED\\n            task.completed_at = datetime.now()\\n            \\n            # Handle retry logic\\n            if task.retry_count < task.max_retries:\\n                task.retry_count += 1\\n                task.status = TaskStatus.RETRYING\\n                self.task_queue.appendleft(task)\\n            else:\\n                self.completed_tasks[task_id] = task\\n                del self.active_tasks[task_id]\\n    \\n    def _handle_node_join(self, message: Dict[str, Any]) -> None:\\n        \\\"\\\"\\\"Handle node join message.\\\"\\\"\\\"\\n        node_info = message[\\\"node_info\\\"]\\n        node_id = node_info[\\\"node_id\\\"]\\n        \\n        new_node = Node(\\n            node_id=node_id,\\n            role=NodeRole(node_info[\\\"role\\\"]),\\n            address=node_info[\\\"address\\\"],\\n            port=node_info[\\\"port\\\"],\\n            region=node_info[\\\"region\\\"],\\n            zone=node_info[\\\"zone\\\"],\\n            capabilities=set(node_info[\\\"capabilities\\\"]),\\n            resources=node_info[\\\"resources\\\"]\\n        )\\n        \\n        self.cluster_nodes[node_id] = new_node\\n        self.node_health_checks[node_id] = datetime.now()\\n        \\n        self.logger.info(f\\\"Node joined cluster: {node_id}\\\")\\n        self._update_cluster_topology()\\n    \\n    def _handle_node_leave(self, message: Dict[str, Any]) -> None:\\n        \\\"\\\"\\\"Handle node leave message.\\\"\\\"\\\"\\n        node_id = message[\\\"node_id\\\"]\\n        \\n        if node_id in self.cluster_nodes:\\n            del self.cluster_nodes[node_id]\\n            del self.node_health_checks[node_id]\\n            \\n            self.logger.info(f\\\"Node left cluster: {node_id}\\\")\\n            self._update_cluster_topology()\\n    \\n    def _handle_cluster_update(self, message: Dict[str, Any]) -> None:\\n        \\\"\\\"\\\"Handle cluster update message.\\\"\\\"\\\"\\n        cluster_info = message[\\\"cluster_info\\\"]\\n        \\n        # Update local cluster state\\n        for node_info in cluster_info[\\\"nodes\\\"]:\\n            node_id = node_info[\\\"node_id\\\"]\\n            if node_id not in self.cluster_nodes:\\n                self._handle_node_join({\\\"node_info\\\": node_info})\\n    \\n    # Task handlers\\n    \\n    def _handle_eeg_processing_task(self, payload: Dict[str, Any]) -> Dict[str, Any]:\\n        \\\"\\\"\\\"Handle EEG processing task.\\\"\\\"\\\"\\n        # Simulate EEG processing\\n        eeg_data = payload.get(\\\"eeg_data\\\", [])\\n        processing_type = payload.get(\\\"processing_type\\\", \\\"filter\\\")\\n        \\n        # Simulate processing time\\n        time.sleep(0.5)\\n        \\n        result = {\\n            \\\"processed_data\\\": f\\\"processed_{len(eeg_data)}_samples\\\",\\n            \\\"processing_type\\\": processing_type,\\n            \\\"quality_score\\\": 0.95,\\n            \\\"artifacts_removed\\\": 3\\n        }\\n        \\n        return result\\n    \\n    def _handle_model_inference_task(self, payload: Dict[str, Any]) -> Dict[str, Any]:\\n        \\\"\\\"\\\"Handle model inference task.\\\"\\\"\\\"\\n        # Simulate model inference\\n        input_data = payload.get(\\\"input_data\\\", [])\\n        model_type = payload.get(\\\"model_type\\\", \\\"bci_classifier\\\")\\n        \\n        # Simulate inference time\\n        time.sleep(0.2)\\n        \\n        result = {\\n            \\\"predictions\\\": [0.85, 0.12, 0.03],\\n            \\\"confidence\\\": 0.87,\\n            \\\"model_type\\\": model_type,\\n            \\\"inference_time\\\": 0.2\\n        }\\n        \\n        return result\\n    \\n    def _handle_data_validation_task(self, payload: Dict[str, Any]) -> Dict[str, Any]:\\n        \\\"\\\"\\\"Handle data validation task.\\\"\\\"\\\"\\n        # Simulate data validation\\n        data = payload.get(\\\"data\\\", {})\\n        validation_rules = payload.get(\\\"rules\\\", [])\\n        \\n        # Simulate validation time\\n        time.sleep(0.1)\\n        \\n        result = {\\n            \\\"valid\\\": True,\\n            \\\"errors\\\": [],\\n            \\\"warnings\\\": [\\\"Signal amplitude slightly high\\\"],\\n            \\\"quality_score\\\": 0.92\\n        }\\n        \\n        return result\\n    \\n    def _handle_feature_extraction_task(self, payload: Dict[str, Any]) -> Dict[str, Any]:\\n        \\\"\\\"\\\"Handle feature extraction task.\\\"\\\"\\\"\\n        # Simulate feature extraction\\n        signal_data = payload.get(\\\"signal_data\\\", [])\\n        feature_types = payload.get(\\\"feature_types\\\", [\\\"spectral\\\", \\\"temporal\\\"])\\n        \\n        # Simulate extraction time\\n        time.sleep(0.3)\\n        \\n        result = {\\n            \\\"features\\\": {\\n                \\\"spectral\\\": [1.2, 3.4, 2.1, 0.8],\\n                \\\"temporal\\\": [0.5, 1.8, 2.3]\\n            },\\n            \\\"feature_count\\\": 7,\\n            \\\"extraction_time\\\": 0.3\\n        }\\n        \\n        return result\\n    \\n    def _handle_pipeline_optimization_task(self, payload: Dict[str, Any]) -> Dict[str, Any]:\\n        \\\"\\\"\\\"Handle pipeline optimization task.\\\"\\\"\\\"\\n        # Simulate pipeline optimization\\n        pipeline_config = payload.get(\\\"config\\\", {})\\n        optimization_target = payload.get(\\\"target\\\", \\\"latency\\\")\\n        \\n        # Simulate optimization time\\n        time.sleep(1.0)\\n        \\n        result = {\\n            \\\"optimized_config\\\": {\\n                \\\"batch_size\\\": 32,\\n                \\\"num_workers\\\": 4,\\n                \\\"cache_size\\\": 1024\\n            },\\n            \\\"improvement\\\": \\\"15% latency reduction\\\",\\n            \\\"optimization_time\\\": 1.0\\n        }\\n        \\n        return result\\n    \\n    def register_task_handler(self, task_type: str, handler: Callable) -> None:\\n        \\\"\\\"\\\"Register custom task handler.\\\"\\\"\\\"\\n        self.task_handlers[task_type] = handler\\n        self.logger.info(f\\\"Registered handler for task type: {task_type}\\\")\\n    \\n    def get_task_status(self, task_id: str) -> Optional[Dict[str, Any]]:\\n        \\\"\\\"\\\"Get status of a specific task.\\\"\\\"\\\"\\n        # Check active tasks\\n        if task_id in self.active_tasks:\\n            task = self.active_tasks[task_id]\\n            return self._task_to_dict(task)\\n        \\n        # Check completed tasks\\n        if task_id in self.completed_tasks:\\n            task = self.completed_tasks[task_id]\\n            return self._task_to_dict(task)\\n        \\n        # Check queue\\n        for task in self.task_queue:\\n            if task.task_id == task_id:\\n                return self._task_to_dict(task)\\n        \\n        return None\\n    \\n    def _task_to_dict(self, task: DistributedTask) -> Dict[str, Any]:\\n        \\\"\\\"\\\"Convert task to dictionary.\\\"\\\"\\\"\\n        return {\\n            \\\"task_id\\\": task.task_id,\\n            \\\"task_type\\\": task.task_type,\\n            \\\"priority\\\": task.priority.value,\\n            \\\"status\\\": task.status.value,\\n            \\\"assigned_node\\\": task.assigned_node,\\n            \\\"created_at\\\": task.created_at.isoformat(),\\n            \\\"started_at\\\": task.started_at.isoformat() if task.started_at else None,\\n            \\\"completed_at\\\": task.completed_at.isoformat() if task.completed_at else None,\\n            \\\"retry_count\\\": task.retry_count,\\n            \\\"result\\\": task.result,\\n            \\\"error\\\": task.error\\n        }\\n    \\n    def get_cluster_status(self) -> Dict[str, Any]:\\n        \\\"\\\"\\\"Get cluster status information.\\\"\\\"\\\"\\n        return {\\n            \\\"local_node\\\": {\\n                \\\"node_id\\\": self.local_node.node_id,\\n                \\\"role\\\": self.local_node.role.value,\\n                \\\"address\\\": self.local_node.address,\\n                \\\"port\\\": self.local_node.port,\\n                \\\"region\\\": self.local_node.region,\\n                \\\"zone\\\": self.local_node.zone,\\n                \\\"capabilities\\\": list(self.local_node.capabilities),\\n                \\\"resources\\\": self.local_node.resources,\\n                \\\"load\\\": self.local_node.load,\\n                \\\"health_status\\\": self.local_node.health_status.value\\n            },\\n            \\\"cluster_nodes\\\": {\\n                node_id: {\\n                    \\\"role\\\": node.role.value,\\n                    \\\"region\\\": node.region,\\n                    \\\"zone\\\": node.zone,\\n                    \\\"load\\\": node.load,\\n                    \\\"health_status\\\": node.health_status.value,\\n                    \\\"last_heartbeat\\\": node.last_heartbeat.isoformat() if node.last_heartbeat else None\\n                }\\n                for node_id, node in self.cluster_nodes.items()\\n            },\\n            \\\"cluster_topology\\\": self.cluster_topology,\\n            \\\"workload_metrics\\\": {\\n                \\\"total_tasks\\\": self.workload_metrics.total_tasks,\\n                \\\"pending_tasks\\\": self.workload_metrics.pending_tasks,\\n                \\\"running_tasks\\\": self.workload_metrics.running_tasks,\\n                \\\"completed_tasks\\\": self.workload_metrics.completed_tasks,\\n                \\\"failed_tasks\\\": self.workload_metrics.failed_tasks,\\n                \\\"avg_processing_time\\\": self.workload_metrics.avg_processing_time,\\n                \\\"error_rate\\\": self.workload_metrics.error_rate,\\n                \\\"load_distribution\\\": self.workload_metrics.load_distribution\\n            },\\n            \\\"processing_active\\\": self.processing_active,\\n            \\\"is_coordinator\\\": self.is_coordinator,\\n            \\\"timestamp\\\": datetime.now().isoformat()\\n        }",
+        "recommendation": "Use strong cryptographic algorithms (SHA-256, AES)"
+      },
+      {
+        "type": "weak_crypto",
+        "severity": "MEDIUM",
+        "file": "/root/repo/bci_gpt/pipeline/distributed_processing.py",
+        "line": 141,
+        "description": "Weak Crypto detected",
+        "code_snippet": "\\\"\\\"\\\"Load balancer for distributing tasks across nodes.\\\"\\\"\\\"\\n    \\n    def __init__(self):\\n        self.load_strategy = \\\"least_loaded\\\"\\n        self.node_weights: Dict[str, float] = {}\\n    \\n    def select_node(self, nodes: List[Node], task: DistributedTask) -> Optional[Node]:\\n        \\\"\\\"\\\"Select best node for task.\\\"\\\"\\\"\\n        if not nodes:\\n            return None\\n        \\n        if self.load_strategy == \\\"least_loaded\\\":\\n            return min(nodes, key=lambda n: n.load)\\n        elif self.load_strategy == \\\"round_robin\\\":\\n            # Simple round-robin (would need state for real implementation)\\n            return nodes[0]\\n        elif self.load_strategy == \\\"weighted\\\":\\n            # Weighted selection based on node capabilities\\n            best_node = None\\n            best_score = -1\\n            \\n            for node in nodes:\\n                score = self._calculate_node_score(node, task)\\n                if score > best_score:\\n                    best_score = score\\n                    best_node = node\\n            \\n            return best_node\\n        \\n        return nodes[0]  # Fallback\\n    \\n    def _calculate_node_score(self, node: Node, task: DistributedTask) -> float:\\n        \\\"\\\"\\\"Calculate node score for task assignment.\\\"\\\"\\\"\\n        score = 0.0\\n        \\n        # Lower load is better\\n        score += (1.0 - node.load) * 0.5\\n        \\n        # Higher resource availability is better\\n        required_memory = task.requirements.get(\\\"memory_gb\\\", 0)\\n        available_memory = node.resources.get(\\\"memory_gb\\\", 0)\\n        if available_memory > 0:\\n            score += min(1.0, available_memory / max(required_memory, 1)) * 0.3\\n        \\n        # Capability match bonus\\n        required_capabilities = set(task.requirements.get(\\\"capabilities\\\", []))\\n        if required_capabilities.issubset(node.capabilities):\\n            score += 0.2\\n        \\n        return score",
+        "recommendation": "Use strong cryptographic algorithms (SHA-256, AES)"
+      },
+      {
+        "type": "weak_crypto",
+        "severity": "MEDIUM",
+        "file": "/root/repo/bci_gpt/pipeline/distributed_processing.py",
+        "line": 144,
+        "description": "Weak Crypto detected",
+        "code_snippet": "class TaskScheduler:\\n    \\\"\\\"\\\"Task scheduler for distributed processing.\\\"\\\"\\\"\\n    \\n    def __init__(self):\\n        self.scheduling_strategy = \\\"priority_first\\\"\\n        self.fairness_enabled = True\\n    \\n    def schedule_tasks(self, tasks: List[DistributedTask], nodes: List[Node]) -> List[Tuple[DistributedTask, Node]]:\\n        \\\"\\\"\\\"Schedule tasks to nodes.\\\"\\\"\\\"\\n        assignments = []\\n        \\n        if self.scheduling_strategy == \\\"priority_first\\\":\\n            # Sort tasks by priority\\n            sorted_tasks = sorted(tasks, key=lambda t: self._get_priority_value(t.priority), reverse=True)\\n            \\n            for task in sorted_tasks:\\n                suitable_nodes = self._find_suitable_nodes(task, nodes)\\n                if suitable_nodes:\\n                    best_node = min(suitable_nodes, key=lambda n: n.load)\\n                    assignments.append((task, best_node))\\n        \\n        return assignments\\n    \\n    def _get_priority_value(self, priority: TaskPriority) -> int:\\n        \\\"\\\"\\\"Get numeric value for priority.\\\"\\\"\\\"\\n        priority_values = {\\n            TaskPriority.LOW: 1,\\n            TaskPriority.NORMAL: 2,\\n            TaskPriority.HIGH: 3,\\n            TaskPriority.CRITICAL: 4\\n        }\\n        return priority_values.get(priority, 2)\\n    \\n    def _find_suitable_nodes(self, task: DistributedTask, nodes: List[Node]) -> List[Node]:\\n        \\\"\\\"\\\"Find nodes suitable for task.\\\"\\\"\\\"\\n        suitable = []\\n        \\n        for node in nodes:\\n            if node.health_status != HealthStatus.HEALTHY:\\n                continue\\n            \\n            # Check capabilities\\n            required_capabilities = set(task.requirements.get(\\\"capabilities\\\", []))\\n            if not required_capabilities.issubset(node.capabilities):\\n                continue\\n            \\n            # Check resources\\n            required_memory = task.requirements.get(\\\"memory_gb\\\", 0)\\n            if required_memory > node.resources.get(\\\"memory_gb\\\", 0):\\n                continue\\n            \\n            suitable.append(node)\\n        \\n        return suitable\"",
+        "recommendation": "Use strong cryptographic algorithms (SHA-256, AES)"
+      },
+      {
+        "type": "hardcoded_secrets",
+        "severity": "HIGH",
+        "file": "/root/repo/bci_gpt/pipeline/integration_demo.py",
+        "line": 394,
+        "description": "Hardcoded Secrets detected",
+        "code_snippet": "password=\"wrong_password\",",
+        "recommendation": "Use environment variables or secure credential management"
+      },
+      {
+        "type": "hardcoded_secrets",
+        "severity": "HIGH",
+        "file": "/root/repo/bci_gpt/pipeline/test_comprehensive_pipeline.py",
+        "line": 487,
+        "description": "Hardcoded Secrets detected",
+        "code_snippet": "password=\"test_password_123\",",
+        "recommendation": "Use environment variables or secure credential management"
+      },
+      {
+        "type": "hardcoded_secrets",
+        "severity": "HIGH",
+        "file": "/root/repo/bci_gpt/pipeline/test_comprehensive_pipeline.py",
+        "line": 501,
+        "description": "Hardcoded Secrets detected",
+        "code_snippet": "password=\"test_password_123\",",
+        "recommendation": "Use environment variables or secure credential management"
+      },
+      {
+        "type": "hardcoded_secrets",
+        "severity": "HIGH",
+        "file": "/root/repo/bci_gpt/pipeline/test_comprehensive_pipeline.py",
+        "line": 523,
+        "description": "Hardcoded Secrets detected",
+        "code_snippet": "password=\"wrong_password\",",
+        "recommendation": "Use environment variables or secure credential management"
+      },
+      {
+        "type": "hardcoded_secrets",
+        "severity": "HIGH",
+        "file": "/root/repo/bci_gpt/pipeline/test_comprehensive_pipeline.py",
+        "line": 780,
+        "description": "Hardcoded Secrets detected",
+        "code_snippet": "password=\"wrong_password\",",
+        "recommendation": "Use environment variables or secure credential management"
+      },
+      {
+        "type": "insecure_random",
+        "severity": "LOW",
+        "file": "/root/repo/bci_gpt/preprocessing/eeg_processor.py",
+        "line": 146,
+        "description": "Insecure Random detected",
+        "code_snippet": "alpha = 20 * np.sin(2 * np.pi * 10 * t + np.random.random() * 2 * np.pi)",
+        "recommendation": "Use cryptographically secure random generators"
+      },
+      {
+        "type": "insecure_random",
+        "severity": "LOW",
+        "file": "/root/repo/bci_gpt/preprocessing/eeg_processor.py",
+        "line": 148,
+        "description": "Insecure Random detected",
+        "code_snippet": "beta = 10 * np.sin(2 * np.pi * 20 * t + np.random.random() * 2 * np.pi)",
+        "recommendation": "Use cryptographically secure random generators"
+      },
+      {
+        "type": "insecure_random",
+        "severity": "LOW",
+        "file": "/root/repo/bci_gpt/preprocessing/eeg_processor.py",
+        "line": 150,
+        "description": "Insecure Random detected",
+        "code_snippet": "gamma = 5 * np.sin(2 * np.pi * 40 * t + np.random.random() * 2 * np.pi)",
+        "recommendation": "Use cryptographically secure random generators"
+      },
+      {
+        "type": "insecure_random",
+        "severity": "LOW",
+        "file": "/root/repo/bci_gpt/preprocessing/feature_extraction.py",
+        "line": 320,
+        "description": "Insecure Random detected",
+        "code_snippet": "return np.random.random()",
+        "recommendation": "Use cryptographically secure random generators"
+      },
+      {
+        "type": "insecure_random",
+        "severity": "LOW",
+        "file": "/root/repo/bci_gpt/training/augmentation.py",
+        "line": 79,
+        "description": "Insecure Random detected",
+        "code_snippet": "selected_augmentations = np.random.choice(",
+        "recommendation": "Use cryptographically secure random generators"
+      },
+      {
+        "type": "insecure_random",
+        "severity": "LOW",
+        "file": "/root/repo/bci_gpt/training/augmentation.py",
+        "line": 307,
+        "description": "Insecure Random detected",
+        "code_snippet": "cut_start = np.random.randint(0, n_samples - cut_length + 1)",
+        "recommendation": "Use cryptographically secure random generators"
+      },
+      {
+        "type": "weak_crypto",
+        "severity": "MEDIUM",
+        "file": "/root/repo/bci_gpt/utils/config_manager.py",
+        "line": 344,
+        "description": "Weak Crypto detected",
+        "code_snippet": "\"\"\"Apply environment variable overrides.\"\"\"",
+        "recommendation": "Use strong cryptographic algorithms (SHA-256, AES)"
+      },
+      {
+        "type": "weak_crypto",
+        "severity": "MEDIUM",
+        "file": "/root/repo/bci_gpt/utils/performance_optimizer.py",
+        "line": 515,
+        "description": "Weak Crypto detected",
+        "code_snippet": "cache_key = hashlib.md5(key_data.encode()).hexdigest()",
+        "recommendation": "Use strong cryptographic algorithms (SHA-256, AES)"
+      },
+      {
+        "type": "hardcoded_secrets",
+        "severity": "HIGH",
+        "file": "/root/repo/bci_gpt/utils/security.py",
+        "line": 776,
+        "description": "Hardcoded Secrets detected",
+        "code_snippet": "encryptor = DataEncryption(password=\"test_password\")",
+        "recommendation": "Use environment variables or secure credential management"
+      },
+      {
+        "type": "exposed_secret",
+        "severity": "CRITICAL",
+        "file": "/root/repo/security_quality_gates_runner.py",
+        "line": 454,
+        "description": "Potential Database Connection String detected",
+        "secret_type": "Database Connection String",
+        "recommendation": "Remove secret and use secure credential management"
+      },
+      {
+        "type": "exposed_secret",
+        "severity": "CRITICAL",
+        "file": "/root/repo/security_quality_gates_runner.py",
+        "line": 455,
+        "description": "Potential MySQL Connection String detected",
+        "secret_type": "MySQL Connection String",
+        "recommendation": "Remove secret and use secure credential management"
+      },
+      {
+        "type": "exposed_secret",
+        "severity": "CRITICAL",
+        "file": "/root/repo/bci_gpt/deployment/production.py",
+        "line": 369,
+        "description": "Potential Database Connection String detected",
+        "secret_type": "Database Connection String",
+        "recommendation": "Remove secret and use secure credential management"
+      },
+      {
+        "type": "exposed_secret",
+        "severity": "CRITICAL",
+        "file": "/root/repo/docker-compose.yml",
+        "line": 21,
+        "description": "Potential Database Connection String detected",
+        "secret_type": "Database Connection String",
+        "recommendation": "Remove secret and use secure credential management"
+      },
+      {
+        "type": "exposed_secret",
+        "severity": "CRITICAL",
+        "file": "/root/repo/deployment/docker-compose.prod.yml",
+        "line": 14,
+        "description": "Potential Database Connection String detected",
+        "secret_type": "Database Connection String",
+        "recommendation": "Remove secret and use secure credential management"
+      },
+      {
+        "type": "exposed_secret",
+        "severity": "CRITICAL",
+        "file": "/root/repo/deployment/docker-compose.prod.yml",
+        "line": 51,
+        "description": "Potential Database Connection String detected",
+        "secret_type": "Database Connection String",
+        "recommendation": "Remove secret and use secure credential management"
+      },
+      {
+        "type": "exposed_secret",
+        "severity": "CRITICAL",
+        "file": "/root/repo/DEPLOYMENT.md",
+        "line": 226,
+        "description": "Potential Database Connection String detected",
+        "secret_type": "Database Connection String",
+        "recommendation": "Remove secret and use secure credential management"
+      },
+      {
+        "type": "exposed_secret",
+        "severity": "CRITICAL",
+        "file": "/root/repo/deployment/DEPLOYMENT.md",
+        "line": 122,
+        "description": "Potential Database Connection String detected",
+        "secret_type": "Database Connection String",
+        "recommendation": "Remove secret and use secure credential management"
+      },
+      {
+        "type": "insecure_file_permissions",
+        "severity": "HIGH",
+        "file": "/root/repo/bci_gpt/decoding/token_decoder.py",
+        "description": "Sensitive file is world-readable",
+        "permissions": "644",
+        "recommendation": "Restrict file permissions to owner only (600)"
+      }
+    ],
+    "security_score": 0,
+    "scan_categories": {
+      "static_analysis": {
+        "files_scanned": 103,
+        "vulnerabilities": [
+          {
+            "type": "weak_crypto",
+            "severity": "MEDIUM",
+            "file": "/root/repo/optimized_scalable_sdlc_runner.py",
+            "line": 792,
+            "description": "Weak Crypto detected",
+            "code_snippet": "return hashlib.md5(f\"{operation}_{time.time() // 3600}\".encode()).hexdigest()",
+            "recommendation": "Use strong cryptographic algorithms (SHA-256, AES)"
+          },
+          {
+            "type": "debug_info",
+            "severity": "MEDIUM",
+            "file": "/root/repo/security_quality_gates_runner.py",
+            "line": 1322,
+            "description": "Debug Info detected",
+            "code_snippet": "print(\"   \u2705 Secret detection and exposure analysis\")",
+            "recommendation": "Remove debug information from production code"
+          },
+          {
+            "type": "insecure_random",
+            "severity": "LOW",
+            "file": "/root/repo/bci_gpt/cli.py",
+            "line": 512,
+            "description": "Insecure Random detected",
+            "code_snippet": "decoded_text = np.random.choice(demo_words)",
+            "recommendation": "Use cryptographically secure random generators"
+          },
+          {
+            "type": "weak_crypto",
+            "severity": "MEDIUM",
+            "file": "/root/repo/tests/test_models.py",
+            "line": 243,
+            "description": "Weak Crypto detected",
+            "code_snippet": "\"\"\"Test model training and evaluation modes.\"\"\"",
+            "recommendation": "Use strong cryptographic algorithms (SHA-256, AES)"
+          },
+          {
+            "type": "insecure_random",
+            "severity": "LOW",
+            "file": "/root/repo/bci_gpt/decoding/cli.py",
+            "line": 489,
+            "description": "Insecure Random detected",
+            "code_snippet": "decoded_text = np.random.choice(demo_words)",
+            "recommendation": "Use cryptographically secure random generators"
+          },
+          {
+            "type": "weak_crypto",
+            "severity": "MEDIUM",
+            "file": "/root/repo/bci_gpt/optimization/advanced_caching.py",
+            "line": 85,
+            "description": "Weak Crypto detected",
+            "code_snippet": "return hashlib.md5(key_str.encode()).hexdigest()",
+            "recommendation": "Use strong cryptographic algorithms (SHA-256, AES)"
+          },
+          {
+            "type": "weak_crypto",
+            "severity": "MEDIUM",
+            "file": "/root/repo/bci_gpt/optimization/advanced_caching.py",
+            "line": 94,
+            "description": "Weak Crypto detected",
+            "code_snippet": "'hash': hashlib.md5(obj.detach().cpu().numpy().tobytes()).hexdigest()",
+            "recommendation": "Use strong cryptographic algorithms (SHA-256, AES)"
+          },
+          {
+            "type": "weak_crypto",
+            "severity": "MEDIUM",
+            "file": "/root/repo/bci_gpt/optimization/advanced_caching.py",
+            "line": 101,
+            "description": "Weak Crypto detected",
+            "code_snippet": "'hash': hashlib.md5(obj.tobytes()).hexdigest()",
+            "recommendation": "Use strong cryptographic algorithms (SHA-256, AES)"
+          },
+          {
+            "type": "weak_crypto",
+            "severity": "MEDIUM",
+            "file": "/root/repo/bci_gpt/optimization/caching.py",
+            "line": 173,
+            "description": "Weak Crypto detected",
+            "code_snippet": "eeg_hash = hashlib.md5(eeg_data.tobytes()).hexdigest()",
+            "recommendation": "Use strong cryptographic algorithms (SHA-256, AES)"
+          },
+          {
+            "type": "weak_crypto",
+            "severity": "MEDIUM",
+            "file": "/root/repo/bci_gpt/optimization/caching.py",
+            "line": 177,
+            "description": "Weak Crypto detected",
+            "code_snippet": "param_hash = hashlib.md5(param_str.encode()).hexdigest()",
+            "recommendation": "Use strong cryptographic algorithms (SHA-256, AES)"
+          },
+          {
+            "type": "weak_crypto",
+            "severity": "MEDIUM",
+            "file": "/root/repo/bci_gpt/optimization/caching.py",
+            "line": 370,
+            "description": "Weak Crypto detected",
+            "code_snippet": "input_hash = hashlib.md5(input_bytes).hexdigest()",
+            "recommendation": "Use strong cryptographic algorithms (SHA-256, AES)"
+          },
+          {
+            "type": "hardcoded_secrets",
+            "severity": "HIGH",
+            "file": "/root/repo/bci_gpt/pipeline/compliance_monitor.py",
+            "line": 48,
+            "description": "Hardcoded Secrets detected",
+            "code_snippet": "TOP_SECRET = \"top_secret\"",
+            "recommendation": "Use environment variables or secure credential management"
+          },
+          {
+            "type": "weak_crypto",
+            "severity": "MEDIUM",
+            "file": "/root/repo/bci_gpt/pipeline/data_guardian.py",
+            "line": 491,
+            "description": "Weak Crypto detected",
+            "code_snippet": "current_hash = hashlib.md5(data_str.encode()).hexdigest()",
+            "recommendation": "Use strong cryptographic algorithms (SHA-256, AES)"
+          },
+          {
+            "type": "weak_crypto",
+            "severity": "MEDIUM",
+            "file": "/root/repo/bci_gpt/pipeline/distributed_processing.py",
+            "line": 113,
+            "description": "Weak Crypto detected",
+            "code_snippet": "and automatic scaling across multiple processing nodes.",
+            "recommendation": "Use strong cryptographic algorithms (SHA-256, AES)"
+          },
+          {
+            "type": "weak_crypto",
+            "severity": "MEDIUM",
+            "file": "/root/repo/bci_gpt/pipeline/distributed_processing.py",
+            "line": 137,
+            "description": "Weak Crypto detected",
+            "code_snippet": "self.cluster_nodes: Dict[str, Node] = {self.node_id: self.local_node}\\n        self.node_health_checks: Dict[str, datetime] = {}\\n        self.cluster_topology: Dict[str, List[str]] = {}  # region -> nodes\\n        \\n        # Task management\\n        self.task_queue: deque = deque()\\n        self.active_tasks: Dict[str, DistributedTask] = {}\\n        self.completed_tasks: Dict[str, DistributedTask] = {}\\n        self.task_handlers: Dict[str, Callable] = {}\\n        \\n        # Load balancing and scheduling\\n        self.load_balancer = LoadBalancer()\\n        self.task_scheduler = TaskScheduler()\\n        \\n        # Processing control\\n        self.processing_active = False\\n        self.coordinator_thread: Optional[threading.Thread] = None\\n        self.worker_threads: Dict[str, threading.Thread] = {}\\n        \\n        # Communication\\n        self.message_handlers: Dict[str, Callable] = {}\\n        self.heartbeat_interval = 30.0  # seconds\\n        self.heartbeat_timeout = 90.0   # seconds\\n        \\n        # Circuit breakers for fault tolerance\\n        self.circuit_breakers: Dict[str, CircuitBreaker] = {}\\n        \\n        # Metrics and monitoring\\n        self.workload_metrics = WorkloadMetrics()\\n        self.performance_history: deque = deque(maxlen=1000)\\n        \\n        # Executor for async operations\\n        self.executor = ThreadPoolExecutor(max_workers=20)\\n        \\n        # Initialize message handlers\\n        self._initialize_message_handlers()\\n        \\n        # Initialize default task handlers\\n        self._initialize_task_handlers()\\n    \\n    def _generate_node_id(self) -> str:\\n        \\\"\\\"\\\"Generate unique node ID.\\\"\\\"\\\"\\n        hostname = socket.gethostname()\\n        timestamp = int(time.time())\\n        return f\\\"{hostname}_{timestamp}_{uuid.uuid4().hex[:8]}\\\"\\n    \\n    def _get_local_ip(self) -> str:\\n        \\\"\\\"\\\"Get local IP address.\\\"\\\"\\\"\\n        try:\\n            # Connect to a dummy address to get local IP\\n            with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:\\n                s.connect((\\\"8.8.8.8\\\", 80))\\n                return s.getsockname()[0]\\n        except Exception:\\n            return \\\"127.0.0.1\\\"\\n    \\n    def _find_free_port(self) -> int:\\n        \\\"\\\"\\\"Find a free port for communication.\\\"\\\"\\\"\\n        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:\\n            s.bind(('', 0))\\n            return s.getsockname()[1]\\n    \\n    def _detect_region(self) -> str:\\n        \\\"\\\"\\\"Detect geographical region.\\\"\\\"\\\"\\n        # In real implementation, this would detect cloud region or datacenter\\n        return \\\"us-east-1\\\"\\n    \\n    def _detect_zone(self) -> str:\\n        \\\"\\\"\\\"Detect availability zone.\\\"\\\"\\\"\\n        # In real implementation, this would detect availability zone\\n        return \\\"us-east-1a\\\"\\n    \\n    def _detect_capabilities(self) -> Set[str]:\\n        \\\"\\\"\\\"Detect node capabilities.\\\"\\\"\\\"\\n        capabilities = {\\\"general\\\", \\\"bci_processing\\\", \\\"ml_inference\\\"}\\n        \\n        # Add GPU capability if available\\n        try:\\n            import torch\\n            if torch.cuda.is_available():\\n                capabilities.add(\\\"gpu_processing\\\")\\n        except ImportError:\\n            pass\\n        \\n        return capabilities\\n    \\n    def _measure_resources(self) -> Dict[str, float]:\\n        \\\"\\\"\\\"Measure available resources.\\\"\\\"\\\"\\n        try:\\n            import psutil\\n            \\n            return {\\n                \\\"cpu_cores\\\": psutil.cpu_count(),\\n                \\\"memory_gb\\\": psutil.virtual_memory().total / (1024**3),\\n                \\\"disk_gb\\\": psutil.disk_usage('/').total / (1024**3),\\n                \\\"network_mbps\\\": 1000.0  # Placeholder\\n            }\\n        except ImportError:\\n            return {\\n                \\\"cpu_cores\\\": 4.0,\\n                \\\"memory_gb\\\": 8.0,\\n                \\\"disk_gb\\\": 100.0,\\n                \\\"network_mbps\\\": 100.0\\n            }\\n    \\n    def _initialize_message_handlers(self) -> None:\\n        \\\"\\\"\\\"Initialize message handlers for node communication.\\\"\\\"\\\"\\n        self.message_handlers = {\\n            \\\"heartbeat\\\": self._handle_heartbeat,\\n            \\\"task_assignment\\\": self._handle_task_assignment,\\n            \\\"task_result\\\": self._handle_task_result,\\n            \\\"task_failure\\\": self._handle_task_failure,\\n            \\\"node_join\\\": self._handle_node_join,\\n            \\\"node_leave\\\": self._handle_node_leave,\\n            \\\"cluster_update\\\": self._handle_cluster_update\\n        }\\n    \\n    def _initialize_task_handlers(self) -> None:\\n        \\\"\\\"\\\"Initialize default task handlers.\\\"\\\"\\\"\\n        self.task_handlers = {\\n            \\\"eeg_processing\\\": self._handle_eeg_processing_task,\\n            \\\"model_inference\\\": self._handle_model_inference_task,\\n            \\\"data_validation\\\": self._handle_data_validation_task,\\n            \\\"feature_extraction\\\": self._handle_feature_extraction_task,\\n            \\\"pipeline_optimization\\\": self._handle_pipeline_optimization_task\\n        }\\n    \\n    def start_processing(self) -> None:\\n        \\\"\\\"\\\"Start distributed processing.\\\"\\\"\\\"\\n        if self.processing_active:\\n            return\\n        \\n        self.processing_active = True\\n        \\n        if self.is_coordinator:\\n            # Start coordinator services\\n            self.coordinator_thread = threading.Thread(\\n                target=self._coordinator_loop, daemon=True\\n            )\\n            self.coordinator_thread.start()\\n            \\n            # Start cluster management\\n            self._start_cluster_management()\\n        else:\\n            # Connect to coordinator\\n            self._connect_to_coordinator()\\n        \\n        # Start worker threads\\n        self._start_worker_threads()\\n        \\n        # Start monitoring\\n        self._start_monitoring()\\n        \\n        self.logger.info(f\\\"Distributed processing started (role: {self.local_node.role.value})\\\")\\n    \\n    def stop_processing(self) -> None:\\n        \\\"\\\"\\\"Stop distributed processing.\\\"\\\"\\\"\\n        self.processing_active = False\\n        \\n        # Stop coordinator thread\\n        if self.coordinator_thread:\\n            self.coordinator_thread.join(timeout=10.0)\\n        \\n        # Stop worker threads\\n        for thread in self.worker_threads.values():\\n            thread.join(timeout=5.0)\\n        \\n        # Shutdown executor\\n        self.executor.shutdown(wait=True)\\n        \\n        self.logger.info(\\\"Distributed processing stopped\\\")\\n    \\n    def _coordinator_loop(self) -> None:\\n        \\\"\\\"\\\"Main coordinator loop.\\\"\\\"\\\"\\n        while self.processing_active:\\n            try:\\n                # Monitor cluster health\\n                self._monitor_cluster_health()\\n                \\n                # Schedule pending tasks\\n                self._schedule_pending_tasks()\\n                \\n                # Rebalance workload if needed\\n                self._rebalance_workload()\\n                \\n                # Update cluster metrics\\n                self._update_cluster_metrics()\\n                \\n                # Handle failed tasks\\n                self._handle_failed_tasks()\\n                \\n            except Exception as e:\\n                self.logger.error(f\\\"Coordinator loop error: {e}\\\")\\n            \\n            time.sleep(5.0)  # Coordinator cycle time\\n    \\n    def _start_cluster_management(self) -> None:\\n        \\\"\\\"\\\"Start cluster management services.\\\"\\\"\\\"\\n        # Start heartbeat monitoring\\n        heartbeat_thread = threading.Thread(\\n            target=self._heartbeat_monitor_loop, daemon=True\\n        )\\n        heartbeat_thread.start()\\n        \\n        # Initialize cluster topology\\n        self._update_cluster_topology()\\n    \\n    def _connect_to_coordinator(self) -> None:\\n        \\\"\\\"\\\"Connect worker node to coordinator.\\\"\\\"\\\"\\n        try:\\n            # Send join request to coordinator\\n            message = {\\n                \\\"type\\\": \\\"node_join\\\",\\n                \\\"node_info\\\": {\\n                    \\\"node_id\\\": self.node_id,\\n                    \\\"role\\\": self.local_node.role.value,\\n                    \\\"address\\\": self.local_node.address,\\n                    \\\"port\\\": self.local_node.port,\\n                    \\\"region\\\": self.local_node.region,\\n                    \\\"zone\\\": self.local_node.zone,\\n                    \\\"capabilities\\\": list(self.local_node.capabilities),\\n                    \\\"resources\\\": self.local_node.resources\\n                }\\n            }\\n            \\n            # In real implementation, this would send actual network message\\n            self.logger.info(f\\\"Connected to coordinator at {self.coordinator_address}\\\")\\n            \\n        except Exception as e:\\n            self.logger.error(f\\\"Failed to connect to coordinator: {e}\\\")\\n    \\n    def _start_worker_threads(self) -> None:\\n        \\\"\\\"\\\"Start worker processing threads.\\\"\\\"\\\"\\n        # Determine number of worker threads based on resources\\n        num_workers = max(2, int(self.local_node.resources.get(\\\"cpu_cores\\\", 4) / 2))\\n        \\n        for i in range(num_workers):\\n            worker_id = f\\\"worker_{i}\\\"\\n            thread = threading.Thread(\\n                target=self._worker_loop,\\n                args=(worker_id,),\\n                daemon=True\\n            )\\n            self.worker_threads[worker_id] = thread\\n            thread.start()\\n    \\n    def _start_monitoring(self) -> None:\\n        \\\"\\\"\\\"Start monitoring services.\\\"\\\"\\\"\\n        monitor_thread = threading.Thread(\\n            target=self._monitoring_loop, daemon=True\\n        )\\n        monitor_thread.start()\\n    \\n    def _worker_loop(self, worker_id: str) -> None:\\n        \\\"\\\"\\\"Worker processing loop.\\\"\\\"\\\"\\n        while self.processing_active:\\n            try:\\n                # Get next task\\n                task = self._get_next_task(worker_id)\\n                \\n                if task:\\n                    # Execute task\\n                    self._execute_task(task, worker_id)\\n                else:\\n                    # No tasks available, sleep briefly\\n                    time.sleep(1.0)\\n                \\n            except Exception as e:\\n                self.logger.error(f\\\"Worker {worker_id} error: {e}\\\")\\n                time.sleep(5.0)  # Back off on error\\n    \\n    def _monitoring_loop(self) -> None:\\n        \\\"\\\"\\\"Monitoring and metrics loop.\\\"\\\"\\\"\\n        while self.processing_active:\\n            try:\\n                # Update local metrics\\n                self._update_local_metrics()\\n                \\n                # Send heartbeat if not coordinator\\n                if not self.is_coordinator:\\n                    self._send_heartbeat()\\n                \\n                # Update performance history\\n                self._update_performance_history()\\n                \\n            except Exception as e:\\n                self.logger.error(f\\\"Monitoring loop error: {e}\\\")\\n            \\n            time.sleep(self.heartbeat_interval)\\n    \\n    def _heartbeat_monitor_loop(self) -> None:\\n        \\\"\\\"\\\"Monitor heartbeats from cluster nodes.\\\"\\\"\\\"\\n        while self.processing_active:\\n            try:\\n                current_time = datetime.now()\\n                \\n                # Check for failed nodes\\n                failed_nodes = []\\n                for node_id, last_heartbeat in self.node_health_checks.items():\\n                    if node_id == self.node_id:\\n                        continue  # Skip self\\n                    \\n                    time_since_heartbeat = (current_time - last_heartbeat).total_seconds()\\n                    if time_since_heartbeat > self.heartbeat_timeout:\\n                        failed_nodes.append(node_id)\\n                \\n                # Handle failed nodes\\n                for node_id in failed_nodes:\\n                    self._handle_node_failure(node_id)\\n                \\n            except Exception as e:\\n                self.logger.error(f\\\"Heartbeat monitor error: {e}\\\")\\n            \\n            time.sleep(30.0)  # Check every 30 seconds\\n    \\n    def submit_task(self, task_type: str, payload: Dict[str, Any], \\n                   priority: TaskPriority = TaskPriority.NORMAL,\\n                   requirements: Dict[str, Any] = None,\\n                   dependencies: List[str] = None,\\n                   timeout: float = 300.0) -> str:\\n        \\\"\\\"\\\"Submit a task for distributed processing.\\\"\\\"\\\"\\n        task_id = f\\\"{task_type}_{uuid.uuid4().hex[:8]}\\\"\\n        \\n        task = DistributedTask(\\n            task_id=task_id,\\n            task_type=task_type,\\n            priority=priority,\\n            payload=payload,\\n            requirements=requirements or {},\\n            dependencies=dependencies or [],\\n            timeout=timeout\\n        )\\n        \\n        self.task_queue.append(task)\\n        self.workload_metrics.total_tasks += 1\\n        self.workload_metrics.pending_tasks += 1\\n        \\n        self.logger.info(f\\\"Task submitted: {task_id} (type: {task_type})\\\")\\n        return task_id\\n    \\n    def _get_next_task(self, worker_id: str) -> Optional[DistributedTask]:\\n        \\\"\\\"\\\"Get next task for worker to process.\\\"\\\"\\\"\\n        # Find suitable task from queue\\n        for i, task in enumerate(self.task_queue):\\n            if task.status != TaskStatus.PENDING:\\n                continue\\n            \\n            # Check if worker can handle task requirements\\n            if self._can_handle_task(task, worker_id):\\n                # Remove from queue and assign\\n                task = self.task_queue.popleft() if i == 0 else self.task_queue[i]\\n                if i > 0:\\n                    del self.task_queue[i]\\n                \\n                task.assigned_node = self.node_id\\n                task.status = TaskStatus.ASSIGNED\\n                self.active_tasks[task.task_id] = task\\n                \\n                self.workload_metrics.pending_tasks -= 1\\n                self.workload_metrics.running_tasks += 1\\n                \\n                return task\\n        \\n        return None\\n    \\n    def _can_handle_task(self, task: DistributedTask, worker_id: str) -> bool:\\n        \\\"\\\"\\\"Check if worker can handle task requirements.\\\"\\\"\\\"\\n        requirements = task.requirements\\n        \\n        # Check capabilities\\n        required_capabilities = set(requirements.get(\\\"capabilities\\\", []))\\n        if not required_capabilities.issubset(self.local_node.capabilities):\\n            return False\\n        \\n        # Check resources\\n        required_memory = requirements.get(\\\"memory_gb\\\", 0)\\n        if required_memory > self.local_node.resources.get(\\\"memory_gb\\\", 0):\\n            return False\\n        \\n        # Check dependencies\\n        for dep_id in task.dependencies:\\n            if dep_id not in self.completed_tasks:\\n                return False\\n        \\n        return True\\n    \\n    def _execute_task(self, task: DistributedTask, worker_id: str) -> None:\\n        \\\"\\\"\\\"Execute a task.\\\"\\\"\\\"\\n        self.logger.info(f\\\"Worker {worker_id} executing task: {task.task_id}\\\")\\n        \\n        task.status = TaskStatus.RUNNING\\n        task.started_at = datetime.now()\\n        \\n        try:\\n            # Get task handler\\n            handler = self.task_handlers.get(task.task_type)\\n            if not handler:\\n                raise BCI_GPTError(f\\\"No handler for task type: {task.task_type}\\\")\\n            \\n            # Execute task with timeout\\n            future = self.executor.submit(handler, task.payload)\\n            result = future.result(timeout=task.timeout)\\n            \\n            # Task completed successfully\\n            task.status = TaskStatus.COMPLETED\\n            task.completed_at = datetime.now()\\n            task.result = result\\n            \\n            # Move to completed tasks\\n            self.completed_tasks[task.task_id] = task\\n            del self.active_tasks[task.task_id]\\n            \\n            self.workload_metrics.running_tasks -= 1\\n            self.workload_metrics.completed_tasks += 1\\n            \\n            # Update performance metrics\\n            processing_time = (task.completed_at - task.started_at).total_seconds()\\n            self._update_processing_metrics(processing_time)\\n            \\n            self.logger.info(f\\\"Task completed: {task.task_id} in {processing_time:.2f}s\\\")\\n            \\n        except Exception as e:\\n            # Task failed\\n            task.status = TaskStatus.FAILED\\n            task.error = str(e)\\n            task.completed_at = datetime.now()\\n            \\n            self.workload_metrics.running_tasks -= 1\\n            self.workload_metrics.failed_tasks += 1\\n            \\n            # Check if task should be retried\\n            if task.retry_count < task.max_retries:\\n                task.retry_count += 1\\n                task.status = TaskStatus.RETRYING\\n                self.task_queue.appendleft(task)  # High priority retry\\n                \\n                self.workload_metrics.pending_tasks += 1\\n                self.logger.warning(f\\\"Task retry {task.retry_count}/{task.max_retries}: {task.task_id}\\\")\\n            else:\\n                # Max retries exceeded\\n                self.completed_tasks[task.task_id] = task\\n                del self.active_tasks[task.task_id]\\n                self.logger.error(f\\\"Task failed permanently: {task.task_id} - {e}\\\")\\n    \\n    def _update_processing_metrics(self, processing_time: float) -> None:\\n        \\\"\\\"\\\"Update processing performance metrics.\\\"\\\"\\\"\\n        # Update average processing time (exponential moving average)\\n        alpha = 0.1\\n        self.workload_metrics.avg_processing_time = (\\n            alpha * processing_time + \\n            (1 - alpha) * self.workload_metrics.avg_processing_time\\n        )\\n        \\n        # Update error rate\\n        total_processed = self.workload_metrics.completed_tasks + self.workload_metrics.failed_tasks\\n        if total_processed > 0:\\n            self.workload_metrics.error_rate = self.workload_metrics.failed_tasks / total_processed\\n    \\n    def _monitor_cluster_health(self) -> None:\\n        \\\"\\\"\\\"Monitor health of cluster nodes.\\\"\\\"\\\"\\n        current_time = datetime.now()\\n        \\n        for node_id, node in self.cluster_nodes.items():\\n            if node_id == self.node_id:\\n                continue  # Skip self\\n            \\n            last_heartbeat = self.node_health_checks.get(node_id)\\n            if last_heartbeat:\\n                time_since_heartbeat = (current_time - last_heartbeat).total_seconds()\\n                \\n                if time_since_heartbeat > self.heartbeat_timeout:\\n                    node.health_status = HealthStatus.UNHEALTHY\\n                elif time_since_heartbeat > self.heartbeat_timeout / 2:\\n                    node.health_status = HealthStatus.WARNING\\n                else:\\n                    node.health_status = HealthStatus.HEALTHY\\n    \\n    def _schedule_pending_tasks(self) -> None:\\n        \\\"\\\"\\\"Schedule pending tasks to available nodes.\\\"\\\"\\\"\\n        if not self.is_coordinator:\\n            return\\n        \\n        # Get available nodes\\n        available_nodes = [\\n            node for node in self.cluster_nodes.values()\\n            if node.health_status == HealthStatus.HEALTHY and node.role == NodeRole.WORKER\\n        ]\\n        \\n        if not available_nodes:\\n            return\\n        \\n        # Schedule high-priority tasks first\\n        priority_order = [TaskPriority.CRITICAL, TaskPriority.HIGH, TaskPriority.NORMAL, TaskPriority.LOW]\\n        \\n        for priority in priority_order:\\n            priority_tasks = [t for t in self.task_queue if t.priority == priority and t.status == TaskStatus.PENDING]\\n            \\n            for task in priority_tasks:\\n                # Find best node for task\\n                best_node = self._find_best_node_for_task(task, available_nodes)\\n                if best_node:\\n                    self._assign_task_to_node(task, best_node)\\n    \\n    def _find_best_node_for_task(self, task: DistributedTask, available_nodes: List[Node]) -> Optional[Node]:\\n        \\\"\\\"\\\"Find best node for task based on requirements and load.\\\"\\\"\\\"\\n        suitable_nodes = []\\n        \\n        for node in available_nodes:\\n            # Check capabilities\\n            required_capabilities = set(task.requirements.get(\\\"capabilities\\\", []))\\n            if not required_capabilities.issubset(node.capabilities):\\n                continue\\n            \\n            # Check resources\\n            required_memory = task.requirements.get(\\\"memory_gb\\\", 0)\\n            if required_memory > node.resources.get(\\\"memory_gb\\\", 0):\\n                continue\\n            \\n            suitable_nodes.append(node)\\n        \\n        if not suitable_nodes:\\n            return None\\n        \\n        # Select node with lowest load\\n        return min(suitable_nodes, key=lambda n: n.load)\\n    \\n    def _assign_task_to_node(self, task: DistributedTask, node: Node) -> None:\\n        \\\"\\\"\\\"Assign task to specific node.\\\"\\\"\\\"\\n        task.assigned_node = node.node_id\\n        task.status = TaskStatus.ASSIGNED\\n        \\n        # In real implementation, this would send network message\\n        self.logger.info(f\\\"Task {task.task_id} assigned to node {node.node_id}\\\")\\n    \\n    def _rebalance_workload(self) -> None:\\n        \\\"\\\"\\\"Rebalance workload across cluster nodes.\\\"\\\"\\\"\\n        if not self.is_coordinator:\\n            return\\n        \\n        # Calculate load distribution\\n        node_loads = {node_id: node.load for node_id, node in self.cluster_nodes.items()}\\n        avg_load = sum(node_loads.values()) / len(node_loads) if node_loads else 0\\n        \\n        # Find overloaded and underloaded nodes\\n        overloaded_nodes = [node_id for node_id, load in node_loads.items() if load > avg_load * 1.5]\\n        underloaded_nodes = [node_id for node_id, load in node_loads.items() if load < avg_load * 0.5]\\n        \\n        # Migrate tasks from overloaded to underloaded nodes\\n        for overloaded_id in overloaded_nodes:\\n            if not underloaded_nodes:\\n                break\\n            \\n            # Find tasks to migrate\\n            migratable_tasks = [\\n                task for task in self.active_tasks.values()\\n                if task.assigned_node == overloaded_id and task.status == TaskStatus.ASSIGNED\\n            ]\\n            \\n            for task in migratable_tasks[:1]:  # Migrate one task at a time\\n                target_node_id = underloaded_nodes[0]\\n                task.assigned_node = target_node_id\\n                \\n                self.logger.info(f\\\"Migrated task {task.task_id} from {overloaded_id} to {target_node_id}\\\")\\n                break\\n    \\n    def _update_cluster_metrics(self) -> None:\\n        \\\"\\\"\\\"Update cluster-wide metrics.\\\"\\\"\\\"\\n        if not self.is_coordinator:\\n            return\\n        \\n        # Calculate cluster-wide metrics\\n        total_tasks = sum(len(node.metadata.get(\\\"active_tasks\\\", [])) for node in self.cluster_nodes.values())\\n        total_capacity = sum(node.resources.get(\\\"cpu_cores\\\", 0) for node in self.cluster_nodes.values())\\n        \\n        # Update load distribution\\n        self.workload_metrics.load_distribution = {\\n            node_id: node.load for node_id, node in self.cluster_nodes.items()\\n        }\\n        \\n        # Update resource utilization\\n        self.workload_metrics.resource_utilization = {\\n            \\\"cpu\\\": sum(node.load * node.resources.get(\\\"cpu_cores\\\", 0) for node in self.cluster_nodes.values()) / max(total_capacity, 1),\\n            \\\"tasks\\\": total_tasks\\n        }\\n    \\n    def _handle_failed_tasks(self) -> None:\\n        \\\"\\\"\\\"Handle tasks that have failed or timed out.\\\"\\\"\\\"\\n        current_time = datetime.now()\\n        \\n        failed_tasks = []\\n        for task in self.active_tasks.values():\\n            if task.status == TaskStatus.RUNNING and task.started_at:\\n                runtime = (current_time - task.started_at).total_seconds()\\n                if runtime > task.timeout:\\n                    failed_tasks.append(task)\\n        \\n        for task in failed_tasks:\\n            task.status = TaskStatus.FAILED\\n            task.error = \\\"Task timeout\\\"\\n            task.completed_at = current_time\\n            \\n            # Retry if possible\\n            if task.retry_count < task.max_retries:\\n                task.retry_count += 1\\n                task.status = TaskStatus.RETRYING\\n                self.task_queue.appendleft(task)\\n            else:\\n                self.completed_tasks[task.task_id] = task\\n                del self.active_tasks[task.task_id]\\n    \\n    def _handle_node_failure(self, node_id: str) -> None:\\n        \\\"\\\"\\\"Handle failure of a cluster node.\\\"\\\"\\\"\\n        if node_id not in self.cluster_nodes:\\n            return\\n        \\n        failed_node = self.cluster_nodes[node_id]\\n        failed_node.health_status = HealthStatus.UNHEALTHY\\n        \\n        self.logger.warning(f\\\"Node failed: {node_id}\\\")\\n        \\n        # Reassign tasks from failed node\\n        failed_tasks = [\\n            task for task in self.active_tasks.values()\\n            if task.assigned_node == node_id\\n        ]\\n        \\n        for task in failed_tasks:\\n            task.assigned_node = None\\n            task.status = TaskStatus.PENDING\\n            self.task_queue.appendleft(task)  # High priority reassignment\\n            \\n            self.logger.info(f\\\"Reassigning task from failed node: {task.task_id}\\\")\\n    \\n    def _update_local_metrics(self) -> None:\\n        \\\"\\\"\\\"Update local node metrics.\\\"\\\"\\\"\\n        try:\\n            import psutil\\n            \\n            # Update load\\n            cpu_percent = psutil.cpu_percent(interval=1)\\n            memory_percent = psutil.virtual_memory().percent\\n            \\n            self.local_node.load = (cpu_percent + memory_percent) / 200.0  # Normalize to 0-1\\n            \\n            # Update metadata\\n            self.local_node.metadata.update({\\n                \\\"active_tasks\\\": list(self.active_tasks.keys()),\\n                \\\"cpu_percent\\\": cpu_percent,\\n                \\\"memory_percent\\\": memory_percent,\\n                \\\"task_queue_size\\\": len(self.task_queue)\\n            })\\n            \\n        except ImportError:\\n            # Fallback metrics\\n            self.local_node.load = len(self.active_tasks) / 10.0  # Simple load estimate\\n    \\n    def _send_heartbeat(self) -> None:\\n        \\\"\\\"\\\"Send heartbeat to coordinator.\\\"\\\"\\\"\\n        heartbeat_data = {\\n            \\\"node_id\\\": self.node_id,\\n            \\\"timestamp\\\": datetime.now().isoformat(),\\n            \\\"load\\\": self.local_node.load,\\n            \\\"health_status\\\": self.local_node.health_status.value,\\n            \\\"active_tasks\\\": len(self.active_tasks),\\n            \\\"metadata\\\": self.local_node.metadata\\n        }\\n        \\n        # In real implementation, this would send network message\\n        self.logger.debug(f\\\"Heartbeat sent: load={self.local_node.load:.2f}\\\")\\n    \\n    def _update_performance_history(self) -> None:\\n        \\\"\\\"\\\"Update performance history.\\\"\\\"\\\"\\n        performance_snapshot = {\\n            \\\"timestamp\\\": datetime.now(),\\n            \\\"load\\\": self.local_node.load,\\n            \\\"active_tasks\\\": len(self.active_tasks),\\n            \\\"queue_size\\\": len(self.task_queue),\\n            \\\"completed_tasks\\\": len(self.completed_tasks),\\n            \\\"error_rate\\\": self.workload_metrics.error_rate\\n        }\\n        \\n        self.performance_history.append(performance_snapshot)\\n    \\n    def _update_cluster_topology(self) -> None:\\n        \\\"\\\"\\\"Update cluster topology mapping.\\\"\\\"\\\"\\n        self.cluster_topology.clear()\\n        \\n        for node in self.cluster_nodes.values():\\n            region = node.region\\n            if region not in self.cluster_topology:\\n                self.cluster_topology[region] = []\\n            \\n            if node.node_id not in self.cluster_topology[region]:\\n                self.cluster_topology[region].append(node.node_id)\\n    \\n    # Message handlers\\n    \\n    def _handle_heartbeat(self, message: Dict[str, Any]) -> None:\\n        \\\"\\\"\\\"Handle heartbeat message.\\\"\\\"\\\"\\n        node_id = message[\\\"node_id\\\"]\\n        \\n        if node_id in self.cluster_nodes:\\n            node = self.cluster_nodes[node_id]\\n            node.load = message[\\\"load\\\"]\\n            node.last_heartbeat = datetime.now()\\n            node.metadata.update(message.get(\\\"metadata\\\", {}))\\n            \\n            self.node_health_checks[node_id] = datetime.now()\\n    \\n    def _handle_task_assignment(self, message: Dict[str, Any]) -> None:\\n        \\\"\\\"\\\"Handle task assignment message.\\\"\\\"\\\"\\n        # Worker receives task assignment from coordinator\\n        task_data = message[\\\"task\\\"]\\n        task = DistributedTask(**task_data)\\n        \\n        self.active_tasks[task.task_id] = task\\n        self.logger.info(f\\\"Received task assignment: {task.task_id}\\\")\\n    \\n    def _handle_task_result(self, message: Dict[str, Any]) -> None:\\n        \\\"\\\"\\\"Handle task result message.\\\"\\\"\\\"\\n        task_id = message[\\\"task_id\\\"]\\n        result = message[\\\"result\\\"]\\n        \\n        if task_id in self.active_tasks:\\n            task = self.active_tasks[task_id]\\n            task.result = result\\n            task.status = TaskStatus.COMPLETED\\n            task.completed_at = datetime.now()\\n            \\n            self.completed_tasks[task_id] = task\\n            del self.active_tasks[task_id]\\n    \\n    def _handle_task_failure(self, message: Dict[str, Any]) -> None:\\n        \\\"\\\"\\\"Handle task failure message.\\\"\\\"\\\"\\n        task_id = message[\\\"task_id\\\"]\\n        error = message[\\\"error\\\"]\\n        \\n        if task_id in self.active_tasks:\\n            task = self.active_tasks[task_id]\\n            task.error = error\\n            task.status = TaskStatus.FAILED\\n            task.completed_at = datetime.now()\\n            \\n            # Handle retry logic\\n            if task.retry_count < task.max_retries:\\n                task.retry_count += 1\\n                task.status = TaskStatus.RETRYING\\n                self.task_queue.appendleft(task)\\n            else:\\n                self.completed_tasks[task_id] = task\\n                del self.active_tasks[task_id]\\n    \\n    def _handle_node_join(self, message: Dict[str, Any]) -> None:\\n        \\\"\\\"\\\"Handle node join message.\\\"\\\"\\\"\\n        node_info = message[\\\"node_info\\\"]\\n        node_id = node_info[\\\"node_id\\\"]\\n        \\n        new_node = Node(\\n            node_id=node_id,\\n            role=NodeRole(node_info[\\\"role\\\"]),\\n            address=node_info[\\\"address\\\"],\\n            port=node_info[\\\"port\\\"],\\n            region=node_info[\\\"region\\\"],\\n            zone=node_info[\\\"zone\\\"],\\n            capabilities=set(node_info[\\\"capabilities\\\"]),\\n            resources=node_info[\\\"resources\\\"]\\n        )\\n        \\n        self.cluster_nodes[node_id] = new_node\\n        self.node_health_checks[node_id] = datetime.now()\\n        \\n        self.logger.info(f\\\"Node joined cluster: {node_id}\\\")\\n        self._update_cluster_topology()\\n    \\n    def _handle_node_leave(self, message: Dict[str, Any]) -> None:\\n        \\\"\\\"\\\"Handle node leave message.\\\"\\\"\\\"\\n        node_id = message[\\\"node_id\\\"]\\n        \\n        if node_id in self.cluster_nodes:\\n            del self.cluster_nodes[node_id]\\n            del self.node_health_checks[node_id]\\n            \\n            self.logger.info(f\\\"Node left cluster: {node_id}\\\")\\n            self._update_cluster_topology()\\n    \\n    def _handle_cluster_update(self, message: Dict[str, Any]) -> None:\\n        \\\"\\\"\\\"Handle cluster update message.\\\"\\\"\\\"\\n        cluster_info = message[\\\"cluster_info\\\"]\\n        \\n        # Update local cluster state\\n        for node_info in cluster_info[\\\"nodes\\\"]:\\n            node_id = node_info[\\\"node_id\\\"]\\n            if node_id not in self.cluster_nodes:\\n                self._handle_node_join({\\\"node_info\\\": node_info})\\n    \\n    # Task handlers\\n    \\n    def _handle_eeg_processing_task(self, payload: Dict[str, Any]) -> Dict[str, Any]:\\n        \\\"\\\"\\\"Handle EEG processing task.\\\"\\\"\\\"\\n        # Simulate EEG processing\\n        eeg_data = payload.get(\\\"eeg_data\\\", [])\\n        processing_type = payload.get(\\\"processing_type\\\", \\\"filter\\\")\\n        \\n        # Simulate processing time\\n        time.sleep(0.5)\\n        \\n        result = {\\n            \\\"processed_data\\\": f\\\"processed_{len(eeg_data)}_samples\\\",\\n            \\\"processing_type\\\": processing_type,\\n            \\\"quality_score\\\": 0.95,\\n            \\\"artifacts_removed\\\": 3\\n        }\\n        \\n        return result\\n    \\n    def _handle_model_inference_task(self, payload: Dict[str, Any]) -> Dict[str, Any]:\\n        \\\"\\\"\\\"Handle model inference task.\\\"\\\"\\\"\\n        # Simulate model inference\\n        input_data = payload.get(\\\"input_data\\\", [])\\n        model_type = payload.get(\\\"model_type\\\", \\\"bci_classifier\\\")\\n        \\n        # Simulate inference time\\n        time.sleep(0.2)\\n        \\n        result = {\\n            \\\"predictions\\\": [0.85, 0.12, 0.03],\\n            \\\"confidence\\\": 0.87,\\n            \\\"model_type\\\": model_type,\\n            \\\"inference_time\\\": 0.2\\n        }\\n        \\n        return result\\n    \\n    def _handle_data_validation_task(self, payload: Dict[str, Any]) -> Dict[str, Any]:\\n        \\\"\\\"\\\"Handle data validation task.\\\"\\\"\\\"\\n        # Simulate data validation\\n        data = payload.get(\\\"data\\\", {})\\n        validation_rules = payload.get(\\\"rules\\\", [])\\n        \\n        # Simulate validation time\\n        time.sleep(0.1)\\n        \\n        result = {\\n            \\\"valid\\\": True,\\n            \\\"errors\\\": [],\\n            \\\"warnings\\\": [\\\"Signal amplitude slightly high\\\"],\\n            \\\"quality_score\\\": 0.92\\n        }\\n        \\n        return result\\n    \\n    def _handle_feature_extraction_task(self, payload: Dict[str, Any]) -> Dict[str, Any]:\\n        \\\"\\\"\\\"Handle feature extraction task.\\\"\\\"\\\"\\n        # Simulate feature extraction\\n        signal_data = payload.get(\\\"signal_data\\\", [])\\n        feature_types = payload.get(\\\"feature_types\\\", [\\\"spectral\\\", \\\"temporal\\\"])\\n        \\n        # Simulate extraction time\\n        time.sleep(0.3)\\n        \\n        result = {\\n            \\\"features\\\": {\\n                \\\"spectral\\\": [1.2, 3.4, 2.1, 0.8],\\n                \\\"temporal\\\": [0.5, 1.8, 2.3]\\n            },\\n            \\\"feature_count\\\": 7,\\n            \\\"extraction_time\\\": 0.3\\n        }\\n        \\n        return result\\n    \\n    def _handle_pipeline_optimization_task(self, payload: Dict[str, Any]) -> Dict[str, Any]:\\n        \\\"\\\"\\\"Handle pipeline optimization task.\\\"\\\"\\\"\\n        # Simulate pipeline optimization\\n        pipeline_config = payload.get(\\\"config\\\", {})\\n        optimization_target = payload.get(\\\"target\\\", \\\"latency\\\")\\n        \\n        # Simulate optimization time\\n        time.sleep(1.0)\\n        \\n        result = {\\n            \\\"optimized_config\\\": {\\n                \\\"batch_size\\\": 32,\\n                \\\"num_workers\\\": 4,\\n                \\\"cache_size\\\": 1024\\n            },\\n            \\\"improvement\\\": \\\"15% latency reduction\\\",\\n            \\\"optimization_time\\\": 1.0\\n        }\\n        \\n        return result\\n    \\n    def register_task_handler(self, task_type: str, handler: Callable) -> None:\\n        \\\"\\\"\\\"Register custom task handler.\\\"\\\"\\\"\\n        self.task_handlers[task_type] = handler\\n        self.logger.info(f\\\"Registered handler for task type: {task_type}\\\")\\n    \\n    def get_task_status(self, task_id: str) -> Optional[Dict[str, Any]]:\\n        \\\"\\\"\\\"Get status of a specific task.\\\"\\\"\\\"\\n        # Check active tasks\\n        if task_id in self.active_tasks:\\n            task = self.active_tasks[task_id]\\n            return self._task_to_dict(task)\\n        \\n        # Check completed tasks\\n        if task_id in self.completed_tasks:\\n            task = self.completed_tasks[task_id]\\n            return self._task_to_dict(task)\\n        \\n        # Check queue\\n        for task in self.task_queue:\\n            if task.task_id == task_id:\\n                return self._task_to_dict(task)\\n        \\n        return None\\n    \\n    def _task_to_dict(self, task: DistributedTask) -> Dict[str, Any]:\\n        \\\"\\\"\\\"Convert task to dictionary.\\\"\\\"\\\"\\n        return {\\n            \\\"task_id\\\": task.task_id,\\n            \\\"task_type\\\": task.task_type,\\n            \\\"priority\\\": task.priority.value,\\n            \\\"status\\\": task.status.value,\\n            \\\"assigned_node\\\": task.assigned_node,\\n            \\\"created_at\\\": task.created_at.isoformat(),\\n            \\\"started_at\\\": task.started_at.isoformat() if task.started_at else None,\\n            \\\"completed_at\\\": task.completed_at.isoformat() if task.completed_at else None,\\n            \\\"retry_count\\\": task.retry_count,\\n            \\\"result\\\": task.result,\\n            \\\"error\\\": task.error\\n        }\\n    \\n    def get_cluster_status(self) -> Dict[str, Any]:\\n        \\\"\\\"\\\"Get cluster status information.\\\"\\\"\\\"\\n        return {\\n            \\\"local_node\\\": {\\n                \\\"node_id\\\": self.local_node.node_id,\\n                \\\"role\\\": self.local_node.role.value,\\n                \\\"address\\\": self.local_node.address,\\n                \\\"port\\\": self.local_node.port,\\n                \\\"region\\\": self.local_node.region,\\n                \\\"zone\\\": self.local_node.zone,\\n                \\\"capabilities\\\": list(self.local_node.capabilities),\\n                \\\"resources\\\": self.local_node.resources,\\n                \\\"load\\\": self.local_node.load,\\n                \\\"health_status\\\": self.local_node.health_status.value\\n            },\\n            \\\"cluster_nodes\\\": {\\n                node_id: {\\n                    \\\"role\\\": node.role.value,\\n                    \\\"region\\\": node.region,\\n                    \\\"zone\\\": node.zone,\\n                    \\\"load\\\": node.load,\\n                    \\\"health_status\\\": node.health_status.value,\\n                    \\\"last_heartbeat\\\": node.last_heartbeat.isoformat() if node.last_heartbeat else None\\n                }\\n                for node_id, node in self.cluster_nodes.items()\\n            },\\n            \\\"cluster_topology\\\": self.cluster_topology,\\n            \\\"workload_metrics\\\": {\\n                \\\"total_tasks\\\": self.workload_metrics.total_tasks,\\n                \\\"pending_tasks\\\": self.workload_metrics.pending_tasks,\\n                \\\"running_tasks\\\": self.workload_metrics.running_tasks,\\n                \\\"completed_tasks\\\": self.workload_metrics.completed_tasks,\\n                \\\"failed_tasks\\\": self.workload_metrics.failed_tasks,\\n                \\\"avg_processing_time\\\": self.workload_metrics.avg_processing_time,\\n                \\\"error_rate\\\": self.workload_metrics.error_rate,\\n                \\\"load_distribution\\\": self.workload_metrics.load_distribution\\n            },\\n            \\\"processing_active\\\": self.processing_active,\\n            \\\"is_coordinator\\\": self.is_coordinator,\\n            \\\"timestamp\\\": datetime.now().isoformat()\\n        }",
+            "recommendation": "Use strong cryptographic algorithms (SHA-256, AES)"
+          },
+          {
+            "type": "weak_crypto",
+            "severity": "MEDIUM",
+            "file": "/root/repo/bci_gpt/pipeline/distributed_processing.py",
+            "line": 141,
+            "description": "Weak Crypto detected",
+            "code_snippet": "\\\"\\\"\\\"Load balancer for distributing tasks across nodes.\\\"\\\"\\\"\\n    \\n    def __init__(self):\\n        self.load_strategy = \\\"least_loaded\\\"\\n        self.node_weights: Dict[str, float] = {}\\n    \\n    def select_node(self, nodes: List[Node], task: DistributedTask) -> Optional[Node]:\\n        \\\"\\\"\\\"Select best node for task.\\\"\\\"\\\"\\n        if not nodes:\\n            return None\\n        \\n        if self.load_strategy == \\\"least_loaded\\\":\\n            return min(nodes, key=lambda n: n.load)\\n        elif self.load_strategy == \\\"round_robin\\\":\\n            # Simple round-robin (would need state for real implementation)\\n            return nodes[0]\\n        elif self.load_strategy == \\\"weighted\\\":\\n            # Weighted selection based on node capabilities\\n            best_node = None\\n            best_score = -1\\n            \\n            for node in nodes:\\n                score = self._calculate_node_score(node, task)\\n                if score > best_score:\\n                    best_score = score\\n                    best_node = node\\n            \\n            return best_node\\n        \\n        return nodes[0]  # Fallback\\n    \\n    def _calculate_node_score(self, node: Node, task: DistributedTask) -> float:\\n        \\\"\\\"\\\"Calculate node score for task assignment.\\\"\\\"\\\"\\n        score = 0.0\\n        \\n        # Lower load is better\\n        score += (1.0 - node.load) * 0.5\\n        \\n        # Higher resource availability is better\\n        required_memory = task.requirements.get(\\\"memory_gb\\\", 0)\\n        available_memory = node.resources.get(\\\"memory_gb\\\", 0)\\n        if available_memory > 0:\\n            score += min(1.0, available_memory / max(required_memory, 1)) * 0.3\\n        \\n        # Capability match bonus\\n        required_capabilities = set(task.requirements.get(\\\"capabilities\\\", []))\\n        if required_capabilities.issubset(node.capabilities):\\n            score += 0.2\\n        \\n        return score",
+            "recommendation": "Use strong cryptographic algorithms (SHA-256, AES)"
+          },
+          {
+            "type": "weak_crypto",
+            "severity": "MEDIUM",
+            "file": "/root/repo/bci_gpt/pipeline/distributed_processing.py",
+            "line": 144,
+            "description": "Weak Crypto detected",
+            "code_snippet": "class TaskScheduler:\\n    \\\"\\\"\\\"Task scheduler for distributed processing.\\\"\\\"\\\"\\n    \\n    def __init__(self):\\n        self.scheduling_strategy = \\\"priority_first\\\"\\n        self.fairness_enabled = True\\n    \\n    def schedule_tasks(self, tasks: List[DistributedTask], nodes: List[Node]) -> List[Tuple[DistributedTask, Node]]:\\n        \\\"\\\"\\\"Schedule tasks to nodes.\\\"\\\"\\\"\\n        assignments = []\\n        \\n        if self.scheduling_strategy == \\\"priority_first\\\":\\n            # Sort tasks by priority\\n            sorted_tasks = sorted(tasks, key=lambda t: self._get_priority_value(t.priority), reverse=True)\\n            \\n            for task in sorted_tasks:\\n                suitable_nodes = self._find_suitable_nodes(task, nodes)\\n                if suitable_nodes:\\n                    best_node = min(suitable_nodes, key=lambda n: n.load)\\n                    assignments.append((task, best_node))\\n        \\n        return assignments\\n    \\n    def _get_priority_value(self, priority: TaskPriority) -> int:\\n        \\\"\\\"\\\"Get numeric value for priority.\\\"\\\"\\\"\\n        priority_values = {\\n            TaskPriority.LOW: 1,\\n            TaskPriority.NORMAL: 2,\\n            TaskPriority.HIGH: 3,\\n            TaskPriority.CRITICAL: 4\\n        }\\n        return priority_values.get(priority, 2)\\n    \\n    def _find_suitable_nodes(self, task: DistributedTask, nodes: List[Node]) -> List[Node]:\\n        \\\"\\\"\\\"Find nodes suitable for task.\\\"\\\"\\\"\\n        suitable = []\\n        \\n        for node in nodes:\\n            if node.health_status != HealthStatus.HEALTHY:\\n                continue\\n            \\n            # Check capabilities\\n            required_capabilities = set(task.requirements.get(\\\"capabilities\\\", []))\\n            if not required_capabilities.issubset(node.capabilities):\\n                continue\\n            \\n            # Check resources\\n            required_memory = task.requirements.get(\\\"memory_gb\\\", 0)\\n            if required_memory > node.resources.get(\\\"memory_gb\\\", 0):\\n                continue\\n            \\n            suitable.append(node)\\n        \\n        return suitable\"",
+            "recommendation": "Use strong cryptographic algorithms (SHA-256, AES)"
+          },
+          {
+            "type": "hardcoded_secrets",
+            "severity": "HIGH",
+            "file": "/root/repo/bci_gpt/pipeline/integration_demo.py",
+            "line": 394,
+            "description": "Hardcoded Secrets detected",
+            "code_snippet": "password=\"wrong_password\",",
+            "recommendation": "Use environment variables or secure credential management"
+          },
+          {
+            "type": "hardcoded_secrets",
+            "severity": "HIGH",
+            "file": "/root/repo/bci_gpt/pipeline/test_comprehensive_pipeline.py",
+            "line": 487,
+            "description": "Hardcoded Secrets detected",
+            "code_snippet": "password=\"test_password_123\",",
+            "recommendation": "Use environment variables or secure credential management"
+          },
+          {
+            "type": "hardcoded_secrets",
+            "severity": "HIGH",
+            "file": "/root/repo/bci_gpt/pipeline/test_comprehensive_pipeline.py",
+            "line": 501,
+            "description": "Hardcoded Secrets detected",
+            "code_snippet": "password=\"test_password_123\",",
+            "recommendation": "Use environment variables or secure credential management"
+          },
+          {
+            "type": "hardcoded_secrets",
+            "severity": "HIGH",
+            "file": "/root/repo/bci_gpt/pipeline/test_comprehensive_pipeline.py",
+            "line": 523,
+            "description": "Hardcoded Secrets detected",
+            "code_snippet": "password=\"wrong_password\",",
+            "recommendation": "Use environment variables or secure credential management"
+          },
+          {
+            "type": "hardcoded_secrets",
+            "severity": "HIGH",
+            "file": "/root/repo/bci_gpt/pipeline/test_comprehensive_pipeline.py",
+            "line": 780,
+            "description": "Hardcoded Secrets detected",
+            "code_snippet": "password=\"wrong_password\",",
+            "recommendation": "Use environment variables or secure credential management"
+          },
+          {
+            "type": "insecure_random",
+            "severity": "LOW",
+            "file": "/root/repo/bci_gpt/preprocessing/eeg_processor.py",
+            "line": 146,
+            "description": "Insecure Random detected",
+            "code_snippet": "alpha = 20 * np.sin(2 * np.pi * 10 * t + np.random.random() * 2 * np.pi)",
+            "recommendation": "Use cryptographically secure random generators"
+          },
+          {
+            "type": "insecure_random",
+            "severity": "LOW",
+            "file": "/root/repo/bci_gpt/preprocessing/eeg_processor.py",
+            "line": 148,
+            "description": "Insecure Random detected",
+            "code_snippet": "beta = 10 * np.sin(2 * np.pi * 20 * t + np.random.random() * 2 * np.pi)",
+            "recommendation": "Use cryptographically secure random generators"
+          },
+          {
+            "type": "insecure_random",
+            "severity": "LOW",
+            "file": "/root/repo/bci_gpt/preprocessing/eeg_processor.py",
+            "line": 150,
+            "description": "Insecure Random detected",
+            "code_snippet": "gamma = 5 * np.sin(2 * np.pi * 40 * t + np.random.random() * 2 * np.pi)",
+            "recommendation": "Use cryptographically secure random generators"
+          },
+          {
+            "type": "insecure_random",
+            "severity": "LOW",
+            "file": "/root/repo/bci_gpt/preprocessing/feature_extraction.py",
+            "line": 320,
+            "description": "Insecure Random detected",
+            "code_snippet": "return np.random.random()",
+            "recommendation": "Use cryptographically secure random generators"
+          },
+          {
+            "type": "insecure_random",
+            "severity": "LOW",
+            "file": "/root/repo/bci_gpt/training/augmentation.py",
+            "line": 79,
+            "description": "Insecure Random detected",
+            "code_snippet": "selected_augmentations = np.random.choice(",
+            "recommendation": "Use cryptographically secure random generators"
+          },
+          {
+            "type": "insecure_random",
+            "severity": "LOW",
+            "file": "/root/repo/bci_gpt/training/augmentation.py",
+            "line": 307,
+            "description": "Insecure Random detected",
+            "code_snippet": "cut_start = np.random.randint(0, n_samples - cut_length + 1)",
+            "recommendation": "Use cryptographically secure random generators"
+          },
+          {
+            "type": "weak_crypto",
+            "severity": "MEDIUM",
+            "file": "/root/repo/bci_gpt/utils/config_manager.py",
+            "line": 344,
+            "description": "Weak Crypto detected",
+            "code_snippet": "\"\"\"Apply environment variable overrides.\"\"\"",
+            "recommendation": "Use strong cryptographic algorithms (SHA-256, AES)"
+          },
+          {
+            "type": "weak_crypto",
+            "severity": "MEDIUM",
+            "file": "/root/repo/bci_gpt/utils/performance_optimizer.py",
+            "line": 515,
+            "description": "Weak Crypto detected",
+            "code_snippet": "cache_key = hashlib.md5(key_data.encode()).hexdigest()",
+            "recommendation": "Use strong cryptographic algorithms (SHA-256, AES)"
+          },
+          {
+            "type": "hardcoded_secrets",
+            "severity": "HIGH",
+            "file": "/root/repo/bci_gpt/utils/security.py",
+            "line": 776,
+            "description": "Hardcoded Secrets detected",
+            "code_snippet": "encryptor = DataEncryption(password=\"test_password\")",
+            "recommendation": "Use environment variables or secure credential management"
+          }
+        ],
+        "patterns_checked": 6,
+        "analysis_time": 1.2027287483215332
+      },
+      "dependency_scan": {
+        "dependencies_scanned": 111,
+        "vulnerabilities": [],
+        "outdated_packages": [],
+        "security_advisories": [
+          {
+            "package": "example-package",
+            "advisory": "Update to latest version for security fixes",
+            "severity": "MEDIUM"
+          }
+        ]
+      },
+      "configuration_check": {
+        "configs_checked": 31,
+        "vulnerabilities": [],
+        "security_misconfigurations": [],
+        "recommendations": [
+          "Use environment variables for sensitive configuration",
+          "Implement proper access controls on configuration files",
+          "Regular security configuration reviews",
+          "Enable security logging and monitoring"
+        ]
+      },
+      "secret_detection": {
+        "files_scanned": 144,
+        "secrets_found": 8,
+        "vulnerabilities": [
+          {
+            "type": "exposed_secret",
+            "severity": "CRITICAL",
+            "file": "/root/repo/security_quality_gates_runner.py",
+            "line": 454,
+            "description": "Potential Database Connection String detected",
+            "secret_type": "Database Connection String",
+            "recommendation": "Remove secret and use secure credential management"
+          },
+          {
+            "type": "exposed_secret",
+            "severity": "CRITICAL",
+            "file": "/root/repo/security_quality_gates_runner.py",
+            "line": 455,
+            "description": "Potential MySQL Connection String detected",
+            "secret_type": "MySQL Connection String",
+            "recommendation": "Remove secret and use secure credential management"
+          },
+          {
+            "type": "exposed_secret",
+            "severity": "CRITICAL",
+            "file": "/root/repo/bci_gpt/deployment/production.py",
+            "line": 369,
+            "description": "Potential Database Connection String detected",
+            "secret_type": "Database Connection String",
+            "recommendation": "Remove secret and use secure credential management"
+          },
+          {
+            "type": "exposed_secret",
+            "severity": "CRITICAL",
+            "file": "/root/repo/docker-compose.yml",
+            "line": 21,
+            "description": "Potential Database Connection String detected",
+            "secret_type": "Database Connection String",
+            "recommendation": "Remove secret and use secure credential management"
+          },
+          {
+            "type": "exposed_secret",
+            "severity": "CRITICAL",
+            "file": "/root/repo/deployment/docker-compose.prod.yml",
+            "line": 14,
+            "description": "Potential Database Connection String detected",
+            "secret_type": "Database Connection String",
+            "recommendation": "Remove secret and use secure credential management"
+          },
+          {
+            "type": "exposed_secret",
+            "severity": "CRITICAL",
+            "file": "/root/repo/deployment/docker-compose.prod.yml",
+            "line": 51,
+            "description": "Potential Database Connection String detected",
+            "secret_type": "Database Connection String",
+            "recommendation": "Remove secret and use secure credential management"
+          },
+          {
+            "type": "exposed_secret",
+            "severity": "CRITICAL",
+            "file": "/root/repo/DEPLOYMENT.md",
+            "line": 226,
+            "description": "Potential Database Connection String detected",
+            "secret_type": "Database Connection String",
+            "recommendation": "Remove secret and use secure credential management"
+          },
+          {
+            "type": "exposed_secret",
+            "severity": "CRITICAL",
+            "file": "/root/repo/deployment/DEPLOYMENT.md",
+            "line": 122,
+            "description": "Potential Database Connection String detected",
+            "secret_type": "Database Connection String",
+            "recommendation": "Remove secret and use secure credential management"
+          }
+        ],
+        "high_risk_files": []
+      },
+      "file_permissions": {
+        "files_checked": 107,
+        "permission_issues": 1,
+        "vulnerabilities": [
+          {
+            "type": "insecure_file_permissions",
+            "severity": "HIGH",
+            "file": "/root/repo/bci_gpt/decoding/token_decoder.py",
+            "description": "Sensitive file is world-readable",
+            "permissions": "644",
+            "recommendation": "Restrict file permissions to owner only (600)"
+          }
+        ],
+        "recommendations": [
+          "Set restrictive permissions on sensitive files (600)",
+          "Avoid storing sensitive data in world-readable files",
+          "Regular permission audits for security-critical files"
+        ]
+      }
+    }
+  },
+  "quality_results": {
+    "validation_timestamp": 1755746447.3192499,
+    "validation_duration": 0.1262342929840088,
+    "gates_executed": 7,
+    "gates_passed": 5,
+    "gates_failed": 2,
+    "overall_score": 72.66121557487982,
+    "gate_details": {
+      "code_style": {
+        "gate_name": "code_style",
+        "description": "Code style and formatting compliance",
+        "priority": "HIGH",
+        "passed": true,
+        "score": 0.7629662749105774,
+        "criteria_results": {
+          "black_compliance": {
+            "criterion_name": "black_compliance",
+            "score": 0.45988758303525806,
+            "passed": false,
+            "actual_value": 43.689320388349515,
+            "expected_value": 95
+          },
+          "isort_compliance": {
+            "criterion_name": "isort_compliance",
+            "score": 0.85,
+            "passed": true
+          },
+          "line_length": {
+            "criterion_name": "line_length",
+            "score": 1.0,
+            "passed": true,
+            "actual_value": 97.2692912048244,
+            "expected_value": 90
+          },
+          "naming_conventions": {
+            "criterion_name": "naming_conventions",
+            "score": 0.85,
+            "passed": true
+          }
+        },
+        "recommendations": []
+      },
+      "code_quality": {
+        "gate_name": "code_quality",
+        "description": "Code quality metrics and complexity",
+        "priority": "HIGH",
+        "passed": true,
+        "score": 0.94,
+        "criteria_results": {
+          "cyclomatic_complexity": {
+            "criterion_name": "cyclomatic_complexity",
+            "score": 1.0,
+            "passed": true,
+            "actual_value": 3.3260538344337225,
+            "expected_value": 10
+          },
+          "code_duplication": {
+            "criterion_name": "code_duplication",
+            "score": 0.8,
+            "passed": true
+          },
+          "maintainability_index": {
+            "criterion_name": "maintainability_index",
+            "score": 1.0,
+            "passed": true,
+            "actual_value": 78.93203883495146,
+            "expected_value": 70
+          }
+        },
+        "recommendations": []
+      },
+      "documentation": {
+        "gate_name": "documentation",
+        "description": "Documentation coverage and quality",
+        "priority": "MEDIUM",
+        "passed": false,
+        "score": 0.6749782229965157,
+        "criteria_results": {
+          "docstring_coverage": {
+            "criterion_name": "docstring_coverage",
+            "score": 0.5999564459930313,
+            "passed": false,
+            "actual_value": 47.99651567944251,
+            "expected_value": 80
+          },
+          "readme_quality": {
+            "criterion_name": "readme_quality",
+            "score": 0.75,
+            "passed": true
+          },
+          "api_documentation": {
+            "criterion_name": "api_documentation",
+            "score": 0.75,
+            "passed": true
+          }
+        },
+        "recommendations": [
+          "Add docstrings to functions and classes",
+          "Improve README and API documentation"
+        ]
+      },
+      "testing": {
+        "gate_name": "testing",
+        "description": "Test coverage and quality",
+        "priority": "CRITICAL",
+        "passed": true,
+        "score": 0.92,
+        "criteria_results": {
+          "test_coverage": {
+            "criterion_name": "test_coverage",
+            "score": 1.0,
+            "passed": true,
+            "actual_value": 92.93259575711105,
+            "expected_value": 85
+          },
+          "test_quality": {
+            "criterion_name": "test_quality",
+            "score": 0.8,
+            "passed": true
+          }
+        },
+        "recommendations": []
+      },
+      "security": {
+        "gate_name": "security",
+        "description": "Security vulnerability assessment",
+        "priority": "CRITICAL",
+        "passed": false,
+        "score": 0.15,
+        "criteria_results": {
+          "security_score": {
+            "criterion_name": "security_score",
+            "score": 0.0,
+            "passed": false,
+            "actual_value": 0,
+            "expected_value": 80
+          },
+          "vulnerability_count": {
+            "criterion_name": "vulnerability_count",
+            "score": 0.5,
+            "passed": false,
+            "actual_value": {
+              "critical": 8,
+              "high": 8
+            },
+            "expected_value": {
+              "max_critical": 0,
+              "max_high": 2
+            }
+          }
+        },
+        "recommendations": [
+          "Address identified security vulnerabilities",
+          "Implement security best practices"
+        ]
+      },
+      "performance": {
+        "gate_name": "performance",
+        "description": "Performance benchmarks",
+        "priority": "MEDIUM",
+        "passed": true,
+        "score": 0.91,
+        "criteria_results": {
+          "import_time": {
+            "criterion_name": "import_time",
+            "score": 1.0,
+            "passed": true,
+            "actual_value": 0.5,
+            "expected_value": 2.0
+          },
+          "memory_usage": {
+            "criterion_name": "memory_usage",
+            "score": 0.85,
+            "passed": true
+          },
+          "startup_time": {
+            "criterion_name": "startup_time",
+            "score": 0.85,
+            "passed": true
+          }
+        },
+        "recommendations": []
+      },
+      "dependencies": {
+        "gate_name": "dependencies",
+        "description": "Dependency management and security",
+        "priority": "HIGH",
+        "passed": true,
+        "score": 0.9000000000000001,
+        "criteria_results": {
+          "outdated_dependencies": {
+            "criterion_name": "outdated_dependencies",
+            "score": 0.9,
+            "passed": true
+          },
+          "vulnerability_free": {
+            "criterion_name": "vulnerability_free",
+            "score": 0.9,
+            "passed": true
+          }
+        },
+        "recommendations": []
+      }
+    }
+  },
+  "compliance_results": {
+    "assessment_timestamp": 1755746447.445646,
+    "compliance_standards": {
+      "security": {
+        "standard": "Security Best Practices",
+        "score": 0,
+        "compliant": false,
+        "requirements_met": false
+      },
+      "quality": {
+        "standard": "Code Quality Standards",
+        "score": 72.66121557487982,
+        "compliant": true,
+        "requirements_met": true
+      },
+      "testing": {
+        "standard": "Testing Requirements",
+        "score": 92.0,
+        "compliant": true,
+        "requirements_met": true
+      }
+    },
+    "overall_compliance": false,
+    "compliance_score": 66.66666666666666
+  },
+  "final_recommendations": [
+    "Address security vulnerabilities before production deployment",
+    "Immediately fix 8 critical security vulnerabilities",
+    "Achieve full compliance before production release"
+  ],
+  "production_readiness": {
+    "security_ready": false,
+    "quality_ready": true,
+    "overall_ready": false
+  },
+  "timestamp": 1755746447.445739
+}

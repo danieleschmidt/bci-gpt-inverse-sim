@@ -1,0 +1,7 @@
+{
+  "health_checks": true,
+  "performance_tracking": true,
+  "error_monitoring": true,
+  "resource_monitoring": true,
+  "automated_alerting": false
+}

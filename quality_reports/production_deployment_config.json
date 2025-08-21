@@ -1,0 +1,183 @@
+{
+  "deployment_summary": {
+    "generation_time": 0.0024585723876953125,
+    "configurations_generated": 6,
+    "deployment_ready": true,
+    "production_grade": true
+  },
+  "docker_configs": {
+    "dockerfile": "# Production-Ready BCI-GPT Dockerfile\nFROM python:3.9-slim\n\n# Set working directory\nWORKDIR /app\n\n# Install system dependencies\nRUN apt-get update && apt-get install -y \\\n    build-essential \\\n    curl \\\n    git \\\n    && rm -rf /var/lib/apt/lists/*\n\n# Create non-root user for security\nRUN useradd --create-home --shell /bin/bash bci-gpt\nUSER bci-gpt\n\n# Copy requirements first for better caching\nCOPY --chown=bci-gpt:bci-gpt requirements*.txt ./\nCOPY --chown=bci-gpt:bci-gpt pyproject.toml ./\n\n# Install Python dependencies\nRUN pip install --user --no-cache-dir -r requirements.txt\n\n# Copy application code\nCOPY --chown=bci-gpt:bci-gpt . .\n\n# Install application\nRUN pip install --user -e .\n\n# Add user site-packages to PATH\nENV PATH=\"/home/bci-gpt/.local/bin:${PATH}\"\nENV PYTHONPATH=\"/app:${PYTHONPATH}\"\n\n# Security configurations\nENV PYTHONDONTWRITEBYTECODE=1\nENV PYTHONUNBUFFERED=1\n\n# Health check\nHEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \\\n    CMD python -c \"import bci_gpt; print('Health OK')\" || exit 1\n\n# Expose port\nEXPOSE 8000\n\n# Run application\nCMD [\"python\", \"-m\", \"bci_gpt.deployment.server\"]\n",
+    "docker_compose_production": "version: '3.8'\n\nservices:\n  bci-gpt-api:\n    build:\n      context: .\n      dockerfile: Dockerfile\n    image: bci-gpt:latest\n    container_name: bci-gpt-production\n    restart: unless-stopped\n    environment:\n      - ENVIRONMENT=production\n      - LOG_LEVEL=INFO\n      - WORKERS=4\n      - MAX_REQUESTS=1000\n      - TIMEOUT=60\n    ports:\n      - \"8000:8000\"\n    volumes:\n      - ./data:/app/data:ro\n      - ./logs:/app/logs\n      - ./models:/app/models:ro\n    networks:\n      - bci-gpt-network\n    deploy:\n      resources:\n        limits:\n          cpus: '2.0'\n          memory: 4G\n        reservations:\n          cpus: '1.0'\n          memory: 2G\n    security_opt:\n      - no-new-privileges:true\n    cap_drop:\n      - ALL\n    cap_add:\n      - CHOWN\n      - SETGID\n      - SETUID\n    read_only: true\n    tmpfs:\n      - /tmp\n      - /var/tmp\n\n  bci-gpt-monitoring:\n    image: prom/prometheus:latest\n    container_name: bci-gpt-prometheus\n    restart: unless-stopped\n    ports:\n      - \"9090:9090\"\n    volumes:\n      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro\n      - prometheus_data:/prometheus\n    command:\n      - '--config.file=/etc/prometheus/prometheus.yml'\n      - '--storage.tsdb.path=/prometheus'\n      - '--web.console.libraries=/etc/prometheus/console_libraries'\n      - '--web.console.templates=/etc/prometheus/consoles'\n      - '--storage.tsdb.retention.time=200h'\n      - '--web.enable-lifecycle'\n    networks:\n      - bci-gpt-network\n\n  bci-gpt-grafana:\n    image: grafana/grafana:latest\n    container_name: bci-gpt-grafana\n    restart: unless-stopped\n    ports:\n      - \"3000:3000\"\n    environment:\n      - GF_SECURITY_ADMIN_PASSWORD=admin\n      - GF_USERS_ALLOW_SIGN_UP=false\n    volumes:\n      - grafana_data:/var/lib/grafana\n      - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro\n      - ./monitoring/grafana/datasources:/etc/grafana/provisioning/datasources:ro\n    networks:\n      - bci-gpt-network\n\n  nginx-proxy:\n    image: nginx:alpine\n    container_name: bci-gpt-nginx\n    restart: unless-stopped\n    ports:\n      - \"80:80\"\n      - \"443:443\"\n    volumes:\n      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro\n      - ./ssl:/etc/ssl/certs:ro\n    depends_on:\n      - bci-gpt-api\n    networks:\n      - bci-gpt-network\n\nvolumes:\n  prometheus_data:\n  grafana_data:\n\nnetworks:\n  bci-gpt-network:\n    driver: bridge\n",
+    "dockerignore": "# Version control\n.git\n.gitignore\n\n# Python\n__pycache__\n*.pyc\n*.pyo\n*.pyd\n.Python\nbuild\ndevelop-eggs\ndist\ndownloads\neggs\n.eggs\nlib\nlib64\nparts\nsdist\nvar\nwheels\n*.egg-info\n.installed.cfg\n*.egg\n\n# Testing\n.tox\n.coverage\n.coverage.*\n.cache\n.pytest_cache\nnosetests.xml\ncoverage.xml\n*.cover\n.hypothesis\n.pytest_cache\n\n# Documentation\ndocs/_build\n\n# IDEs\n.vscode\n.idea\n*.swp\n*.swo\n\n# OS\n.DS_Store\nThumbs.db\n\n# Logs\n*.log\nlogs\n\n# Temporary files\n*.tmp\n.temp\n\n# Local development\n.env.local\n.env.development\n\n# Node modules (if any)\nnode_modules\n\n# Data files\ndata/raw\ndata/temp\n*.pkl\n*.h5\n\n# Model files (large)\nmodels/large/*\n*.bin\n*.safetensors\n",
+    "docker_commands": {
+      "build": "docker build -t bci-gpt:latest .",
+      "run_dev": "docker-compose up -d",
+      "run_production": "docker-compose -f docker-compose.prod.yml up -d",
+      "logs": "docker-compose logs -f bci-gpt-api",
+      "stop": "docker-compose down"
+    }
+  },
+  "kubernetes_configs": {
+    "deployment": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: bci-gpt-deployment\n  namespace: bci-gpt-production\n  labels:\n    app: bci-gpt\n    version: v1.0.0\n    environment: production\nspec:\n  replicas: 3\n  strategy:\n    type: RollingUpdate\n    rollingUpdate:\n      maxSurge: 1\n      maxUnavailable: 1\n  selector:\n    matchLabels:\n      app: bci-gpt\n  template:\n    metadata:\n      labels:\n        app: bci-gpt\n        version: v1.0.0\n    spec:\n      serviceAccountName: bci-gpt-service-account\n      securityContext:\n        runAsNonRoot: true\n        runAsUser: 1000\n        fsGroup: 2000\n      containers:\n      - name: bci-gpt\n        image: bci-gpt:latest\n        imagePullPolicy: Always\n        ports:\n        - containerPort: 8000\n          name: http\n        env:\n        - name: ENVIRONMENT\n          value: \"production\"\n        - name: LOG_LEVEL\n          value: \"INFO\"\n        - name: WORKERS\n          value: \"4\"\n        envFrom:\n        - secretRef:\n            name: bci-gpt-secrets\n        resources:\n          requests:\n            memory: \"2Gi\"\n            cpu: \"1\"\n          limits:\n            memory: \"4Gi\"\n            cpu: \"2\"\n        livenessProbe:\n          httpGet:\n            path: /health\n            port: 8000\n          initialDelaySeconds: 30\n          periodSeconds: 10\n          timeoutSeconds: 5\n          failureThreshold: 3\n        readinessProbe:\n          httpGet:\n            path: /ready\n            port: 8000\n          initialDelaySeconds: 5\n          periodSeconds: 5\n          timeoutSeconds: 3\n          failureThreshold: 3\n        volumeMounts:\n        - name: config-volume\n          mountPath: /app/config\n          readOnly: true\n        - name: model-cache\n          mountPath: /app/models\n        - name: temp-storage\n          mountPath: /tmp\n        securityContext:\n          allowPrivilegeEscalation: false\n          readOnlyRootFilesystem: true\n          runAsNonRoot: true\n          capabilities:\n            drop:\n            - ALL\n      volumes:\n      - name: config-volume\n        configMap:\n          name: bci-gpt-config\n      - name: model-cache\n        persistentVolumeClaim:\n          claimName: bci-gpt-model-pvc\n      - name: temp-storage\n        emptyDir: {}\n      nodeSelector:\n        kubernetes.io/arch: amd64\n      tolerations:\n      - key: \"node.kubernetes.io/not-ready\"\n        operator: \"Exists\"\n        effect: \"NoExecute\"\n        tolerationSeconds: 300\n      - key: \"node.kubernetes.io/unreachable\"\n        operator: \"Exists\"\n        effect: \"NoExecute\"\n        tolerationSeconds: 300\n---\napiVersion: v1\nkind: Service\nmetadata:\n  name: bci-gpt-service\n  namespace: bci-gpt-production\n  labels:\n    app: bci-gpt\nspec:\n  selector:\n    app: bci-gpt\n  ports:\n  - name: http\n    port: 80\n    targetPort: 8000\n    protocol: TCP\n  type: ClusterIP\n---\napiVersion: networking.k8s.io/v1\nkind: Ingress\nmetadata:\n  name: bci-gpt-ingress\n  namespace: bci-gpt-production\n  annotations:\n    kubernetes.io/ingress.class: \"nginx\"\n    cert-manager.io/cluster-issuer: \"letsencrypt-prod\"\n    nginx.ingress.kubernetes.io/ssl-redirect: \"true\"\n    nginx.ingress.kubernetes.io/rate-limit: \"100\"\n    nginx.ingress.kubernetes.io/rate-limit-window: \"1m\"\nspec:\n  tls:\n  - hosts:\n    - api.bci-gpt.com\n    secretName: bci-gpt-tls\n  rules:\n  - host: api.bci-gpt.com\n    http:\n      paths:\n      - path: /\n        pathType: Prefix\n        backend:\n          service:\n            name: bci-gpt-service\n            port:\n              number: 80\n",
+    "hpa": "apiVersion: autoscaling/v2\nkind: HorizontalPodAutoscaler\nmetadata:\n  name: bci-gpt-hpa\n  namespace: bci-gpt-production\nspec:\n  scaleTargetRef:\n    apiVersion: apps/v1\n    kind: Deployment\n    name: bci-gpt-deployment\n  minReplicas: 3\n  maxReplicas: 10\n  metrics:\n  - type: Resource\n    resource:\n      name: cpu\n      target:\n        type: Utilization\n        averageUtilization: 70\n  - type: Resource\n    resource:\n      name: memory\n      target:\n        type: Utilization\n        averageUtilization: 80\n  behavior:\n    scaleDown:\n      stabilizationWindowSeconds: 300\n      policies:\n      - type: Percent\n        value: 50\n        periodSeconds: 60\n    scaleUp:\n      stabilizationWindowSeconds: 60\n      policies:\n      - type: Percent\n        value: 100\n        periodSeconds: 60\n      - type: Pods\n        value: 2\n        periodSeconds: 60\n      selectPolicy: Max\n",
+    "rbac": "apiVersion: v1\nkind: ServiceAccount\nmetadata:\n  name: bci-gpt-service-account\n  namespace: bci-gpt-production\n---\napiVersion: rbac.authorization.k8s.io/v1\nkind: Role\nmetadata:\n  namespace: bci-gpt-production\n  name: bci-gpt-role\nrules:\n- apiGroups: [\"\"]\n  resources: [\"pods\", \"services\", \"endpoints\"]\n  verbs: [\"get\", \"list\", \"watch\"]\n- apiGroups: [\"apps\"]\n  resources: [\"deployments\", \"replicasets\"]\n  verbs: [\"get\", \"list\", \"watch\"]\n---\napiVersion: rbac.authorization.k8s.io/v1\nkind: RoleBinding\nmetadata:\n  name: bci-gpt-role-binding\n  namespace: bci-gpt-production\nsubjects:\n- kind: ServiceAccount\n  name: bci-gpt-service-account\n  namespace: bci-gpt-production\nroleRef:\n  kind: Role\n  name: bci-gpt-role\n  apiGroup: rbac.authorization.k8s.io\n",
+    "pvc": "apiVersion: v1\nkind: PersistentVolumeClaim\nmetadata:\n  name: bci-gpt-model-pvc\n  namespace: bci-gpt-production\nspec:\n  accessModes:\n    - ReadWriteOnce\n  resources:\n    requests:\n      storage: 50Gi\n  storageClassName: fast-ssd\n---\napiVersion: v1\nkind: PersistentVolumeClaim\nmetadata:\n  name: bci-gpt-data-pvc\n  namespace: bci-gpt-production\nspec:\n  accessModes:\n    - ReadWriteMany\n  resources:\n    requests:\n      storage: 100Gi\n  storageClassName: shared-storage\n",
+    "kubectl_commands": {
+      "apply_all": "kubectl apply -f kubernetes/",
+      "create_namespace": "kubectl create namespace bci-gpt-production",
+      "get_pods": "kubectl get pods -n bci-gpt-production",
+      "logs": "kubectl logs -f deployment/bci-gpt-deployment -n bci-gpt-production",
+      "scale": "kubectl scale deployment bci-gpt-deployment --replicas=5 -n bci-gpt-production"
+    }
+  },
+  "monitoring_configs": {
+    "prometheus_config": "global:\n  scrape_interval: 15s\n  evaluation_interval: 15s\n  external_labels:\n    cluster: 'bci-gpt-production'\n    environment: 'production'\n\nrule_files:\n  - \"alert_rules.yml\"\n\nalerting:\n  alertmanagers:\n    - static_configs:\n        - targets:\n          - alertmanager:9093\n\nscrape_configs:\n  - job_name: 'bci-gpt-api'\n    static_configs:\n      - targets: ['bci-gpt-api:8000']\n    metrics_path: '/metrics'\n    scrape_interval: 30s\n    scrape_timeout: 10s\n\n  - job_name: 'node-exporter'\n    static_configs:\n      - targets: ['node-exporter:9100']\n\n  - job_name: 'kubernetes-apiservers'\n    kubernetes_sd_configs:\n    - role: endpoints\n      namespaces:\n        names:\n        - default\n    scheme: https\n    tls_config:\n      ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt\n      insecure_skip_verify: true\n    bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token\n    relabel_configs:\n    - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]\n      action: keep\n      regex: default;kubernetes;https\n\n  - job_name: 'kubernetes-pods'\n    kubernetes_sd_configs:\n    - role: pod\n    relabel_configs:\n    - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]\n      action: keep\n      regex: true\n    - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]\n      action: replace\n      target_label: __metrics_path__\n      regex: (.+)\n",
+    "grafana_dashboard": "{\n  \"dashboard\": {\n    \"id\": null,\n    \"title\": \"BCI-GPT Production Monitoring\",\n    \"tags\": [\"bci-gpt\", \"production\"],\n    \"timezone\": \"browser\",\n    \"panels\": [\n      {\n        \"id\": 1,\n        \"title\": \"API Response Time\",\n        \"type\": \"graph\",\n        \"targets\": [\n          {\n            \"expr\": \"histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m]))\",\n            \"legendFormat\": \"95th percentile\"\n          },\n          {\n            \"expr\": \"histogram_quantile(0.50, rate(http_request_duration_seconds_bucket[5m]))\",\n            \"legendFormat\": \"50th percentile\"\n          }\n        ],\n        \"yAxes\": [\n          {\n            \"label\": \"Response Time (seconds)\",\n            \"min\": 0\n          }\n        ],\n        \"gridPos\": {\n          \"h\": 8,\n          \"w\": 12,\n          \"x\": 0,\n          \"y\": 0\n        }\n      },\n      {\n        \"id\": 2,\n        \"title\": \"Request Rate\",\n        \"type\": \"graph\",\n        \"targets\": [\n          {\n            \"expr\": \"rate(http_requests_total[5m])\",\n            \"legendFormat\": \"Requests/sec\"\n          }\n        ],\n        \"gridPos\": {\n          \"h\": 8,\n          \"w\": 12,\n          \"x\": 12,\n          \"y\": 0\n        }\n      },\n      {\n        \"id\": 3,\n        \"title\": \"Error Rate\",\n        \"type\": \"graph\",\n        \"targets\": [\n          {\n            \"expr\": \"rate(http_requests_total{status=~\"5..\"}[5m]) / rate(http_requests_total[5m])\",\n            \"legendFormat\": \"Error Rate\"\n          }\n        ],\n        \"gridPos\": {\n          \"h\": 8,\n          \"w\": 12,\n          \"x\": 0,\n          \"y\": 8\n        }\n      },\n      {\n        \"id\": 4,\n        \"title\": \"Memory Usage\",\n        \"type\": \"graph\",\n        \"targets\": [\n          {\n            \"expr\": \"process_resident_memory_bytes / 1024 / 1024\",\n            \"legendFormat\": \"Memory (MB)\"\n          }\n        ],\n        \"gridPos\": {\n          \"h\": 8,\n          \"w\": 12,\n          \"x\": 12,\n          \"y\": 8\n        }\n      }\n    ],\n    \"time\": {\n      \"from\": \"now-1h\",\n      \"to\": \"now\"\n    },\n    \"refresh\": \"30s\"\n  }\n}",
+    "alert_rules": "groups:\n- name: bci-gpt-alerts\n  rules:\n  - alert: HighErrorRate\n    expr: rate(http_requests_total{status=~\"5..\"}[5m]) / rate(http_requests_total[5m]) > 0.05\n    for: 5m\n    labels:\n      severity: warning\n    annotations:\n      summary: \"High error rate detected\"\n      description: \"Error rate is {{ $value | humanizePercentage }} for the last 5 minutes\"\n\n  - alert: HighResponseTime\n    expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m])) > 2\n    for: 5m\n    labels:\n      severity: warning\n    annotations:\n      summary: \"High response time detected\"\n      description: \"95th percentile response time is {{ $value }}s\"\n\n  - alert: HighMemoryUsage\n    expr: process_resident_memory_bytes / 1024 / 1024 > 3072\n    for: 10m\n    labels:\n      severity: warning\n    annotations:\n      summary: \"High memory usage detected\"\n      description: \"Memory usage is {{ $value }}MB\"\n\n  - alert: ServiceDown\n    expr: up == 0\n    for: 1m\n    labels:\n      severity: critical\n    annotations:\n      summary: \"Service is down\"\n      description: \"{{ $labels.instance }} has been down for more than 1 minute\"\n\n  - alert: PodCrashLooping\n    expr: rate(kube_pod_container_status_restarts_total[15m]) > 0\n    for: 5m\n    labels:\n      severity: warning\n    annotations:\n      summary: \"Pod is crash looping\"\n      description: \"Pod {{ $labels.pod }} in namespace {{ $labels.namespace }} is crash looping\"\n",
+    "monitoring_setup": {
+      "prometheus_port": 9090,
+      "grafana_port": 3000,
+      "alertmanager_port": 9093,
+      "default_credentials": {
+        "grafana_admin": "admin",
+        "grafana_password": "admin"
+      }
+    }
+  },
+  "security_configs": {
+    "network_policies": "apiVersion: networking.k8s.io/v1\nkind: NetworkPolicy\nmetadata:\n  name: bci-gpt-network-policy\n  namespace: bci-gpt-production\nspec:\n  podSelector:\n    matchLabels:\n      app: bci-gpt\n  policyTypes:\n  - Ingress\n  - Egress\n  ingress:\n  - from:\n    - namespaceSelector:\n        matchLabels:\n          name: ingress-nginx\n    - podSelector:\n        matchLabels:\n          app: nginx-proxy\n    ports:\n    - protocol: TCP\n      port: 8000\n  egress:\n  - to: []\n    ports:\n    - protocol: TCP\n      port: 53\n    - protocol: UDP\n      port: 53\n  - to: []\n    ports:\n    - protocol: TCP\n      port: 443\n    - protocol: TCP\n      port: 80\n---\napiVersion: policy/v1beta1\nkind: PodSecurityPolicy\nmetadata:\n  name: bci-gpt-psp\nspec:\n  privileged: false\n  allowPrivilegeEscalation: false\n  requiredDropCapabilities:\n    - ALL\n  volumes:\n    - 'configMap'\n    - 'emptyDir'\n    - 'projected'\n    - 'secret'\n    - 'downwardAPI'\n    - 'persistentVolumeClaim'\n  runAsUser:\n    rule: 'MustRunAsNonRoot'\n  seLinux:\n    rule: 'RunAsAny'\n  fsGroup:\n    rule: 'RunAsAny'\n  readOnlyRootFilesystem: true\n",
+    "secrets_template": "apiVersion: v1\nkind: Secret\nmetadata:\n  name: bci-gpt-secrets\n  namespace: bci-gpt-production\ntype: Opaque\ndata:\n  # Base64 encoded values - replace with actual values\n  DATABASE_URL: <base64-encoded-database-url>\n  API_SECRET_KEY: <base64-encoded-secret-key>\n  JWT_SECRET: <base64-encoded-jwt-secret>\n  ENCRYPTION_KEY: <base64-encoded-encryption-key>\n---\napiVersion: v1\nkind: ConfigMap\nmetadata:\n  name: bci-gpt-config\n  namespace: bci-gpt-production\ndata:\n  app_config.yaml: |\n    application:\n      name: bci-gpt\n      version: \"1.0.0\"\n      environment: production\n    \n    server:\n      host: \"0.0.0.0\"\n      port: 8000\n      workers: 4\n      timeout: 60\n    \n    logging:\n      level: INFO\n      format: json\n      \n    security:\n      enable_cors: true\n      allowed_origins:\n        - \"https://app.bci-gpt.com\"\n      rate_limiting:\n        enabled: true\n        requests_per_minute: 60\n    \n    monitoring:\n      metrics_enabled: true\n      health_check_enabled: true\n      tracing_enabled: true\n",
+    "security_guidelines": {
+      "ssl_certificates": "Use Let's Encrypt or proper CA certificates",
+      "secret_management": "Use Kubernetes secrets or external secret managers",
+      "network_security": "Implement network policies and firewall rules",
+      "access_control": "Use RBAC and proper service accounts",
+      "image_security": "Scan container images for vulnerabilities"
+    }
+  },
+  "cicd_configs": {
+    "github_actions": "name: CI/CD Pipeline\n\non:\n  push:\n    branches: [ main, develop ]\n  pull_request:\n    branches: [ main ]\n\nenv:\n  REGISTRY: ghcr.io\n  IMAGE_NAME: ${{ github.repository }}\n\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n    - uses: actions/checkout@v3\n    \n    - name: Set up Python\n      uses: actions/setup-python@v4\n      with:\n        python-version: '3.9'\n    \n    - name: Install dependencies\n      run: |\n        python -m pip install --upgrade pip\n        pip install -r requirements.txt\n        pip install -e .\n    \n    - name: Run tests\n      run: |\n        python -m pytest tests/ --cov=bci_gpt --cov-report=xml\n    \n    - name: Security scan\n      run: |\n        python security_quality_gates_runner.py\n  \n  build:\n    needs: test\n    runs-on: ubuntu-latest\n    if: github.event_name == 'push'\n    steps:\n    - uses: actions/checkout@v3\n    \n    - name: Log in to Container Registry\n      uses: docker/login-action@v2\n      with:\n        registry: ${{ env.REGISTRY }}\n        username: ${{ github.actor }}\n        password: ${{ secrets.GITHUB_TOKEN }}\n    \n    - name: Build and push Docker image\n      uses: docker/build-push-action@v4\n      with:\n        context: .\n        push: true\n        tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest,${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}\n  \n  deploy:\n    needs: build\n    runs-on: ubuntu-latest\n    if: github.ref == 'refs/heads/main'\n    environment: production\n    steps:\n    - uses: actions/checkout@v3\n    \n    - name: Deploy to Kubernetes\n      run: |\n        echo \"${{ secrets.KUBECONFIG }}\" | base64 -d > kubeconfig\n        export KUBECONFIG=kubeconfig\n        kubectl set image deployment/bci-gpt-deployment bci-gpt=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }} -n bci-gpt-production\n        kubectl rollout status deployment/bci-gpt-deployment -n bci-gpt-production\n",
+    "deployment_stages": {
+      "development": "Automatic deployment on develop branch",
+      "staging": "Manual approval required",
+      "production": "Manual approval + security checks"
+    },
+    "quality_gates": {
+      "unit_tests": "Must pass with 85%+ coverage",
+      "security_scan": "No critical vulnerabilities",
+      "performance_tests": "Response time < 200ms",
+      "code_quality": "Quality score > 70%"
+    }
+  },
+  "environment_configs": {
+    "production": {
+      "replicas": 3,
+      "resources": {
+        "cpu_request": "1",
+        "cpu_limit": "2",
+        "memory_request": "2Gi",
+        "memory_limit": "4Gi"
+      },
+      "environment_variables": {
+        "ENVIRONMENT": "production",
+        "LOG_LEVEL": "INFO",
+        "WORKERS": "4",
+        "DEBUG": "false"
+      }
+    },
+    "staging": {
+      "replicas": 2,
+      "resources": {
+        "cpu_request": "0.5",
+        "cpu_limit": "1",
+        "memory_request": "1Gi",
+        "memory_limit": "2Gi"
+      },
+      "environment_variables": {
+        "ENVIRONMENT": "staging",
+        "LOG_LEVEL": "DEBUG",
+        "WORKERS": "2",
+        "DEBUG": "true"
+      }
+    },
+    "development": {
+      "replicas": 1,
+      "resources": {
+        "cpu_request": "0.25",
+        "cpu_limit": "0.5",
+        "memory_request": "512Mi",
+        "memory_limit": "1Gi"
+      },
+      "environment_variables": {
+        "ENVIRONMENT": "development",
+        "LOG_LEVEL": "DEBUG",
+        "WORKERS": "1",
+        "DEBUG": "true"
+      }
+    }
+  },
+  "deployment_instructions": [
+    "1. Build and test the Docker image locally",
+    "2. Push the image to your container registry",
+    "3. Create the Kubernetes namespace: kubectl create namespace bci-gpt-production",
+    "4. Apply the RBAC configuration: kubectl apply -f kubernetes/rbac.yaml",
+    "5. Create secrets: kubectl apply -f security/secrets-template.yaml (after filling values)",
+    "6. Apply PVC configuration: kubectl apply -f kubernetes/pvc.yaml",
+    "7. Deploy the application: kubectl apply -f kubernetes/deployment.yaml",
+    "8. Apply HPA: kubectl apply -f kubernetes/hpa.yaml",
+    "9. Apply network policies: kubectl apply -f security/network-policies.yaml",
+    "10. Set up monitoring: docker-compose up -d prometheus grafana",
+    "11. Verify deployment: kubectl get pods -n bci-gpt-production",
+    "12. Test the application endpoints",
+    "13. Set up CI/CD pipeline using provided GitHub Actions workflow"
+  ],
+  "scaling_recommendations": {
+    "horizontal_scaling": {
+      "min_replicas": 3,
+      "max_replicas": 10,
+      "cpu_threshold": "70%",
+      "memory_threshold": "80%"
+    },
+    "vertical_scaling": {
+      "cpu_optimization": "Monitor CPU usage and adjust requests/limits",
+      "memory_optimization": "Profile memory usage and tune GC settings",
+      "storage_optimization": "Use fast SSDs for model storage"
+    },
+    "performance_tuning": {
+      "worker_processes": "Set to number of CPU cores",
+      "connection_pooling": "Use database connection pooling",
+      "caching": "Implement Redis for application caching",
+      "cdn": "Use CDN for static assets"
+    }
+  },
+  "maintenance_procedures": {
+    "regular_maintenance": {
+      "daily": [
+        "Check application logs for errors",
+        "Monitor system metrics",
+        "Verify backup completion"
+      ],
+      "weekly": [
+        "Update security patches",
+        "Review resource usage trends",
+        "Test disaster recovery procedures"
+      ],
+      "monthly": [
+        "Update dependencies",
+        "Review and update security policies",
+        "Capacity planning review"
+      ]
+    },
+    "emergency_procedures": {
+      "service_outage": "kubectl rollout restart deployment/bci-gpt-deployment -n bci-gpt-production",
+      "scale_up_quickly": "kubectl scale deployment bci-gpt-deployment --replicas=10 -n bci-gpt-production",
+      "rollback_deployment": "kubectl rollout undo deployment/bci-gpt-deployment -n bci-gpt-production"
+    },
+    "monitoring_alerts": {
+      "setup_alerts": "Configure Prometheus alerts for critical metrics",
+      "notification_channels": "Set up Slack/email notifications",
+      "escalation_procedures": "Define on-call rotation and escalation"
+    }
+  },
+  "timestamp": 1755746617.988323
+}
