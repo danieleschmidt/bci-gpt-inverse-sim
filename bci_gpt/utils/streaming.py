@@ -1,6 +1,23 @@
 """Real-time EEG streaming interfaces and data handling."""
 
-import numpy as np
+try:
+    import numpy as np
+    HAS_NUMPY = True
+    NDArrayType = np.ndarray
+except ImportError:
+    HAS_NUMPY = False
+    NDArrayType = list
+    # Simple numpy fallback
+    class np:
+        ndarray = list
+        @staticmethod
+        def array(data):
+            return list(data)
+        @staticmethod
+        def zeros(shape):
+            if isinstance(shape, int):
+                return [0.0] * shape
+            return [[0.0] * shape[1] for _ in range(shape[0])]
 from typing import Optional, List, Dict, Any, Callable
 import threading
 import time
@@ -29,7 +46,7 @@ except ImportError:
 @dataclass
 class EEGSample:
     """Single EEG sample with metadata."""
-    data: np.ndarray
+    data: NDArrayType
     timestamp: float
     channels: List[str]
     sampling_rate: float
