@@ -1,35 +1,116 @@
 """Command-line interface for BCI-GPT."""
 
-import typer
+try:
+    import typer
+    HAS_TYPER = True
+except ImportError:
+    HAS_TYPER = False
+
 from typing import Optional, List
 from pathlib import Path
-import torch
-import numpy as np
-from rich.console import Console
-from rich.progress import track
-from rich.table import Table
+
+try:
+    import torch
+    HAS_TORCH = True
+except ImportError:
+    HAS_TORCH = False
+
+try:
+    import numpy as np
+    HAS_NUMPY = True
+except ImportError:
+    HAS_NUMPY = False
+
+try:
+    from rich.console import Console
+    from rich.progress import track
+    from rich.table import Table
+    HAS_RICH = True
+except ImportError:
+    HAS_RICH = False
 import warnings
 
-from .core.models import BCIGPTModel
-from .core.inverse_gan import InverseSimulator
-from .preprocessing.eeg_processor import EEGProcessor
-from .training.trainer import BCIGPTTrainer, TrainingConfig
-from .decoding.realtime_decoder import RealtimeDecoder
-from .inverse.text_to_eeg import TextToEEG, GenerationConfig
-from .utils.streaming import StreamingEEG, StreamConfig
-from .utils.metrics import BCIMetrics
-from .utils.visualization import EEGVisualizer
+try:
+    from .core.models import BCIGPTModel
+    from .core.inverse_gan import InverseSimulator
+except ImportError:
+    BCIGPTModel = None
+    InverseSimulator = None
+try:
+    from .preprocessing.eeg_processor import EEGProcessor
+except ImportError:
+    EEGProcessor = None
 
-app = typer.Typer(
-    name="bci-gpt",
-    help="BCI-GPT: Brain-Computer Interface GPT Inverse Simulator",
-    add_completion=False
-)
+try:
+    from .training.trainer import BCIGPTTrainer, TrainingConfig
+except ImportError:
+    BCIGPTTrainer = None
+    TrainingConfig = None
 
-console = Console()
+try:
+    from .decoding.realtime_decoder import RealtimeDecoder
+except ImportError:
+    RealtimeDecoder = None
+
+try:
+    from .inverse.text_to_eeg import TextToEEG, GenerationConfig
+except ImportError:
+    TextToEEG = None
+    GenerationConfig = None
+try:
+    from .utils.streaming import StreamingEEG, StreamConfig
+except ImportError:
+    StreamingEEG = None
+    StreamConfig = None
+
+try:
+    from .utils.metrics import BCIMetrics
+except ImportError:
+    BCIMetrics = None
+
+try:
+    from .utils.visualization import EEGVisualizer
+except ImportError:
+    EEGVisualizer = None
+
+if HAS_TYPER:
+    app = typer.Typer(
+        name="bci-gpt",
+        help="BCI-GPT: Brain-Computer Interface GPT Inverse Simulator",
+        add_completion=False
+    )
+else:
+    app = None
+
+if HAS_RICH:
+    console = Console()
+else:
+    console = None
 
 
-@app.command()
+# Conditional decorator for commands
+def command_decorator(func):
+    """Conditional command decorator."""
+    if app:
+        return app.command()(func)
+    return func
+
+# Mock typer objects when not available
+if not HAS_TYPER:
+    class MockTyper:
+        @staticmethod
+        def Argument(*args, **kwargs):
+            return None
+        @staticmethod
+        def Option(*args, **kwargs):
+            return None
+        @staticmethod
+        def Exit(code=0):
+            return SystemExit(code)
+    
+    typer = MockTyper()
+
+@command_decorator
 def info():
     """Display BCI-GPT system information."""
     console.print("[bold blue]BCI-GPT System Information[/bold blue]")
@@ -73,7 +154,7 @@ def info():
     console.print(table)
 
 
-@app.command()
+@command_decorator
 def train(
     data_path: str = typer.Argument(..., help="Path to training data"),
     model_name: str = typer.Option("bci-gpt", help="Model name"),
@@ -144,7 +225,7 @@ def train(
         raise typer.Exit(1)
 
 
-@app.command()
+@command_decorator
 def decode(
     model_path: str = typer.Argument(..., help="Path to trained model"),
     input_type: str = typer.Option("file", help="Input type: file, stream, or demo"),
@@ -184,7 +265,7 @@ def decode(
         raise typer.Exit(1)
 
 
-@app.command()
+@command_decorator
 def generate(
     text: str = typer.Argument(..., help="Text to convert to EEG"),
     model_path: str = typer.Option("./models/inverse_gan.pt", help="Path to inverse model"),
@@ -245,7 +326,7 @@ def generate(
         raise typer.Exit(1)
 
 
-@app.command()
+@command_decorator
 def visualize(
     data_path: str = typer.Argument(..., help="Path to EEG data file"),
     channels: Optional[List[str]] = typer.Option(None, help="Channel names to plot"),
@@ -302,7 +383,7 @@ def visualize(
         raise typer.Exit(1)
 
 
-@app.command()
+@command_decorator
 def evaluate(
     model_path: str = typer.Argument(..., help="Path to trained model"),
     test_data: str = typer.Argument(..., help="Path to test data"),
@@ -550,5 +631,16 @@ def _run_demo_decoding(model_path: str, device: str):
     console.print("Demo completed!")
 
 
+def main():
+    """Main CLI entry point."""
+    if not HAS_TYPER:
+        print("CLI requires typer package. Install with: pip install typer[all]")
+        return
+    
+    if app:
+        app()
+    else:
+        print("CLI not available - missing dependencies")
+
 if __name__ == "__main__":
-    app()
+    main()

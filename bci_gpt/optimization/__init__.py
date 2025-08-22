@@ -1,12 +1,7 @@
-"""Performance optimization modules for BCI-GPT."""
+"""Optimization modules for BCI-GPT."""
 
-from .model_optimization import ModelOptimizer
-from .caching import EEGCache, InferenceCache
-from .batch_processing import BatchProcessor
-
-__all__ = [
-    "ModelOptimizer",
-    "EEGCache",
-    "InferenceCache", 
-    "BatchProcessor",
-]
+try:
+    from .performance_optimizer import PerformanceOptimizer, CacheSystem, ResourcePool, global_optimizer
+    __all__ = ["PerformanceOptimizer", "CacheSystem", "ResourcePool", "global_optimizer"]
+except ImportError:
+    __all__ = []
