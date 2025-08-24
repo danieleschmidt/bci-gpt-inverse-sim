@@ -1,0 +1,104 @@
+{
+  "all_results": {
+    "structure": {
+      "core_modules": [
+        "bci_gpt/core/enhanced_models.py",
+        "bci_gpt/core/models.py",
+        "bci_gpt/core/fusion_layers.py"
+      ],
+      "research_modules": [
+        "bci_gpt/research/advanced_fusion_architectures.py",
+        "bci_gpt/research/experimental_validation.py"
+      ],
+      "missing_modules": [],
+      "structure_valid": true
+    },
+    "architecture": {
+      "class_definitions": [
+        "EnhancedBCIGPTModel",
+        "RealTimeOptimizedEEGEncoder",
+        "UncertaintyEstimator",
+        "SignalQualityAssessor",
+        "AdaptiveAttentionController",
+        "RealTimePerformanceMonitor"
+      ],
+      "key_features": [
+        "multi_language",
+        "uncertainty",
+        "real_time",
+        "signal_quality",
+        "performance_monitor"
+      ],
+      "architecture_components": [
+        "forward(",
+        "generate_text",
+        "MultiheadAttention",
+        "TransformerEncoder"
+      ],
+      "valid_architecture": true
+    },
+    "fusion": {
+      "fusion_classes": [
+        "AttentionGuidedSpectralTemporalFusion",
+        "SpectralBandExtractor",
+        "TemporalWindowExtractor",
+        "CrossModalSpectralAttention",
+        "CrossModalTemporalAttention",
+        "CausalInterventionModule",
+        "MetaLearningBCIAdapter",
+        "FederatedBCILearning"
+      ],
+      "research_components": [
+        "causal_intervention"
+      ],
+      "algorithmic_innovations": [],
+      "fusion_valid": true
+    },
+    "validation": {
+      "validation_classes": [
+        "ExperimentRunner",
+        "ExperimentConfig",
+        "BenchmarkSuite"
+      ],
+      "statistical_methods": [
+        "t_test",
+        "anova",
+        "wilcoxon",
+        "cross_validation",
+        "statistical_significance",
+        "effect_size"
+      ],
+      "publication_ready": [
+        "reproducible",
+        "benchmark",
+        "cohen",
+        "p_value"
+      ],
+      "framework_valid": true
+    },
+    "generation_1": {
+      "real_time_optimization": true,
+      "multi_language_support": true,
+      "uncertainty_quantification": true,
+      "adaptive_processing": true,
+      "enhanced_fusion": true,
+      "requirements_met": 5,
+      "total_requirements": 5
+    },
+    "quality": {
+      "documentation_quality": 3,
+      "type_annotations": 3,
+      "error_handling": 3,
+      "code_organization": 3,
+      "total_score": 12
+    }
+  },
+  "report": {
+    "total_tests": 6,
+    "passed_tests": 6,
+    "success_rate": 1.0,
+    "overall_status": "EXCELLENT"
+  },
+  "execution_time": 0.0059740543365478516,
+  "timestamp": "20250824_193959"
+}
