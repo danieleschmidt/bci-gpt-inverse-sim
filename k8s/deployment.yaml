@@ -1,0 +1,65 @@
+{
+  "apiVersion": "apps/v1",
+  "kind": "Deployment",
+  "metadata": {
+    "name": "bci-gpt",
+    "labels": {
+      "app": "bci-gpt",
+      "version": "v0.1.0"
+    }
+  },
+  "spec": {
+    "replicas": 3,
+    "selector": {
+      "matchLabels": {
+        "app": "bci-gpt"
+      }
+    },
+    "template": {
+      "metadata": {
+        "labels": {
+          "app": "bci-gpt"
+        }
+      },
+      "spec": {
+        "containers": [
+          {
+            "name": "bci-gpt",
+            "image": "bci-gpt:latest",
+            "ports": [
+              {
+                "containerPort": 8000
+              }
+            ],
+            "resources": {
+              "requests": {
+                "cpu": "500m",
+                "memory": "1Gi"
+              },
+              "limits": {
+                "cpu": "2",
+                "memory": "4Gi"
+              }
+            },
+            "livenessProbe": {
+              "httpGet": {
+                "path": "/health",
+                "port": 8000
+              },
+              "initialDelaySeconds": 60,
+              "periodSeconds": 30
+            },
+            "readinessProbe": {
+              "httpGet": {
+                "path": "/ready",
+                "port": 8000
+              },
+              "initialDelaySeconds": 10,
+              "periodSeconds": 5
+            }
+          }
+        ]
+      }
+    }
+  }
+}

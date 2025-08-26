@@ -40,6 +40,74 @@ except ImportError:
 logger = logging.getLogger(__name__)
 
 
+def sanitize_text_input(text: str, max_length: int = 1000) -> str:
+    """Sanitize text input for security.
+    
+    Args:
+        text: Input text to sanitize
+        max_length: Maximum allowed text length
+        
+    Returns:
+        Sanitized text
+    """
+    if not isinstance(text, str):
+        text = str(text)
+    
+    # Length validation
+    if len(text) > max_length:
+        text = text[:max_length]
+        logger.warning(f"Text input truncated to {max_length} characters")
+    
+    # Remove potential injection patterns
+    dangerous_patterns = [
+        '<script', '</script>', 'javascript:', 'data:',
+        'eval(', 'exec(', 'import ', '__import__'
+    ]
+    
+    for pattern in dangerous_patterns:
+        text = text.replace(pattern, '')
+    
+    return text.strip()
+
+
+def validate_file_path(file_path: Union[str, Path],
+                      allowed_extensions: List[str] = None,
+                      max_size_mb: float = 100.0) -> bool:
+    """Validate file path and constraints.
+    
+    Args:
+        file_path: Path to validate
+        allowed_extensions: Allowed file extensions
+        max_size_mb: Maximum file size in MB
+        
+    Returns:
+        True if valid, raises ValueError if invalid
+    """
+    try:
+        path = Path(file_path)
+        
+        # Check if file exists
+        if not path.exists():
+            raise ValueError(f"File does not exist: {file_path}")
+        
+        # Check file extension
+        if allowed_extensions:
+            if path.suffix.lower() not in [ext.lower() for ext in allowed_extensions]:
+                raise ValueError(f"Invalid file extension. Allowed: {allowed_extensions}")
+        
+        # Check file size
+        size_mb = path.stat().st_size / (1024 * 1024)
+        if size_mb > max_size_mb:
+            raise ValueError(f"File too large: {size_mb:.1f}MB > {max_size_mb}MB")
+        
+        logger.debug(f"Validated file path: {file_path}")
+        return True
+        
+    except Exception as e:
+        logger.error(f"File path validation failed: {e}")
+        raise
+
+
 class DataEncryption:
     """Secure data encryption and decryption."""
     

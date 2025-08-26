@@ -2,7 +2,14 @@
 
 import os
 import json
-import yaml
+try:
+    import yaml
+    HAS_YAML = True
+except ImportError:
+    HAS_YAML = False
+    # Fallback to lightweight config manager
+    from .config_manager_lightweight import get_config_manager as _get_lightweight_config
+    yaml = None
 import logging
 from pathlib import Path
 from typing import Dict, Any, Optional, List, Union, Type
@@ -562,8 +569,12 @@ class ConfigManager:
 _global_config_manager: Optional[ConfigManager] = None
 
 
-def get_config_manager(config_path: Optional[str] = None) -> ConfigManager:
+def get_config_manager(config_path: Optional[str] = None):
     """Get or create global configuration manager."""
+    if not HAS_YAML:
+        # Use lightweight fallback
+        return _get_lightweight_config()
+    
     global _global_config_manager
     
     if _global_config_manager is None:

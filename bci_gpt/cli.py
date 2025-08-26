@@ -14,6 +14,8 @@ try:
     HAS_TORCH = True
 except ImportError:
     HAS_TORCH = False
+    # Use lightweight CLI fallback
+    from .cli_lightweight import main as lightweight_main
 
 try:
     import numpy as np
