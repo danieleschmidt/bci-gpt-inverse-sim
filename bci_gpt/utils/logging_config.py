@@ -156,11 +156,15 @@ class BCIGPTLogger:
         
         return logger
     
-    def log_info(self, message: str, extra: Optional[Dict] = None):
+    def info(self, message: str, extra: Optional[Dict] = None):
         """Log info message with optional structured data."""
         if extra:
             message += f" | Extra: {json.dumps(extra, default=str)}"
         self.logger.info(message)
+        
+    def log_info(self, message: str, extra: Optional[Dict] = None):
+        """Log info message with optional structured data."""
+        return self.info(message, extra)
     
     def log_warning(self, message: str, extra: Optional[Dict] = None):
         """Log warning message with optional structured data."""
