@@ -1,241 +1,245 @@
-"""Comprehensive tests for the BCI-GPT inverse simulation package."""
+"""
+Tests for bci_gpt_inverse_sim package.
+
+Covers: EEG shape, band ranges, feature extraction, logit shapes,
+softmax normalization, top-k ordering, and pipeline integration.
+"""
 
 import numpy as np
 import pytest
 
-from bci_gpt.eeg_sim import EEGSignalSim, VOCABULARY
-from bci_gpt.features import BandPowerExtractor
-from bci_gpt.mapper import InverseMapper
-from bci_gpt.decoder import top_k_decode, full_pipeline
+from bci_gpt_inverse_sim.eeg_sim import EEGSignalSim, N_WORDS, N_CHANNELS, WORD_FREQUENCIES
+from bci_gpt_inverse_sim.band_power import BandPowerExtractor, BANDS, N_BANDS
+from bci_gpt_inverse_sim.inverse_mapper import InverseMapper
+from bci_gpt_inverse_sim.decoder import TopKDecoder, softmax
+from bci_gpt_inverse_sim.pipeline import BCIPipeline
 
 
-# ──────────────────────────────────────────────────────────────────────────────
-# Fixtures
-# ──────────────────────────────────────────────────────────────────────────────
-
-@pytest.fixture
-def sim():
-    return EEGSignalSim(n_channels=8, sample_rate=256, duration=1.0, noise_level=0.1)
-
-
-@pytest.fixture
-def extractor():
-    return BandPowerExtractor(sample_rate=256)
-
-
-@pytest.fixture
-def trained_mapper(sim, extractor):
-    """Return a trained InverseMapper along with normalized test data."""
-    signals, labels = sim.generate_dataset(n_per_word=20)
-    X = extractor.extract_batch(signals)
-    mu = X.mean(axis=0)
-    std = X.std(axis=0) + 1e-8
-    X_norm = (X - mu) / std
-
-    mapper = InverseMapper(feature_dim=X.shape[1], vocab_size=10, hidden_dim=64)
-    history = mapper.fit(X_norm, labels, epochs=200, lr=0.01)
-    return mapper, X_norm, labels, history
-
-
-# ──────────────────────────────────────────────────────────────────────────────
+# ---------------------------------------------------------------------------
 # EEGSignalSim tests
-# ──────────────────────────────────────────────────────────────────────────────
+# ---------------------------------------------------------------------------
 
 class TestEEGSignalSim:
+    def setup_method(self):
+        self.sim = EEGSignalSim(seed=0)
 
-    def test_generate_word_returns_correct_shape(self, sim):
-        signal = sim.generate_word("move")
-        assert signal.shape == (sim.n_channels, sim.n_samples), (
-            f"Expected ({sim.n_channels}, {sim.n_samples}), got {signal.shape}"
-        )
+    def test_output_shape_default(self):
+        """generate() should return (n_channels, n_samples) for default params."""
+        eeg = self.sim.generate(0)
+        assert eeg.shape == (N_CHANNELS, 256), f"Expected (8, 256), got {eeg.shape}"
 
-    def test_generate_word_n_samples_matches_sr_duration(self, sim):
-        expected = int(sim.sample_rate * sim.duration)
-        signal = sim.generate_word("left")
-        assert signal.shape[1] == expected
+    def test_output_shape_custom_sr_duration(self):
+        """generate() shape matches duration * sr."""
+        eeg = self.sim.generate(2, duration=2.0, sr=512)
+        assert eeg.shape == (N_CHANNELS, 1024)
 
-    def test_different_words_give_different_signals(self, sim):
-        sig1 = sim.generate_word("move")
-        sig2 = sim.generate_word("stop")
-        assert not np.allclose(sig1, sig2), "Different words should produce different signals"
+    def test_all_word_ids_valid(self):
+        """All word IDs 0–9 should produce valid signals."""
+        for word_id in range(N_WORDS):
+            eeg = self.sim.generate(word_id)
+            assert eeg.shape[0] == N_CHANNELS
+            assert eeg.shape[1] > 0
 
-    def test_same_word_is_deterministic(self, sim):
-        sig1 = sim.generate_word("yes")
-        sig2 = sim.generate_word("yes")
-        assert np.allclose(sig1, sig2), "Same word should produce same base signal"
-
-    def test_noise_is_present(self, sim):
-        """Signals should not be perfectly smooth sinusoids — noise must be present."""
-        signal = sim.generate_word("hello")
-        # A noiseless sinusoid would have very low residual after fitting
-        # Just check that std > 0 and values are not all integers
-        assert signal.std() > 0
-        assert not np.all(signal == signal.astype(int))
-
-    def test_generate_dataset_shape(self, sim):
-        n_per_word = 5
-        signals, labels = sim.generate_dataset(n_per_word=n_per_word)
-        expected_n = len(VOCABULARY) * n_per_word
-        assert signals.shape == (expected_n, sim.n_channels, sim.n_samples)
-        assert labels.shape == (expected_n,)
-
-    def test_generate_dataset_labels_range(self, sim):
-        _, labels = sim.generate_dataset(n_per_word=3)
-        assert labels.min() == 0
-        assert labels.max() == len(VOCABULARY) - 1
-
-    def test_vocabulary_has_10_words(self):
-        assert len(VOCABULARY) == 10
-
-    def test_generate_word_invalid_raises(self, sim):
+    def test_invalid_word_id_raises(self):
+        """word_id outside [0, 9] should raise ValueError."""
         with pytest.raises(ValueError):
-            sim.generate_word("banana")
+            self.sim.generate(10)
+        with pytest.raises(ValueError):
+            self.sim.generate(-1)
+
+    def test_signals_are_distinct(self):
+        """Different word IDs should produce numerically distinct signals."""
+        eeg0 = EEGSignalSim(seed=0).generate(0)
+        eeg1 = EEGSignalSim(seed=0).generate(1)
+        # Different word IDs produce different signals (different dominant frequencies)
+        assert not np.allclose(eeg0, eeg1), "Word 0 and word 1 should not produce identical signals"
+
+    def test_word_frequencies_count(self):
+        """There should be exactly 10 word frequencies."""
+        assert len(WORD_FREQUENCIES) == N_WORDS == 10
+
+    def test_no_nan_in_output(self):
+        """EEG signal should not contain NaN or Inf."""
+        for word_id in range(N_WORDS):
+            eeg = self.sim.generate(word_id)
+            assert np.all(np.isfinite(eeg)), f"Non-finite values in word {word_id} signal"
 
 
-# ──────────────────────────────────────────────────────────────────────────────
+# ---------------------------------------------------------------------------
 # BandPowerExtractor tests
-# ──────────────────────────────────────────────────────────────────────────────
+# ---------------------------------------------------------------------------
 
 class TestBandPowerExtractor:
+    def setup_method(self):
+        self.extractor = BandPowerExtractor()
+        self.sim = EEGSignalSim(seed=1)
 
-    def test_extract_returns_dict_with_all_4_bands(self, extractor):
-        signal = np.random.randn(256)
-        result = extractor.extract(signal)
-        assert set(result.keys()) == {"delta", "theta", "alpha", "beta"}
+    def test_feature_vector_length(self):
+        """Feature vector should have length n_channels * n_bands."""
+        eeg = self.sim.generate(0)
+        features = self.extractor.extract(eeg, sr=256)
+        assert len(features) == N_CHANNELS * N_BANDS
 
-    def test_all_powers_are_non_negative(self, extractor):
-        signal = np.random.randn(256)
-        result = extractor.extract(signal)
-        for band, power in result.items():
-            assert power >= 0, f"Band '{band}' has negative power: {power}"
+    def test_features_non_negative(self):
+        """All band powers should be non-negative."""
+        for word_id in range(N_WORDS):
+            eeg = self.sim.generate(word_id)
+            features = self.extractor.extract(eeg, sr=256)
+            assert np.all(features >= 0), f"Negative band power in word {word_id}"
 
-    def test_extract_multichannel_flattens_correctly(self, extractor):
-        n_channels = 8
-        n_samples = 256
-        signal = np.random.randn(n_channels, n_samples)
-        features = extractor.extract_multichannel(signal)
-        expected_dim = n_channels * 4  # 4 bands
-        assert features.shape == (expected_dim,)
+    def test_bands_cover_correct_ranges(self):
+        """Band definitions should include all standard EEG bands."""
+        band_names = [b[0] for b in BANDS]
+        for expected in ("delta", "theta", "alpha", "beta", "gamma"):
+            assert expected in band_names
 
-    def test_extract_multichannel_is_1d(self, extractor):
-        signal = np.random.randn(4, 256)
-        features = extractor.extract_multichannel(signal)
-        assert features.ndim == 1
+    def test_feature_names_length(self):
+        """feature_names() should return n_channels * n_bands names."""
+        names = self.extractor.feature_names(n_channels=N_CHANNELS)
+        assert len(names) == N_CHANNELS * N_BANDS
 
-    def test_extract_batch_gives_2d_array(self, extractor):
-        signals = np.random.randn(10, 8, 256)
-        batch_features = extractor.extract_batch(signals)
-        assert batch_features.ndim == 2
-        assert batch_features.shape[0] == 10
-        assert batch_features.shape[1] == 8 * 4
+    def test_dominant_frequency_reflected(self):
+        """
+        A pure sine at a known frequency should have highest power
+        in the corresponding band.
+        """
+        sr = 512
+        duration = 2.0
+        t = np.linspace(0, duration, int(duration * sr), endpoint=False)
 
-    def test_extract_batch_consistent_with_single(self, extractor):
-        signals = np.random.randn(5, 4, 256)
-        batch_features = extractor.extract_batch(signals)
-        for i in range(5):
-            single = extractor.extract_multichannel(signals[i])
-            np.testing.assert_allclose(batch_features[i], single)
+        # Alpha band: 10 Hz sine, single channel
+        alpha_signal = np.sin(2 * np.pi * 10 * t).reshape(1, -1)
+        features = self.extractor.extract(alpha_signal, sr=sr)
+        # features has 1 channel × 5 bands = 5 values: delta, theta, alpha, beta, gamma
+        band_names = [b[0] for b in BANDS]
+        alpha_idx = band_names.index("alpha")
+        assert features[alpha_idx] == max(features), (
+            f"Alpha band should have highest power for 10 Hz signal; "
+            f"features={features}"
+        )
 
 
-# ──────────────────────────────────────────────────────────────────────────────
+# ---------------------------------------------------------------------------
 # InverseMapper tests
-# ──────────────────────────────────────────────────────────────────────────────
+# ---------------------------------------------------------------------------
 
 class TestInverseMapper:
+    def setup_method(self):
+        self.n_features = N_CHANNELS * N_BANDS  # 40
+        self.mapper = InverseMapper(n_features=self.n_features, seed=42)
 
-    def test_forward_returns_correct_shape(self):
-        mapper = InverseMapper(feature_dim=32, vocab_size=10)
-        x = np.random.randn(32)
-        logits = mapper.forward(x)
+    def test_logits_shape(self):
+        """forward() should return logits of shape (n_vocab,)."""
+        features = np.ones(self.n_features)
+        logits = self.mapper.forward(features)
         assert logits.shape == (10,)
 
-    def test_forward_batch_shape(self):
-        mapper = InverseMapper(feature_dim=32, vocab_size=10)
-        X = np.random.randn(5, 32)
-        logits = mapper.forward(X)
-        assert logits.shape == (5, 10)
+    def test_logits_are_finite(self):
+        """Logits should contain no NaN or Inf."""
+        features = np.random.default_rng(0).standard_normal(self.n_features)
+        logits = self.mapper.forward(features)
+        assert np.all(np.isfinite(logits))
 
-    def test_fit_runs_without_error(self):
-        mapper = InverseMapper(feature_dim=16, vocab_size=10)
-        X = np.random.randn(50, 16)
-        y = np.random.randint(0, 10, size=50)
-        history = mapper.fit(X, y, epochs=5, lr=0.01)
-        assert len(history) == 5
+    def test_wrong_feature_shape_raises(self):
+        """forward() with wrong feature shape should raise ValueError."""
+        with pytest.raises(ValueError):
+            self.mapper.forward(np.ones(self.n_features + 1))
 
-    def test_loss_decreases_over_training(self, trained_mapper):
-        _, _, _, history = trained_mapper
-        # Average of first 20 epochs vs last 20 epochs
-        early_loss = np.mean(history[:20])
-        late_loss = np.mean(history[-20:])
-        assert late_loss < early_loss, (
-            f"Loss did not decrease: early={early_loss:.4f}, late={late_loss:.4f}"
-        )
+    def test_set_weights(self):
+        """set_weights() should update W and b correctly."""
+        W = np.eye(self.n_features, 10)
+        b = np.ones(10)
+        self.mapper.set_weights(W, b)
+        np.testing.assert_array_equal(self.mapper.W, W)
+        np.testing.assert_array_equal(self.mapper.b, b)
 
 
-# ──────────────────────────────────────────────────────────────────────────────
+# ---------------------------------------------------------------------------
 # Decoder tests
-# ──────────────────────────────────────────────────────────────────────────────
+# ---------------------------------------------------------------------------
 
 class TestDecoder:
+    def setup_method(self):
+        self.decoder = TopKDecoder()
 
-    def test_top_k_decode_returns_k_items(self):
-        logits = np.random.randn(10)
-        result = top_k_decode(logits, k=3)
-        assert len(result) == 3
+    def test_softmax_sums_to_one(self):
+        """softmax output should sum to 1."""
+        logits = np.array([1.0, 2.0, 3.0, 0.5, -1.0])
+        probs = softmax(logits)
+        assert abs(probs.sum() - 1.0) < 1e-10
 
-    def test_top_k_decode_probabilities_sum_to_1(self):
-        logits = np.random.randn(10)
-        result = top_k_decode(logits, k=10)
-        total = sum(p for _, p in result)
-        assert abs(total - 1.0) < 1e-6, f"Probabilities sum to {total}, expected ~1.0"
+    def test_softmax_all_positive(self):
+        """softmax output should be all positive."""
+        logits = np.array([-100.0, 0.0, 100.0])
+        probs = softmax(logits)
+        assert np.all(probs > 0)
 
-    def test_top_k_decode_sorted_descending(self):
-        logits = np.random.randn(10)
-        result = top_k_decode(logits, k=5)
-        probs = [p for _, p in result]
+    def test_softmax_numerical_stability(self):
+        """softmax should not overflow with large logits."""
+        logits = np.array([1000.0, 1001.0, 999.0])
+        probs = softmax(logits)
+        assert np.all(np.isfinite(probs))
+        assert abs(probs.sum() - 1.0) < 1e-10
+
+    def test_topk_returns_k_items(self):
+        """decode() should return exactly k items."""
+        logits = np.arange(10, dtype=float)
+        results = self.decoder.decode(logits, k=3)
+        assert len(results) == 3
+
+    def test_topk_sorted_descending(self):
+        """decode() results should be sorted by probability descending."""
+        logits = np.array([0.1, 5.0, 2.0, 8.0, 1.0, 3.0, 0.5, 4.0, 7.0, 6.0])
+        results = self.decoder.decode(logits, k=5)
+        probs = [p for _, p in results]
         assert probs == sorted(probs, reverse=True)
 
-    def test_top_k_decode_returns_words(self):
-        logits = np.random.randn(10)
-        result = top_k_decode(logits, k=3)
-        for word, prob in result:
-            assert isinstance(word, str)
-            assert word in VOCABULARY
+    def test_topk_highest_logit_is_first(self):
+        """Word with highest logit should have highest probability and appear first."""
+        logits = np.zeros(10)
+        logits[7] = 10.0  # Word 7 should dominate
+        results = self.decoder.decode(logits, k=3)
+        assert results[0][0] == 7
 
-    def test_full_pipeline_returns_list(self, sim, extractor):
-        mapper = InverseMapper(feature_dim=8 * 4, vocab_size=10)
-        signal = sim.generate_word("move")
-        result = full_pipeline(signal, extractor, mapper)
-        assert isinstance(result, list)
-
-    def test_full_pipeline_items_are_str_float_tuples(self, sim, extractor):
-        mapper = InverseMapper(feature_dim=8 * 4, vocab_size=10)
-        signal = sim.generate_word("move")
-        result = full_pipeline(signal, extractor, mapper)
-        for item in result:
-            assert isinstance(item, tuple) and len(item) == 2
-            word, prob = item
-            assert isinstance(word, str)
-            assert isinstance(prob, float)
+    def test_topk_k_clamped_to_vocab(self):
+        """decode() with k > n_vocab should return n_vocab items."""
+        logits = np.arange(10, dtype=float)
+        results = self.decoder.decode(logits, k=20)
+        assert len(results) == 10
 
 
-# ──────────────────────────────────────────────────────────────────────────────
-# End-to-end accuracy test
-# ──────────────────────────────────────────────────────────────────────────────
+# ---------------------------------------------------------------------------
+# Pipeline integration tests
+# ---------------------------------------------------------------------------
 
-class TestEndToEnd:
+class TestPipeline:
+    def setup_method(self):
+        self.pipeline = BCIPipeline(sr=256, duration=1.0, seed=0)
 
-    def test_trained_model_above_random_accuracy(self, trained_mapper):
-        """Trained model should achieve >30% accuracy (random = 10%)."""
-        mapper, X_norm, labels, _ = trained_mapper
-        preds = mapper.predict(X_norm)
-        accuracy = np.mean(preds == labels)
-        assert accuracy > 0.30, (
-            f"Accuracy {accuracy:.1%} is not above 30% threshold"
-        )
+    def test_pipeline_run_returns_expected_keys(self):
+        """run() should return a dict with all expected keys."""
+        result = self.pipeline.run(0, k=3)
+        for key in ("word_id", "word", "eeg_shape", "features", "logits", "top_k"):
+            assert key in result
 
-    def test_demo_runs_without_error(self):
-        from bci_gpt.demo import demo
-        accuracy = demo()
-        assert accuracy is not None
-        assert isinstance(accuracy, float)
+    def test_pipeline_eeg_shape(self):
+        """Pipeline EEG shape should match (N_CHANNELS, sr * duration)."""
+        result = self.pipeline.run(0)
+        assert result["eeg_shape"] == (N_CHANNELS, 256)
+
+    def test_pipeline_feature_length(self):
+        """Pipeline features should have correct length."""
+        result = self.pipeline.run(0)
+        assert len(result["features"]) == N_CHANNELS * N_BANDS
+
+    def test_pipeline_logits_shape(self):
+        """Pipeline logits should have shape (n_vocab,)."""
+        result = self.pipeline.run(0)
+        assert result["logits"].shape == (10,)
+
+    def test_pipeline_run_all(self):
+        """run_all() should return results for all 10 words."""
+        results = self.pipeline.run_all(k=3)
+        assert len(results) == N_WORDS
+        for i, result in enumerate(results):
+            assert result["word_id"] == i

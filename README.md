@@ -1,86 +1,113 @@
-# BCI-GPT Inverse Simulation
+# bci-gpt-inverse-sim
 
-A Python toolkit for simulating EEG signals and decoding them back into vocabulary words — an inverse BCI (Brain-Computer Interface) pipeline.
+**BCI-GPT Inverse Simulation** — A lightweight Python library for simulating the inverse problem in Brain-Computer Interface (BCI) systems: mapping EEG signal features back to vocabulary (word) probabilities.
 
 ## Overview
 
-This package implements an end-to-end BCI decoding pipeline:
+This project demonstrates how a linear inverse model can decode synthetic EEG signals into word predictions. The pipeline simulates the full flow:
 
-1. **EEG Signal Simulation** — Generate synthetic multi-channel EEG signals, each with a distinct spectral fingerprint corresponding to a vocabulary word.
-2. **Band Power Extraction** — Extract delta, theta, alpha, and beta band power features using FFT.
-3. **Inverse Mapping** — Train a 2-layer MLP to map EEG features back to vocabulary logits.
-4. **Top-k Decoding** — Decode the most likely vocabulary words from the model's output.
-
-## Vocabulary
-
-10 words: `move`, `stop`, `left`, `right`, `up`, `down`, `yes`, `no`, `hello`, `goodbye`
-
-## Installation
-
-```bash
-pip install -e .
+```
+Synthetic EEG → Band Power Features → Inverse Linear Mapping → Top-K Word Decoding
 ```
 
-## Quick Start
-
-```python
-from bci_gpt.eeg_sim import EEGSignalSim
-from bci_gpt.features import BandPowerExtractor
-from bci_gpt.mapper import InverseMapper
-from bci_gpt.decoder import full_pipeline
-
-# Generate synthetic EEG data
-sim = EEGSignalSim(n_channels=8, sample_rate=256, duration=1.0)
-signals, labels = sim.generate_dataset(n_per_word=20)
-
-# Extract features
-extractor = BandPowerExtractor(sample_rate=256)
-X = extractor.extract_batch(signals)
-
-# Train inverse mapper
-mapper = InverseMapper(feature_dim=X.shape[1], vocab_size=10)
-mapper.fit(X, labels, epochs=200, lr=0.01)
-
-# Decode a signal
-test_signal = sim.generate_word("left")
-results = full_pipeline(test_signal, extractor, mapper)
-for word, prob in results:
-    print(f"{word}: {prob:.3f}")
-```
-
-## Run the Demo
-
-```bash
-python -m bci_gpt.demo
-```
-
-## Run Tests
-
-```bash
-python -m pytest tests/ -v
-```
+This is a research/educational tool for exploring EEG-to-language decoding concepts.
 
 ## Architecture
 
 ```
-EEGSignalSim → raw EEG (8 ch × 256 samples)
-     ↓
-BandPowerExtractor → 32 features (8 channels × 4 bands)
-     ↓
-InverseMapper (MLP) → 10 logits
-     ↓
-top_k_decode → [(word, probability), ...]
+bci_gpt_inverse_sim/
+├── eeg_sim.py        # EEGSignalSim — synthetic EEG generation (10 words × 8 channels)
+├── band_power.py     # BandPowerExtractor — delta/theta/alpha/beta/gamma band powers
+├── inverse_mapper.py # InverseMapper — linear W.T @ features + b → logits
+├── decoder.py        # TopKDecoder — softmax + top-k selection
+└── pipeline.py       # BCIPipeline — end-to-end demo
 ```
 
-## Modules
+## Components
 
-| Module | Class/Function | Description |
-|--------|---------------|-------------|
-| `eeg_sim` | `EEGSignalSim` | Synthetic EEG signal generator |
-| `features` | `BandPowerExtractor` | FFT-based band power features |
-| `mapper` | `InverseMapper` | 2-layer numpy MLP |
-| `decoder` | `top_k_decode`, `full_pipeline` | Vocabulary decoding |
-| `demo` | `demo()` | End-to-end demonstration |
+### EEGSignalSim
+Generates synthetic 8-channel EEG signals for 10 vocabulary words. Each word has a unique dominant frequency (1.5 Hz to 45 Hz), with slight per-channel variations and Gaussian noise.
+
+```python
+from bci_gpt_inverse_sim import EEGSignalSim
+
+sim = EEGSignalSim(seed=42)
+eeg = sim.generate(word_id=3, duration=1.0, sr=256)
+# eeg.shape == (8, 256)
+```
+
+### BandPowerExtractor
+Extracts per-channel power in standard EEG frequency bands using Welch's method:
+- **Delta**: 0.5–4 Hz
+- **Theta**: 4–8 Hz
+- **Alpha**: 8–13 Hz
+- **Beta**: 13–30 Hz
+- **Gamma**: 30–100 Hz
+
+```python
+from bci_gpt_inverse_sim import BandPowerExtractor
+
+extractor = BandPowerExtractor()
+features = extractor.extract(eeg, sr=256)
+# features.shape == (40,)  — 8 channels × 5 bands
+```
+
+### InverseMapper
+Maps feature vectors to vocabulary logits via a linear model:
+```
+logits = W.T @ features + b
+```
+Weights are randomly initialized (Xavier-style). Can be replaced with trained weights.
+
+```python
+from bci_gpt_inverse_sim import InverseMapper
+
+mapper = InverseMapper(n_features=40, n_vocab=10)
+logits = mapper.forward(features)
+# logits.shape == (10,)
+```
+
+### TopKDecoder
+Applies softmax to logits and returns the top-k most likely words.
+
+```python
+from bci_gpt_inverse_sim import TopKDecoder
+
+decoder = TopKDecoder()
+top3 = decoder.decode(logits, k=3)
+# [(word_id, probability), ...]
+```
+
+### BCIPipeline
+End-to-end convenience wrapper:
+
+```python
+from bci_gpt_inverse_sim import BCIPipeline
+
+pipeline = BCIPipeline(sr=256, duration=1.0, seed=42)
+result = pipeline.run(word_id=5, k=3)
+print(result["top_k"])
+```
+
+## Quick Start
+
+```bash
+pip install numpy scipy
+python -m bci_gpt_inverse_sim.pipeline
+```
+
+## Running Tests
+
+```bash
+pip install pytest
+pytest tests/ -v
+```
+
+## Requirements
+
+- Python ≥ 3.10
+- numpy ≥ 1.24
+- scipy ≥ 1.10
 
 ## License
 
